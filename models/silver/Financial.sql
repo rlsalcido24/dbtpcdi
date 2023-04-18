@@ -41,7 +41,7 @@ FROM (
       cast(substring(value, 161, 13) AS BIGINT) AS fi_out_basic,
       cast(substring(value, 174, 13) AS BIGINT) AS fi_out_dilut,
       trim(substring(value, 187, 60)) AS conameorcik
-    FROM Live.FinWire
+    FROM {{ ref('Finwire') }}
     WHERE rectype = 'FIN'
   ) f 
 ) f
@@ -58,7 +58,7 @@ JOIN (
     cast(companyid as string) conameorcik,
     EffectiveDate,
     EndDate
-  FROM LIVE.DimCompany
+  FROM {{ ref('DimCompany') }}
 ) dc 
 ON
   f.conameorcik = dc.conameorcik 
