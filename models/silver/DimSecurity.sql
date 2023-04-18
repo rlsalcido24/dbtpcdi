@@ -56,10 +56,10 @@ FROM (
         to_date(substring(value, 141, 8), 'yyyyMMdd') AS firsttradeonexchange,
         cast(substring(value, 149, 12) AS DOUBLE) AS Dividend,
         trim(substring(value, 161, 60)) AS conameorcik
-      FROM Live.FinWire
+      FROM {{ ref('Finwire') }}
       WHERE rectype = 'SEC'
       ) fws
-    JOIN LIVE.StatusType s 
+    JOIN {{ ref('StatusType') }} s 
       ON s.ST_ID = fws.status
     ) fws
   JOIN (
@@ -68,14 +68,14 @@ FROM (
       name conameorcik,
       EffectiveDate,
       EndDate
-    FROM LIVE.DimCompany
+    FROM {{ ref('DimCompany') }}
     UNION ALL
     SELECT 
       sk_companyid,
       cast(companyid as string) conameorcik,
       EffectiveDate,
       EndDate
-    FROM LIVE.DimCompany
+    FROM {{ ref('DimCompany') }}
   ) dc 
   ON
     fws.conameorcik = dc.conameorcik 
