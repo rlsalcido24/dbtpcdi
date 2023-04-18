@@ -51,8 +51,8 @@ SELECT
       trim(substring(value, 324, 24)) AS Country,
       trim(substring(value, 348, 46)) AS CEOname,
       trim(substring(value, 394, 150)) AS Description
-    FROM Live.FinWire
+    FROM {{ ref('FinWire') }}
     WHERE rectype = 'CMP') cmp
-  JOIN LIVE.StatusType st ON cmp.status = st.st_id
-  JOIN LIVE.Industry ind ON cmp.industryid = ind.in_id
+  JOIN {{ ref('StatusTyoe') }} st ON cmp.status = st.st_id
+  JOIN {{ ref('Industry') }} ind ON cmp.industryid = ind.in_id
 )
