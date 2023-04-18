@@ -51,7 +51,7 @@ JOIN (
     name conameorcik,
     EffectiveDate,
     EndDate
-  FROM LIVE.DimCompany
+  FROM {{ ref('DimCompany') }}
   UNION ALL
   SELECT 
     sk_companyid,
