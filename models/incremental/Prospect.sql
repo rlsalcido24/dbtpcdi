@@ -82,7 +82,7 @@ FROM (
       numbercreditcards,
       networth,
       min(batchid) batchid
-    FROM LIVE.ProspectRaw p
+    FROM {{ source('tpcdi', 'ProspectRaw') }} p
     GROUP BY
       agencyid,
       lastname,
@@ -111,16 +111,16 @@ JOIN (
   SELECT 
     sk_dateid,
     batchid
-  FROM LIVE.BatchDate b 
-  JOIN LIVE.DimDate d 
+  FROM {{ source('tpcdi', 'BatchDate') }} b 
+  JOIN {{ ref('DimDate') }} d 
     ON b.batchdate = d.datevalue) recdate
   ON p.recordbatchid = recdate.batchid
 JOIN (
   SELECT 
     sk_dateid,
     batchid
-  FROM LIVE.BatchDate b 
-  JOIN LIVE.DimDate d 
+  FROM {{ source('tpcdi', 'BatchDate') }} b 
+  JOIN {{ ref('DimDate') }} d 
     ON b.batchdate = d.datevalue) origdate
   ON p.batchid = origdate.batchid
 LEFT JOIN (
@@ -131,7 +131,7 @@ LEFT JOIN (
     addressline1,
     addressline2,
     postalcode
-  FROM LIVE.DimCustomerStg
+  FROM {{ ref('DimCustomerStg') }}
   WHERE iscurrent) c
   ON 
     upper(p.LastName) = upper(c.lastname)
