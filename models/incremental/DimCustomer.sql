@@ -12,7 +12,7 @@ SELECT
   c.lastname,
   c.firstname,
   c.middleinitial,
-  c.gender,
+  if(c.gender IN ('M', 'F'), c.gender, 'U') gender,
   c.tier,
   c.dob,
   c.addressline1,
@@ -48,5 +48,4 @@ LEFT JOIN LIVE.Prospect p
   and upper(p.firstname) = upper(c.firstname)
   and upper(p.addressline1) = upper(c.addressline1)
   and upper(nvl(p.addressline2, '')) = upper(nvl(c.addressline2, ''))
-  and upper(p.postalcode) = upper(c.postalcode)
-WHERE effectivedate < enddate
+  and upper(p.postalcode) = upper(c.postalcode);
