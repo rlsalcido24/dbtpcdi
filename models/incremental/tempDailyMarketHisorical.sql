@@ -15,8 +15,8 @@ SELECT
     ORDER BY dm_date ASC ROWS BETWEEN 364 PRECEDING AND CURRENT ROW
   ) fiftytwoweekhigh
 FROM (
-  SELECT * FROM LIVE.DailyMarketHistorical
+  SELECT * FROM {{ source('tpcdi', 'DailyMarketHistorical') }}
   UNION ALL
   SELECT * except(cdc_flag, cdc_dsn) FROM LIVE.DailyMarketIncremental) dmh
-JOIN LIVE.DimDate d 
+JOIN {{ ref('DimDate') }} d 
   ON d.datevalue = dm_date;
