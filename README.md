@@ -6,4 +6,3 @@ remaining action items:
 
 i) finish refactoring models in the incremental folder
 ii) dbt unit tests
-iii) clean up profiles.yml and sources.yml
