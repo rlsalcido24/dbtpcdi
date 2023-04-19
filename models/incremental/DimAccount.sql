@@ -3,59 +3,75 @@
         materialized = 'table'
     )
 }}
-with orders as (
-    
-    select * from {{ ref('base_orders') }}
-
-),
-line_items as (
-
-    select * from {{ ref('base_line_item') }}
-
-)
-select 
-
-    {{ dbt_utils.surrogate_key(['o.order_key', 'l.order_line_number']) }} as order_item_key,
-
-    o.order_key,
-    o.order_date,
-    o.customer_key,
-    o.order_status_code,
-    
-    l.part_key,
-    l.supplier_key,
-    l.return_status_code,
-    l.order_line_number,
-    l.order_line_status_code,
-    l.ship_date,
-    l.commit_date,
-    l.receipt_date,
-    l.ship_mode_name,
-
-    l.quantity,
-    
-    -- extended_price is actually the line item total,
-    -- so we back out the extended price per item
-    (l.extended_price/nullif(l.quantity, 0)){{ money() }} as base_price,
-    l.discount_percentage,
-    ((l.extended_price/nullif(l.quantity, 0)){{ money() }} * (1 - l.discount_percentage)){{ money() }} as discounted_price,
-
-    l.extended_price as gross_item_sales_amount,
-    (l.extended_price * (1 - l.discount_percentage)){{ money() }} as discounted_item_sales_amount,
-    -- We model discounts as negative amounts
-    (-1 * l.extended_price * l.discount_percentage){{ money() }} as item_discount_amount,
-    l.tax_rate,
-    ((l.extended_price + (-1 * l.extended_price * l.discount_percentage){{ money() }}) * l.tax_rate){{ money() }} as item_tax_amount,
-    (
-        l.extended_price + 
-        (-1 * l.extended_price * l.discount_percentage){{ money() }} + 
-        ((l.extended_price + (-1 * l.extended_price * l.discount_percentage){{ money() }}) * l.tax_rate){{ money() }}
-    ){{ money() }} as net_item_sales_amount
-
-from
-    orders o
-    join
-    line_items l
-        on o.order_key = l.order_key
-order by
-    o.order_date
+SELECT
+  a.accountid,
+  b.sk_brokerid,
+  a.sk_customerid,
+  a.accountdesc,
+  a.TaxStatus,
+  a.status,
+  a.batchid,
+  a.effectivedate,
+  a.enddate
+FROM (
+  SELECT
+    a.* except(effectivedate, enddate, customerid),
+    c.sk_customerid,
+    if(a.effectivedate < c.effectivedate, c.effectivedate, a.effectivedate) effectivedate,
+    if(a.enddate > c.enddate, c.enddate, a.enddate) enddate
+  FROM (
+    SELECT *
+    FROM (
+      SELECT
+        accountid,
+        customerid,
+        coalesce(accountdesc, last_value(accountdesc) IGNORE NULLS OVER (
+          PARTITION BY accountid ORDER BY update_ts)) accountdesc,
+        coalesce(taxstatus, last_value(taxstatus) IGNORE NULLS OVER (
+          PARTITION BY accountid ORDER BY update_ts)) taxstatus,
+        coalesce(brokerid, last_value(brokerid) IGNORE NULLS OVER (
+          PARTITION BY accountid ORDER BY update_ts)) brokerid,
+        coalesce(status, last_value(status) IGNORE NULLS OVER (
+          PARTITION BY accountid ORDER BY update_ts)) status,
+        date(update_ts) effectivedate,
+        nvl(lead(date(update_ts)) OVER (PARTITION BY accountid ORDER BY update_ts), date('9999-12-31')) enddate,
+        batchid
+      FROM (
+        SELECT
+          accountid,
+          customerid,
+          accountdesc,
+          taxstatus,
+          brokerid,
+          status,
+          update_ts,
+          1 batchid
+        FROM ${staging_db}.CustomerMgmt c
+        WHERE ActionType NOT IN ('UPDCUST', 'INACT')
+        UNION ALL
+        SELECT
+          accountid,
+          a.ca_c_id customerid,
+          accountDesc,
+          TaxStatus,
+          a.ca_b_id brokerid,
+          st_name as status,
+          TIMESTAMP(bd.batchdate) update_ts,
+          a.batchid
+        FROM LIVE.AccountIncremental a
+        JOIN LIVE.BatchDate bd
+          ON a.batchid = bd.batchid
+        JOIN LIVE.StatusType st 
+          ON a.CA_ST_ID = st.st_id
+      ) a
+    ) a
+    WHERE a.effectivedate < a.enddate
+  ) a
+  FULL OUTER JOIN LIVE.DimCustomerStg c 
+    ON 
+      a.customerid = c.customerid
+      AND c.enddate > a.effectivedate
+      AND c.effectivedate < a.enddate
+) a
+LEFT JOIN LIVE.DimBroker b 
+  ON a.brokerid = b.brokerid;
