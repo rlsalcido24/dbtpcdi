@@ -98,8 +98,8 @@ FROM (
             WHEN (th_st_id == "SBMT" AND t_tt_id IN ("TMB", "TMS")) OR th_st_id = "PNDG" THEN TRUE 
             WHEN th_st_id IN ("CMPT", "CNCL") THEN FALSE 
             ELSE cast(null as boolean) END AS create_flg
-        FROM LIVE.TradeHistory t
-        JOIN LIVE.TradeHistoryRaw th
+        FROM {{ source('tpcdi', 'TradeHistory') }} t
+        JOIN {{ source('tpcdi', 'TradeHistoryRaw') }} th
           ON th_t_id = t_id
         UNION ALL
         SELECT
@@ -122,27 +122,27 @@ FROM (
             WHEN cdc_flag = 'I' THEN TRUE 
             WHEN t_st_id IN ("CMPT", "CNCL") THEN FALSE 
             ELSE cast(null as boolean) END AS create_flg
-        FROM LIVE.TradeIncremental t
+        FROM {{ source('tpcdi', 'TradeIncremental') }} t
       ) t
-      JOIN LIVE.DimDate dd
+      JOIN {{ source('tpcdi', 'DimDate') }} dd
         ON date(t.t_dts) = dd.datevalue
-      JOIN LIVE.DimTime dt
+      JOIN {{ source('tpcdi', 'DimTime') }} dt
         ON date_format(t.t_dts, 'HH:mm:ss') = dt.timevalue
     )
   )
   QUALIFY ROW_NUMBER() OVER (PARTITION BY tradeid ORDER BY t_dts desc) = 1
 ) trade
-JOIN LIVE.StatusType status
+JOIN {{ source('tpcdi', 'StatusType') }} status
   ON status.st_id = trade.t_st_id
-JOIN LIVE.TradeType tt
+JOIN {{ source('tpcdi', 'TradeType') }} tt
   ON tt.tt_id == trade.t_tt_id
 -- Converts to LEFT JOIN if this is run as DQ EDITION. On some higher Scale Factors, a small number of Security symbols or Account IDs are missing from DimSecurity/DimAccount, causing audit check failures. 
-${dq_left_flg} JOIN LIVE.DimSecurity ds
+${dq_left_flg} JOIN {{ ref('DimSecurity') }} ds
   ON 
     ds.symbol = trade.t_s_symb
     AND createdate >= ds.effectivedate 
     AND createdate < ds.enddate
-${dq_left_flg} JOIN LIVE.DimAccount da
+${dq_left_flg} JOIN {{ ref('DimAccount') }} da
   ON 
     trade.t_ca_id = da.accountid 
     AND createdate >= da.effectivedate 
