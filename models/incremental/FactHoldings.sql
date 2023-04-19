@@ -20,9 +20,10 @@ FROM (
   SELECT 
     * ,
     1 batchid
-  FROM {{ ref('HoldingHistory') }}
+  FROM LIVE.HoldingHistory
   UNION ALL
   SELECT * except(cdc_flag, cdc_dsn)
-  FROM {{ ref('HoldingIncremental') }} hh
-JOIN {{ ref('DimTrade') }} dt
+  FROM LIVE.HoldingIncremental) hh
+-- Converts to LEFT JOIN if this is run as DQ EDITION. It is possible, because of the issues upstream with DimSecurity/DimAccount on "some" scale factors, that DimTrade may be missing some rows.
+${dq_left_flg} JOIN LIVE.DimTrade dt
   ON tradeid = hh_t_id
