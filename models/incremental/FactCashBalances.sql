@@ -18,18 +18,19 @@ FROM (
     batchid
   FROM (
     SELECT * , 1 batchid
-    FROM {{ ref('CashTransactionHistory') }}
+    FROM LIVE.CashTransactionHistory
     UNION ALL
     SELECT * except(cdc_flag, cdc_dsn)
-    FROM {{ ref('CashTransactionIncremental') }}
+    FROM LIVE.CashTransactionIncremental
   )
   GROUP BY
     accountid,
     datevalue,
     batchid) c 
-JOIN {{ ref('DimDate') }} d 
+JOIN LIVE.DimDate d 
   ON c.datevalue = d.datevalue
-JOIN {{ ref('DimAccount') }} a 
+-- Converts to LEFT JOIN if this is run as DQ EDITION. On some higher Scale Factors, a small number of Account IDs are missing from DimAccount, causing audit check failures. 
+${dq_left_flg} JOIN LIVE.DimAccount a 
   ON 
     c.accountid = a.accountid
     AND c.datevalue >= a.effectivedate 
