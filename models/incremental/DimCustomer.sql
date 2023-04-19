@@ -38,12 +38,12 @@ SELECT
   c.batchid,
   c.effectivedate,
   c.enddate
-FROM LIVE.DimCustomerStg c
-LEFT JOIN LIVE.TaxRate r_lcl 
+FROM {{ ref('DimCustomerStg') }} c
+LEFT JOIN {{ source('tpcdi', 'TaxRate') }} r_lcl 
   ON c.LCL_TX_ID = r_lcl.TX_ID
-LEFT JOIN LIVE.TaxRate r_nat 
+LEFT JOIN {{ source('tpcdi', 'TaxRate') }} r_nat 
   ON c.NAT_TX_ID = r_nat.TX_ID
-LEFT JOIN LIVE.Prospect p 
+LEFT JOIN {{ ref('Prospect') }} p 
   on upper(p.lastname) = upper(c.lastname)
   and upper(p.firstname) = upper(c.firstname)
   and upper(p.addressline1) = upper(c.addressline1)
