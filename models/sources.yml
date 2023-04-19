@@ -1,19 +1,34 @@
 version: 2
 
 sources:
-  - name: tpch
-    catalog: samples
-    schema: tpch
+  - name: tpcdi
+    schema: roberto_salcido_tpcdi_dlt_advanced_10_wh
     
     tables:
-      - name: customer
-      - name: lineitem
-      - name: nation
-      - name: orders
-      - name: part
-      - name: partsupp
-      - name: region
-      - name: supplier
+      - name: AccountIncremental
+      - name: BatchDate
+      - name: CashTransactionHistory
+      - name: CashTransactionIncremental
+      - name: CustomerIncremental
+      - name: DailyMarketHistorical
+      - name: DailyMarketIncremental
+      - name: DimDate
+      - name: DimTime
+      - name: FinWire
+      - name: HR
+      - name: HoldingHistory
+      - name: HoldingIncremental
+      - name: Industry
+      - name: ProspectRaw
+      - name: StatusType
+      - name: TaxRate
+      - name: TradeHistory
+      - name: TradeHistoryRaw
+      - name: TradeIncremental
+      - name: TradeType
+      - name: WatchHistory
+      - name: WatchIncremental
+
 
 
 
