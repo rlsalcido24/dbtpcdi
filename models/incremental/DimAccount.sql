@@ -58,20 +58,20 @@ FROM (
           st_name as status,
           TIMESTAMP(bd.batchdate) update_ts,
           a.batchid
-        FROM LIVE.AccountIncremental a
-        JOIN LIVE.BatchDate bd
+        FROM {{ source('tpcdi', 'AccountIncremental') }} a
+        JOIN {{ source('tpcdi', 'BatchDate') }} bd
           ON a.batchid = bd.batchid
-        JOIN LIVE.StatusType st 
+        JOIN {{ source('tpcdi', 'StatusType') }} st 
           ON a.CA_ST_ID = st.st_id
       ) a
     ) a
     WHERE a.effectivedate < a.enddate
   ) a
-  FULL OUTER JOIN LIVE.DimCustomerStg c 
+  FULL OUTER JOIN {{ ref('DimCustomerStg') }} c 
     ON 
       a.customerid = c.customerid
       AND c.enddate > a.effectivedate
       AND c.effectivedate < a.enddate
 ) a
-LEFT JOIN LIVE.DimBroker b 
+LEFT JOIN {{ ref('DimBroke') }} b 
   ON a.brokerid = b.brokerid;
