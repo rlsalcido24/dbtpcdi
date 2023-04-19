@@ -1,17 +1,28 @@
 {{
     config(
-        materialized = 'table'
+        materialized = 'incremental'
     )
 }}
-with regions as (
 
-    select * from {{ ref('base_region') }}
-
-)
-select 
-    r.region_key,
-    r.region_name
-from
-    regions r
-order by
-    r.region_key
+SELECT 
+  hh_h_t_id tradeid,
+  hh_t_id currenttradeid,
+  sk_customerid,
+  sk_accountid,
+  sk_securityid,
+  sk_companyid,
+  sk_closedateid sk_dateid,
+  sk_closetimeid sk_timeid,
+  tradeprice currentprice,
+  hh_after_qty currentholding,
+  hh.batchid
+FROM (
+  SELECT 
+    * ,
+    1 batchid
+  FROM {{ ref('HoldingHistory') }}
+  UNION ALL
+  SELECT * except(cdc_flag, cdc_dsn)
+  FROM {{ ref('HoldingIncremental') }} hh
+JOIN {{ ref('DimTrade') }} dt
+  ON tradeid = hh_t_id
