@@ -4,5 +4,5 @@ The goal of this repo is to collaborate to refactor the DLT code in tpc-di repo 
 
 remaining action items:
 
-i) finish refactoring 10 models in the incremental folder
+i) finish refactoring 5 models in the incremental folder (dim tables + prospect.sql)
 ii) dbt unit tests
