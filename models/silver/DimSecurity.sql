@@ -56,10 +56,10 @@ FROM (
         to_date(substring(value, 141, 8), 'yyyyMMdd') AS firsttradeonexchange,
         cast(substring(value, 149, 12) AS DOUBLE) AS Dividend,
         trim(substring(value, 161, 60)) AS conameorcik
-      FROM {{ ref('Finwire') }}
+      FROM {{ source('tpcdi', 'FinWire') }}
       WHERE rectype = 'SEC'
       ) fws
-    JOIN {{ ref('StatusType') }} s 
+    JOIN {{ source('tpcdi', 'StatusType') }}s 
       ON s.ST_ID = fws.status
     ) fws
   JOIN (
