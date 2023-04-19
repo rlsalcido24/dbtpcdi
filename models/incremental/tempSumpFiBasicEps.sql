@@ -3,21 +3,10 @@
         materialized = 'table'
     )
 }}
-with parts as (
-
-    select * from {{ ref('base_part') }}
-
-)
-select 
-    p.part_key,
-    p.part_name,
-    p.part_manufacturer_name,
-    p.part_brand_name,
-    p.part_type_name,
-    p.part_size,
-    p.part_container_desc,
-    p.retail_price
-from
-    parts p
-order by
-    p.part_key
+SELECT
+  sk_companyid,
+  fi_qtr_start_date,
+  sum(fi_basic_eps) OVER (PARTITION BY companyid ORDER BY fi_qtr_start_date ROWS BETWEEN 4 PRECEDING AND CURRENT ROW) - fi_basic_eps sum_fi_basic_eps
+FROM LIVE.Financial
+JOIN LIVE.DimCompany
+  USING (sk_companyid);
