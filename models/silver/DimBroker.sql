@@ -15,5 +15,5 @@ SELECT
   1 batchid,
   (SELECT min(to_date(datevalue)) as effectivedate FROM {{ ref('DimDate') }} ) effectivedate,
   date('9999-12-31') enddate
-FROM  {{ ref('HR') }}
+FROM  {{ source('tpcdi', 'HR) }}
 WHERE employeejobcode = 314
