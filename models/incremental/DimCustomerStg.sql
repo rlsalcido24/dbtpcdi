@@ -143,9 +143,9 @@ SELECT * FROM (
       c.NAT_TX_ID,
       c.batchid,
       timestamp(bd.batchdate) update_ts
-    FROM LIVE.CustomerIncremental c
-    JOIN LIVE.BatchDate bd
+    FROM {{ source('tpcdi', 'CustomerIncremental') }} c
+    JOIN {{ source('tpcdi', 'BatchDate') }} bd
       ON c.batchid = bd.batchid
-    JOIN LIVE.StatusType s 
+    JOIN {{ source('tpcdi', 'StatusType') }} s 
       ON c.status = s.st_id
   ) c
