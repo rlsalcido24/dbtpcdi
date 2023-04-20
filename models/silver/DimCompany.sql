@@ -6,6 +6,7 @@
 SELECT 
   * FROM (
   SELECT
+    md5(cik) sk_companyid,
     cast(cik as BIGINT) companyid,
     st.st_name status,
     companyname name,
@@ -42,7 +43,7 @@ SELECT
       trim(substring(value, 89, 4)) AS Status,
       trim(substring(value, 93, 2)) AS IndustryID,
       trim(substring(value, 95, 4)) AS SPrating,
-      to_date(substring(value, 99, 8), 'yyyyMMdd') AS FoundingDate,
+      to_date(iff(trim(substring(value, 99, 8))='',NULL,substring(value, 99, 8)), 'yyyyMMdd') AS FoundingDate,
       trim(substring(value, 107, 80)) AS AddrLine1,
       trim(substring(value, 187, 80)) AS AddrLine2,
       trim(substring(value, 267, 12)) AS PostalCode,
@@ -52,7 +53,8 @@ SELECT
       trim(substring(value, 348, 46)) AS CEOname,
       trim(substring(value, 394, 150)) AS Description
     FROM {{ source('tpcdi', 'FinWire') }}
-    WHERE rectype = 'CMP') cmp
+    WHERE rectype = 'CMP'
+       ) cmp
   JOIN {{ source('tpcdi', 'StatusType') }} st ON cmp.status = st.st_id
   JOIN {{ source('tpcdi', 'Industry') }} ind ON cmp.industryid = ind.in_id
 )
