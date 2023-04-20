@@ -14,7 +14,7 @@ sources:
       - name: DailyMarketIncremental
       - name: DimDate
       - name: DimTime
-      - name: FinWire
+      - name: FinWire 
       - name: HR
       - name: HoldingHistory
       - name: HoldingIncremental
