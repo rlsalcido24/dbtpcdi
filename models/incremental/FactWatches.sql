@@ -41,12 +41,14 @@ FROM (
         ON d.datevalue = date(wh.w_dts)))
   QUALIFY ROW_NUMBER() OVER (PARTITION BY customerid, symbol ORDER BY w_dts desc) = 1) wh
 -- Converts to LEFT JOINs if this is run as DQ EDITION. On some higher Scale Factors, a small number of Security symbols or Customer IDs "may" be missing from DimSecurity/DimCustomer, causing audit check failures. 
-${dq_left_flg} JOIN {{ ref('DimSecurity') }} s 
+--${dq_left_flg} 
+JOIN {{ ref('DimSecurity') }} s 
   ON 
     s.symbol = wh.symbol
     AND wh.dateplaced >= s.effectivedate 
     AND wh.dateplaced < s.enddate
-${dq_left_flg} JOIN {{ ref('DimCustomer') }} c 
+--${dq_left_flg} 
+JOIN {{ ref('DimCustomer') }} c 
   ON
     wh.customerid = c.customerid
     AND wh.dateplaced >= c.effectivedate 

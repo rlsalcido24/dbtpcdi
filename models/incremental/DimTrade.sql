@@ -137,12 +137,14 @@ JOIN {{ source('tpcdi', 'StatusType') }} status
 JOIN {{ source('tpcdi', 'TradeType') }} tt
   ON tt.tt_id == trade.t_tt_id
 -- Converts to LEFT JOIN if this is run as DQ EDITION. On some higher Scale Factors, a small number of Security symbols or Account IDs are missing from DimSecurity/DimAccount, causing audit check failures. 
-${dq_left_flg} JOIN {{ ref('DimSecurity') }} ds
+--${dq_left_flg} 
+JOIN {{ ref('DimSecurity') }} ds
   ON 
     ds.symbol = trade.t_s_symb
     AND createdate >= ds.effectivedate 
     AND createdate < ds.enddate
-${dq_left_flg} JOIN {{ ref('DimAccount') }} da
+--${dq_left_flg} 
+JOIN {{ ref('DimAccount') }} da
   ON 
     trade.t_ca_id = da.accountid 
     AND createdate >= da.effectivedate 

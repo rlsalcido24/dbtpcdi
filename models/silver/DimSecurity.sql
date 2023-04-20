@@ -4,6 +4,7 @@
     )
 }}
 SELECT 
+  md5(Symbol) as sk_securityid,
   Symbol,
   issue,
   status,
@@ -59,7 +60,7 @@ FROM (
       FROM {{ source('tpcdi', 'FinWire') }}
       WHERE rectype = 'SEC'
       ) fws
-    JOIN {{ source('tpcdi', 'StatusType') }}s 
+    JOIN {{ source('tpcdi', 'StatusType') }} s
       ON s.ST_ID = fws.status
     ) fws
   JOIN (
