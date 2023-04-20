@@ -18,7 +18,7 @@ SELECT
 FROM (
   SELECT 
     * except(conameorcik),
-    nvl(string(cast(conameorcik as bigint)), conameorcik) conameorcik
+    nvl(string(try_cast(conameorcik as bigint)), conameorcik) conameorcik
   FROM (
     SELECT
       to_timestamp(substring(value, 1, 15), 'yyyyMMdd-HHmmss') AS PTS,

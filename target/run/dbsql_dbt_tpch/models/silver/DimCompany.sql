@@ -16,7 +16,8 @@
 SELECT 
   * FROM (
   SELECT
-    cast(cik as BIGINT) sk_companyid,
+    md5(cik) sk_companyid,
+    cast(cik as BIGINT) companyid,
     st.st_name status,
     companyname name,
     ind.in_name industry,
@@ -52,7 +53,7 @@ SELECT
       trim(substring(value, 89, 4)) AS Status,
       trim(substring(value, 93, 2)) AS IndustryID,
       trim(substring(value, 95, 4)) AS SPrating,
-      to_date(substring(value, 99, 8), 'yyyyMMdd') AS FoundingDate,
+      to_date(iff(trim(substring(value, 99, 8))='',NULL,substring(value, 99, 8)), 'yyyyMMdd') AS FoundingDate,
       trim(substring(value, 107, 80)) AS AddrLine1,
       trim(substring(value, 187, 80)) AS AddrLine2,
       trim(substring(value, 267, 12)) AS PostalCode,
@@ -63,7 +64,6 @@ SELECT
       trim(substring(value, 394, 150)) AS Description
     FROM `roberto_salcido_tpcdi_dlt_advanced_10_wh`.`FinWire`
     WHERE rectype = 'CMP'
-       AND trim(substring(value, 99, 8)) <> ''
        ) cmp
   JOIN `roberto_salcido_tpcdi_dlt_advanced_10_wh`.`StatusType` st ON cmp.status = st.st_id
   JOIN `roberto_salcido_tpcdi_dlt_advanced_10_wh`.`Industry` ind ON cmp.industryid = ind.in_id

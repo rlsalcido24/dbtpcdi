@@ -1,6 +1,7 @@
 
 
 SELECT
+  md5(employeeid) as sk_brokerid,
   cast(employeeid as BIGINT) brokerid,
   cast(managerid as BIGINT) managerid,
   employeefirstname firstname,

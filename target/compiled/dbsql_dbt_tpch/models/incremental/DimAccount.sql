@@ -1,5 +1,6 @@
 
 SELECT
+  md5(a.accountid::string) as sk_accountid,
   a.accountid,
   b.sk_brokerid,
   a.sk_customerid,

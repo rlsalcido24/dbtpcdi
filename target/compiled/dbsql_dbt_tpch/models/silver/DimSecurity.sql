@@ -31,7 +31,7 @@ FROM (
   FROM (
     SELECT 
       fws.* except(Status, conameorcik),
-      nvl(string(cast(conameorcik as bigint)), conameorcik) conameorcik,
+      nvl(string(try_cast(conameorcik as bigint)), conameorcik) conameorcik,
       s.ST_NAME as status,
       coalesce(
         lead(effectivedate) OVER (
