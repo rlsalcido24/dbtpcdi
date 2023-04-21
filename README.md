@@ -4,5 +4,5 @@ The goal of this repo is to collaborate to refactor the DLT code in tpc-di repo 
 
 remaining action items:
 
-i) dbt unit tests/ column descriptions
-ii) verify table contents match
+i) verify table contents match
+ii) dbt column descriptions
