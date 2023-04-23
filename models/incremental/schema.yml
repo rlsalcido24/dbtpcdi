@@ -93,6 +93,17 @@ models:
         tests:
            - not_null:
               config:
-                store_failures: true                             
+                store_failures: true
+      - name: commission
+        tests:
+           - tradecom:
+              config:
+                store_failures: true 
+                
+      - name: fee
+        tests:
+           - tradefee:
+              config:
+                store_failures: true                                                    
 
 

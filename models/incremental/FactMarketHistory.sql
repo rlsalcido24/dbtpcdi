@@ -41,7 +41,7 @@ FROM (
     ORDER BY sk_fiftytwoweeklowdate, sk_fiftytwoweekhighdate) = 1) fmh
 -- Converts to LEFT JOIN if this is run as DQ EDITION. On some higher Scale Factors, a small number of Security Security symbols are missing from DimSecurity, causing audit check failures. 
 --${dq_left_flg} 
-JOIN {{ ref('DimSecurity') }} s 
+LEFT JOIN {{ ref('DimSecurity') }} s 
   ON 
     s.symbol = fmh.dm_s_symb
     AND fmh.dm_date >= s.effectivedate 

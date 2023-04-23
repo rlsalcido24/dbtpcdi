@@ -26,5 +26,5 @@ FROM (
   FROM {{ source('tpcdi', 'HoldingIncremental') }}) hh
 -- Converts to LEFT JOIN if this is run as DQ EDITION. It is possible, because of the issues upstream with DimSecurity/DimAccount on "some" scale factors, that DimTrade may be missing some rows.
 --${dq_left_flg}
- JOIN {{ ref('DimTrade') }} dt
+ LEFT JOIN {{ ref('DimTrade') }} dt
   ON tradeid = hh_t_id

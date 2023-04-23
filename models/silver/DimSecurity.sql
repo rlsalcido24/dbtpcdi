@@ -4,7 +4,7 @@
     )
 }}
 SELECT 
-  md5(Symbol) as sk_securityid,
+  monotonically_increasing_id() as sk_securityid,
   Symbol,
   issue,
   status,

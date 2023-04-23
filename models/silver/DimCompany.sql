@@ -6,7 +6,7 @@
 SELECT 
   * FROM (
   SELECT
-    md5(cik) sk_companyid,
+    monotonically_increasing_id() sk_companyid,
     cast(cik as BIGINT) companyid,
     st.st_name status,
     companyname name,

@@ -30,7 +30,7 @@ FROM (
 JOIN {{ source('tpcdi', 'DimDate') }} d 
   ON c.datevalue = d.datevalue
 -- Converts to LEFT JOIN if this is run as DQ EDITION. On some higher Scale Factors, a small number of Account IDs are missing from DimAccount, causing audit check failures. 
- JOIN {{ ref( 'DimAccount') }} a 
+ LEFT JOIN {{ ref( 'DimAccount') }} a 
   ON 
     c.accountid = a.accountid
     AND c.datevalue >= a.effectivedate 

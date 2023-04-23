@@ -74,7 +74,7 @@ SELECT * FROM (
     coalesce(lead(date(update_ts)) OVER (PARTITION BY customerid ORDER BY update_ts), date('9999-12-31')) enddate
   FROM (
     SELECT
-      md5(customerid::string) as sk_customerid,
+      monotonically_increasing_id() as sk_customerid,
       customerid,
       taxid,
       status,
@@ -103,7 +103,7 @@ SELECT * FROM (
     WHERE ActionType in ('NEW', 'INACT', 'UPDCUST')
     UNION ALL
     SELECT
-      md5(c.customerid::string) as sk_customerid,
+      monotonically_increasing_id() as sk_customerid,
       c.customerid,
       nullif(c.taxid, '') taxid,
       nullif(s.st_name, '') as status,
