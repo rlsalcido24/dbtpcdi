@@ -3,7 +3,7 @@
 ) }}
 
 SELECT
-  monotonically_increasing_id() as sk_brokerid,
+
   cast(employeeid as BIGINT) brokerid,
   cast(managerid as BIGINT) managerid,
   employeefirstname firstname,
@@ -15,6 +15,7 @@ SELECT
   true iscurrent,
   1 batchid,
   (SELECT min(to_date(datevalue)) as effectivedate FROM {{ source('tpcdi', 'DimDate') }}) effectivedate,
-  date('9999-12-31') enddate
+  date('9999-12-31') enddate,
+  concat(brokerid, '-', enddate) as sk_brokerid
 FROM  {{ source('tpcdi', 'HR') }}
 WHERE employeejobcode = 314

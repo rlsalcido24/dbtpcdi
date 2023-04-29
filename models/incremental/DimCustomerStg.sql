@@ -74,7 +74,7 @@ SELECT * FROM (
     coalesce(lead(date(update_ts)) OVER (PARTITION BY customerid ORDER BY update_ts), date('9999-12-31')) enddate
   FROM (
     SELECT
-      monotonically_increasing_id() as sk_customerid,
+
       customerid,
       taxid,
       status,
@@ -98,12 +98,13 @@ SELECT * FROM (
       lcl_tx_id,
       nat_tx_id,
       1 batchid,
-      update_ts
+      update_ts,
+      concat(customerid, '-', update_ts) as sk_customerid
     FROM roberto_salcido_tpcdi_dlt_10_stage.CustomerMgmt c
     WHERE ActionType in ('NEW', 'INACT', 'UPDCUST')
     UNION ALL
     SELECT
-      monotonically_increasing_id() as sk_customerid,
+
       c.customerid,
       nullif(c.taxid, '') taxid,
       nullif(s.st_name, '') as status,
@@ -145,7 +146,8 @@ SELECT * FROM (
       c.LCL_TX_ID, 
       c.NAT_TX_ID,
       c.batchid,
-      timestamp(bd.batchdate) update_ts
+      timestamp(bd.batchdate) update_ts,
+      concat(c.customerid, '-', update_ts)as sk_customerid
     FROM {{ source('tpcdi', 'CustomerIncremental') }} c
     JOIN {{ source('tpcdi', 'BatchDate') }} bd
       ON c.batchid = bd.batchid

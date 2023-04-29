@@ -4,7 +4,7 @@
     )
 }}
 SELECT 
-  monotonically_increasing_id() as sk_securityid,
+
   Symbol,
   issue,
   status,
@@ -18,6 +18,7 @@ SELECT
   if(enddate = date('9999-12-31'), True, False) iscurrent,
   1 batchid,
   effectivedate,
+  concat(exchangeid, '-', effectivedate) as sk_securityid, 
   enddate
 FROM (
   SELECT 

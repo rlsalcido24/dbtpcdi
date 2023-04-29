@@ -4,7 +4,7 @@
     )
 }}
 SELECT
-  monotonically_increasing_id() as sk_accountid,
+  
   a.accountid,
   b.sk_brokerid,
   a.sk_customerid,
@@ -13,6 +13,7 @@ SELECT
   a.status,
   a.batchid,
   a.effectivedate,
+  concat(a.accountid, '-', a.effectivedate) as sk_accountid,
   a.enddate
 FROM (
   SELECT

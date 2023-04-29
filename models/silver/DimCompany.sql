@@ -6,7 +6,7 @@
 SELECT 
   * FROM (
   SELECT
-    monotonically_increasing_id() sk_companyid,
+  
     cast(cik as BIGINT) companyid,
     st.st_name status,
     companyname name,
@@ -32,6 +32,7 @@ SELECT
     nvl2(lead(pts) OVER (PARTITION BY cik ORDER BY pts), true, false) iscurrent,
     1 batchid,
     date(pts) effectivedate,
+    concat(companyid, '-', effectivedate) sk_companyid,
     coalesce(
       lead(date(pts)) OVER (PARTITION BY cik ORDER BY pts),
       cast('9999-12-31' as date)) enddate
