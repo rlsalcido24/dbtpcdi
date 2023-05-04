@@ -148,7 +148,7 @@ SELECT * FROM (
       c.batchid,
       timestamp(bd.batchdate) update_ts,
       concat(c.customerid, '-', update_ts)as sk_customerid
-    FROM {{ source('tpcdi', 'CustomerIncremental') }} c
+    FROM {{ source('tpcdidev', 'CustomerIncremental') }} c
     JOIN {{ source('tpcdi', 'BatchDate') }} bd
       ON c.batchid = bd.batchid
     JOIN {{ source('tpcdi', 'StatusType') }} s 

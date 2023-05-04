@@ -122,7 +122,7 @@ FROM (
             WHEN cdc_flag = 'I' THEN TRUE 
             WHEN t_st_id IN ("CMPT", "CNCL") THEN FALSE 
             ELSE cast(null as boolean) END AS create_flg
-        FROM {{ source('tpcdi', 'TradeIncremental') }} t
+        FROM {{ source('tpcdidev', 'TradeIncremental') }} t
       ) t
       JOIN {{ source('tpcdi', 'DimDate') }} dd
         ON date(t.t_dts) = dd.datevalue

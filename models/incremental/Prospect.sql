@@ -82,7 +82,7 @@ FROM (
       numbercreditcards,
       networth,
       min(batchid) batchid
-    FROM {{ source('tpcdi', 'ProspectRaw') }} p
+    FROM {{ source('tpcdidev', 'ProspectRaw') }} p
     GROUP BY
       agencyid,
       lastname,

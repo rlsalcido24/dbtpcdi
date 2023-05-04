@@ -41,7 +41,7 @@ FROM (
       cast(substring(value, 161, 13) AS BIGINT) AS fi_out_basic,
       cast(substring(value, 174, 13) AS BIGINT) AS fi_out_dilut,
       trim(substring(value, 187, 60)) AS conameorcik
-    FROM {{ source('tpcdi', 'FinWire') }}
+    FROM {{ source('tpcdidev', 'FinWire') }}
     WHERE rectype = 'FIN'
   ) f 
 ) f

@@ -53,7 +53,7 @@ SELECT
       trim(substring(value, 324, 24)) AS Country,
       trim(substring(value, 348, 46)) AS CEOname,
       trim(substring(value, 394, 150)) AS Description
-    FROM {{ source('tpcdi', 'FinWire') }}
+    FROM {{ source('tpcdidev', 'FinWire') }}
     WHERE rectype = 'CMP'
        ) cmp
   JOIN {{ source('tpcdi', 'StatusType') }} st ON cmp.status = st.st_id

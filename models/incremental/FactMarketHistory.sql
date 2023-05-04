@@ -16,8 +16,8 @@ SELECT
   dm_close closeprice,
   dm_high dayhigh,
   dm_low daylow,
-  dm_vol volume,
-  fmh.batchid
+  dm_vol volume
+  
 FROM (
   SELECT * FROM (
     SELECT 

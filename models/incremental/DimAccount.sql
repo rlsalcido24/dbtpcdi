@@ -60,7 +60,7 @@ FROM (
           st_name as status,
           TIMESTAMP(bd.batchdate) update_ts,
           a.batchid
-        FROM {{ source('tpcdi', 'AccountIncremental') }} a
+        FROM {{ source('tpcdidev', 'AccountIncremental') }} a
         JOIN {{ source('tpcdi', 'BatchDate') }} bd
           ON a.batchid = bd.batchid
         JOIN {{ source('tpcdi', 'StatusType') }} st 
