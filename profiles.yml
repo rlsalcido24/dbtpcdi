@@ -6,13 +6,12 @@ sql_endpoints:
       type: databricks
       method: http
       #catalog: financeclone
-      schema: rstpcdi
+      schema: <insertschemahere>
       host: e2-demo-field-eng.cloud.databricks.com
 
       token: <insertokenhere>
        
       # optional
-      #http_path: /sql/1.0/endpoints/ead10bf07050390f
       http_path: /sql/1.0/warehouses/ead10bf07050390f
 
 
