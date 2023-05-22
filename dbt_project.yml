@@ -5,9 +5,9 @@ config-version: 2
 profile: 'sql_endpoints'
 
 vars:
-  stage: "rstpcdistg105"
-  prod: "rstpcdiprod105"
-  benchmark: 100
+  stage: "hive_metastore.rstpcdistg10012"
+  prod: "hive_metastore.rstpcdiprod10012"
+  benchmark: 10000
 
 
 on-run-start:
