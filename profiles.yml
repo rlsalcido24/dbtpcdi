@@ -5,15 +5,18 @@ sql_endpoints:
     dev:
       type: databricks
       method: http
-      #catalog: financeclone
-      schema: <insertschemahere>
-      host: e2-demo-field-eng.cloud.databricks.com
+      catalog: hive_metastore
+      schema: rstpcdiprod10012
+      threads: 10
+      host: e2-dogfood.staging.cloud.databricks.com
 
-      token: <insertokenhere>
+      token: dapi2e400bc7d1284bd23e602a3ecc472082
        
       # optional
-      http_path: /sql/1.0/warehouses/ead10bf07050390f
+      #http_path: /sql/1.0/endpoints/ead10bf07050390f
+      http_path: /sql/1.0/warehouses/1cef66d7b4e17fe9
 
 
 
   target: dev
+      
