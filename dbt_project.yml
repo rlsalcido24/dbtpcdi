@@ -5,8 +5,8 @@ config-version: 2
 profile: 'sql_endpoints'
 
 vars:
-  stage: "hive_metastore.rstpcdistg10012"
-  prod: "hive_metastore.rstpcdiprod10012"
+  stage: "insertstageenv"
+  prod: "insertprodenv"
   benchmark: 10000
 
 
