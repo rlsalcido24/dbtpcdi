@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: tpcdi
     catalog: hive_metastore
-    schema: rstpcdiprod10012
+    schema: insertprodenvhere
     
     tables:
     
@@ -30,7 +30,7 @@ sources:
       
   - name: tpcdidev
     catalog: hive_metastore
-    schema: rstpcdistg10011
+    schema: insertstgenvhere
     tables:
       - name: AccountIncremental
       - name: CashTransactionIncremental
