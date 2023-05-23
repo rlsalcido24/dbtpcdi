@@ -13,7 +13,7 @@ SELECT
   a.status,
   a.batchid,
   a.effectivedate,
-  bigint(concat(date_format(a.effectivedate, 'yyyyMMdd'), cast(a.accountid as string))) as sk_accountid
+  bigint(concat(date_format(a.effectivedate, 'yyyyMMdd'), cast(a.accountid as string))) as sk_accountid,
   a.enddate
 FROM (
   SELECT
