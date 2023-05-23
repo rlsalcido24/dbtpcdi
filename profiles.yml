@@ -7,7 +7,7 @@ sql_endpoints:
       method: http
       catalog: hive_metastore
       schema: insertschemahere
-      threads: 10
+      threads: 25
       host: "{{ env_var('DBT_DATABRICKS_HOST') }}"
       token: "{{ env_var('DBT_DATABRICKS_TOKEN') }}"
       http_path: "{{ env_var('DBT_DATABRICKS_HTTP_PATH') }}
