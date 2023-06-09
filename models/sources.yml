@@ -1,8 +1,5 @@
 version: 2
 
-vars:
-
-  benchmark: 10000
 
 sources:
   - name: tpcdi
