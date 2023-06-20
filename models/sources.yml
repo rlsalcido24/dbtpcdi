@@ -1132,19 +1132,7 @@ sources:
           options:                           # as needed
             pathGlobFilter: 'FINWIRE*'      
 
-        columns:
-          - name: w_c_id
-            data_type: bigint
-            description: "abc"
-          - name: w_s_symb
-            data_type: string
-            description: "abc" 
-          - name: w_dts
-            data_type: timestamp
-            description: "abc" 
-          - name: w_action
-            data_type: string
-            description: "abc" 
+        
             
      
            
