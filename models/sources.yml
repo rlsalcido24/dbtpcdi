@@ -1124,6 +1124,14 @@ sources:
             sep: '|'
             header: 'false'
 
+      - name: FinWireStg
+        external:
+          location: dbfs:/tmp/tpcdi/sf={{var("benchmark")}}/Batch1/ # hdfs://, s3://, azure://, dbfs://, ...
+          using: text
+                                  # file type: csv, json, parquet, delta, ...
+          options:                           # as needed
+            pathGlobFilter: 'FINWIRE*'      
+
         columns:
           - name: w_c_id
             data_type: bigint
