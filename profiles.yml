@@ -7,7 +7,7 @@ sql_endpoints:
       method: http
       catalog: hive_metastore
       schema: insertschemahere
-      threads: 25
+      threads: 100
       host: inserthosthere
       token: insertokenhere
       http_path: insertpathhere
