@@ -18,7 +18,7 @@ SELECT
   if(enddate = date('9999-12-31'), True, False) iscurrent,
   1 batchid,
   effectivedate,
-  concat(exchangeid, '-', effectivedate) as sk_securityid, 
+  bigint(concat(date_format(effectivedate, 'yyyyMMdd'), cast(exchangeid as string))) as sk_securityid,
   enddate
 FROM (
   SELECT 
@@ -58,7 +58,7 @@ FROM (
         to_date(substring(value, 141, 8), 'yyyyMMdd') AS firsttradeonexchange,
         cast(substring(value, 149, 12) AS DOUBLE) AS Dividend,
         trim(substring(value, 161, 60)) AS conameorcik
-      FROM {{ source('tpcdidev', 'FinWire') }}
+      FROM {{ ref('FinWire') }}
       WHERE rectype = 'SEC'
       ) fws
     JOIN {{ source('tpcdi', 'StatusType') }} s

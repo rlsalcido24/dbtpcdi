@@ -23,7 +23,7 @@ FROM (
   FROM {{ source('tpcdi', 'HoldingHistory') }}
   UNION ALL
   SELECT * except(cdc_flag, cdc_dsn)
-  FROM {{ source('tpcdidev', 'HoldingIncremental') }}) hh
+  FROM {{ ref('HoldingIncremental') }}) hh
 -- Converts to LEFT JOIN if this is run as DQ EDITION. It is possible, because of the issues upstream with DimSecurity/DimAccount on "some" scale factors, that DimTrade may be missing some rows.
 --${dq_left_flg}
  LEFT JOIN {{ ref('DimTrade') }} dt

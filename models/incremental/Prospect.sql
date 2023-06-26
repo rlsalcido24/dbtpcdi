@@ -82,7 +82,7 @@ FROM (
       numbercreditcards,
       networth,
       min(batchid) batchid
-    FROM {{ source('tpcdidev', 'ProspectRaw') }} p
+    FROM {{ ref('ProspectRaw') }} p
     GROUP BY
       agencyid,
       lastname,
@@ -111,7 +111,7 @@ JOIN (
   SELECT 
     sk_dateid,
     batchid
-  FROM {{ source('tpcdi', 'BatchDate') }} b 
+  FROM {{ ref('BatchDate') }} b 
   JOIN {{ source('tpcdi', 'DimDate') }} d 
     ON b.batchdate = d.datevalue) recdate
   ON p.recordbatchid = recdate.batchid
@@ -119,7 +119,7 @@ JOIN (
   SELECT 
     sk_dateid,
     batchid
-  FROM {{ source('tpcdi', 'BatchDate') }} b 
+  FROM {{ ref('BatchDate') }} b 
   JOIN {{ source('tpcdi', 'DimDate') }} d 
     ON b.batchdate = d.datevalue) origdate
   ON p.batchid = origdate.batchid

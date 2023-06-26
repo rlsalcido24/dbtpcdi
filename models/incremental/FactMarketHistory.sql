@@ -7,7 +7,7 @@ SELECT
   s.sk_securityid,
   s.sk_companyid,
   sk_dateid,
-  fmh.dm_close / sum_fi_basic_eps AS peratio,
+  fmh.dm_close / nullif(sum_fi_basic_eps,0) AS peratio,
   (s.dividend / fmh.dm_close) / 100 yield,
   fiftytwoweekhigh,
   sk_fiftytwoweekhighdate,

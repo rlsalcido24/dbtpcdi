@@ -13,7 +13,7 @@ SELECT
   a.status,
   a.batchid,
   a.effectivedate,
-  concat(a.accountid, '-', a.effectivedate) as sk_accountid,
+  bigint(concat(date_format(a.effectivedate, 'yyyyMMdd'), cast(a.accountid as string))) as sk_accountid,
   a.enddate
 FROM (
   SELECT
@@ -48,7 +48,7 @@ FROM (
           status,
           update_ts,
           1 batchid
-        FROM hive_metastore.shannon_barrow_tpcdi_dlt_10000_stage.CustomerMgmt c
+        FROM {{ ref('CustomerMgmtView') }} c
         WHERE ActionType NOT IN ('UPDCUST', 'INACT')
         UNION ALL
         SELECT
@@ -60,8 +60,8 @@ FROM (
           st_name as status,
           TIMESTAMP(bd.batchdate) update_ts,
           a.batchid
-        FROM {{ source('tpcdidev', 'AccountIncremental') }} a
-        JOIN {{ source('tpcdi', 'BatchDate') }} bd
+        FROM {{ ref('AccountIncremental') }} a
+        JOIN {{ ref('BatchDate') }} bd
           ON a.batchid = bd.batchid
         JOIN {{ source('tpcdi', 'StatusType') }} st 
           ON a.CA_ST_ID = st.st_id

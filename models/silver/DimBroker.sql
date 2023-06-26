@@ -16,6 +16,6 @@ SELECT
   1 batchid,
   (SELECT min(to_date(datevalue)) as effectivedate FROM {{ source('tpcdi', 'DimDate') }}) effectivedate,
   date('9999-12-31') enddate,
-  concat(brokerid, '-', enddate) as sk_brokerid
+  bigint(concat(date_format(enddate, 'yyyyMMdd'), cast(brokerid as string))) as sk_brokerid
 FROM  {{ source('tpcdi', 'HR') }}
 WHERE employeejobcode = 314

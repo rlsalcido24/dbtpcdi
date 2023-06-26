@@ -99,8 +99,8 @@ SELECT * FROM (
       nat_tx_id,
       1 batchid,
       update_ts,
-      concat(customerid, '-', update_ts) as sk_customerid
-    FROM hive_metastore.shannon_barrow_tpcdi_dlt_10000_stage.CustomerMgmt c
+      bigint(concat(date_format(update_ts, 'yyyyMMdd'), cast(customerid as string))) as sk_customerid
+    FROM {{ ref('CustomerMgmtView') }} c
     WHERE ActionType in ('NEW', 'INACT', 'UPDCUST')
     UNION ALL
     SELECT
@@ -147,9 +147,9 @@ SELECT * FROM (
       c.NAT_TX_ID,
       c.batchid,
       timestamp(bd.batchdate) update_ts,
-      concat(c.customerid, '-', update_ts)as sk_customerid
-    FROM {{ source('tpcdidev', 'CustomerIncremental') }} c
-    JOIN {{ source('tpcdi', 'BatchDate') }} bd
+      bigint(concat(date_format(update_ts, 'yyyyMMdd'), cast(customerid as string))) as sk_customerid
+    FROM {{ ref('CustomerIncremental') }} c
+    JOIN {{ ref('BatchDate') }} bd
       ON c.batchid = bd.batchid
     JOIN {{ source('tpcdi', 'StatusType') }} s 
       ON c.status = s.st_id

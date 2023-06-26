@@ -21,7 +21,7 @@ FROM (
     FROM {{ source('tpcdi', 'CashTransactionHistory') }}
     UNION ALL
     SELECT * except(cdc_flag, cdc_dsn)
-    FROM {{ source('tpcdidev', 'CashTransactionIncremental') }}
+    FROM {{ ref('CashTransactionIncremental') }}
   )
   GROUP BY
     accountid,

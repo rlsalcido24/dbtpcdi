@@ -32,7 +32,7 @@ SELECT
     nvl2(lead(pts) OVER (PARTITION BY cik ORDER BY pts), true, false) iscurrent,
     1 batchid,
     date(pts) effectivedate,
-    concat(companyid, '-', effectivedate) sk_companyid,
+    bigint(concat(date_format(effectivedate, 'yyyyMMdd'), cast(companyid as string))) as sk_companyid,
     coalesce(
       lead(date(pts)) OVER (PARTITION BY cik ORDER BY pts),
       cast('9999-12-31' as date)) enddate
@@ -53,7 +53,7 @@ SELECT
       trim(substring(value, 324, 24)) AS Country,
       trim(substring(value, 348, 46)) AS CEOname,
       trim(substring(value, 394, 150)) AS Description
-    FROM {{ source('tpcdidev', 'FinWire') }}
+    FROM {{ ref('FinWire') }}
     WHERE rectype = 'CMP'
        ) cmp
   JOIN {{ source('tpcdi', 'StatusType') }} st ON cmp.status = st.st_id
