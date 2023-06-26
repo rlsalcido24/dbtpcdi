@@ -5,7 +5,7 @@ config-version: 2
 profile: 'sql_endpoints'
 
 vars:
-  benchmark: 10000
+  benchmark: 1000
 
 
 
