@@ -1124,6 +1124,20 @@ sources:
             sep: '|'
             header: 'false'
 
+        columns:
+          - name: w_c_id
+            data_type: bigint
+            description: "abc"
+          - name: w_s_symb
+            data_type: string
+            description: "abc" 
+          - name: w_dts
+            data_type: timestamp
+            description: "abc" 
+          - name: w_action
+            data_type: string
+            description: "abc"
+
       - name: FinWireStg
         external:
           location: dbfs:/tmp/tpcdi/sf={{var("benchmark")}}/Batch1/ # hdfs://, s3://, azure://, dbfs://, ...
