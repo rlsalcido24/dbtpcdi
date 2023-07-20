@@ -1,0 +1,1609 @@
+version: 2
+
+
+sources:
+  - name: tpcdi
+    database: tpcdi_sf1000
+    schema: rsstgtest
+    tables:
+     
+      - name: StatusType
+        external:
+          location: "@tpcdi_sf10000_raw/Batch1"
+          pattern: '.*StatusType[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+  
+
+        columns:
+          - name: st_id
+            index: c1
+            data_type: string
+            description: "StatusCode"
+          - name: st_name
+            index: c2
+            data_type: string
+            description: "Status Description"
+  
+
+      - name: TaxRate
+        external:
+          location: "@tpcdi_sf10000_raw/Batch1"
+          pattern: '.*TaxRate[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+                                
+          
+
+        columns:
+          - name: tx_id
+            index: c1
+            data_type: string
+            description: "Tax Rate Code"
+          - name: tx_name
+            index: c2
+            data_type: string
+            description: "Tax rate description"
+          - name: tx_rate
+            index: c3
+            data_type: float
+            description: "tax rate"
+
+      - name: DimTime
+        external:
+          location: "@tpcdi_sf10000_raw/Batch1"
+          pattern: '.*Time[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: sk_timeid
+            data_type: bigint
+            description: "abc"
+            index: c1
+          - name: timevalue
+            data_type: string
+            description: "abc"
+            index: c2
+          - name: hourid
+            data_type: int
+            description: "abc"
+            index: c3
+          - name: hourdesc
+            data_type: string
+            description: "abc"
+            index: c4 
+          - name: minuteid
+            data_type: int
+            description: "abc" 
+            index: c4
+          - name: minutedesc
+            data_type: int
+            description: "abc"
+            index: c5 
+          - name: secondid
+            data_type: int
+            description: "abc"
+            index: c6 
+
+          - name: seconddesc
+            data_type: int
+            description: "string"
+            index: c7 
+          - name: markethoursflag
+            data_type: boolean
+            description: "abc" 
+            index: c8
+          - name: officehoursflag
+            data_type: boolean
+            description: "abc"
+            index: c9
+
+      - name: AccountIncrementaldos
+        external:
+          location: "@tpcdi_sf10000_raw/Batch2"
+          pattern: '.*Account[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: cdc_flag
+            data_type: string
+            description: "abc"
+            index: c1
+          - name: cdc_dsn
+            data_type: bigint
+            description: "abc"
+            index: c2
+          - name: accountid
+            data_type: bigint
+            description: "abc"
+            index: c3
+          - name: ca_b_id
+            data_type: bigint
+            description: "abc"
+            index: c4 
+          - name: ca_c_id
+            data_type: bigint
+            description: "abc"
+            index: c5 
+          - name: accountDesc
+            data_type: string
+            description: "abc"
+            index: c6
+          - name: taxstatus
+            data_type: tinyint
+            description: "abc"
+            index: c7 
+          - name: ca_st_id
+            data_type: string
+            description: "abc"
+            index: c8
+
+      - name: AccountIncrementaltres
+        external:
+          location: "@tpcdi_sf10000_raw/Batch3"
+          pattern: '.*Account[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: cdc_flag
+            data_type: string
+            description: "abc"
+            index: c1
+          - name: cdc_dsn
+            data_type: bigint
+            description: "abc"
+            index: c2
+          - name: accountid
+            data_type: bigint
+            description: "abc"
+            index: c3
+          - name: ca_b_id
+            data_type: bigint
+            description: "abc"
+            index: c4 
+          - name: ca_c_id
+            data_type: bigint
+            description: "abc"
+            index: c5 
+          - name: accountDesc
+            data_type: string
+            description: "abc"
+            index: c6
+          - name: taxstatus
+            data_type: tinyint
+            description: "abc"
+            index: c7 
+          - name: ca_st_id
+            data_type: string
+            description: "abc"
+            index: c8      
+        
+      - name: CashTransactionHistory
+        external:
+          location: "@tpcdi_sf10000_raw/Batch1"
+          pattern: '.*CashTransaction[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: ct_ca_id
+            data_type: bigint
+            description: "abc"
+            index: c1
+          - name: ct_dts
+            data_type: timestamp
+            description: "abc"
+            index: c2
+          - name: ct_amt
+            data_type: double
+            description: "abc"
+            index: c3
+          - name: ct_name
+            data_type: string
+            description: "abc"
+            index: c4 
+
+
+      - name: CashTransactionIncrementaldos
+        external:
+          location: "@tpcdi_sf10000_raw/Batch2"
+          pattern: '.*CashTransaction[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+            
+
+        columns:
+          - name: cdc_flag
+            data_type: string
+            description: "abc"
+            index: c1
+          - name: cdc_dsn
+            data_type: bigint
+            description: "abc"
+            index: c2
+          - name: ct_ca_id
+            data_type: bigint
+            description: "abc"
+            index: c3
+          - name: ct_dts
+            data_type: timestamp
+            description: "abc"
+            index: c4 
+          - name: ct_amt
+            data_type: double
+            description: "abc"
+            index: c5 
+          - name: ct_name
+            data_type: string
+            description: "abc"
+            index: c6
+
+      - name: CashTransactionIncrementaltres
+        external:
+          location: "@tpcdi_sf10000_raw/Batch3"
+          pattern: '.*CashTransaction[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: cdc_flag
+            data_type: string
+            description: "abc"
+            index: c1
+          - name: cdc_dsn
+            data_type: bigint
+            description: "abc"
+            index: c2
+          - name: ct_ca_id
+            data_type: bigint
+            description: "abc"
+            index: c3
+          - name: ct_dts
+            data_type: timestamp
+            description: "abc"
+            index: c4 
+          - name: ct_amt
+            data_type: double
+            description: "abc"
+            index: c5 
+          - name: ct_name
+            data_type: string
+            description: "abc"
+            index: c6
+
+      - name: customerincrementaldos
+        external:
+          location: "@tpcdi_sf10000_raw/Batch2"
+          pattern: '.*Customer[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: cdc_flag
+            data_type: string
+            description: "abc"
+            index: c1
+          - name: cdc_dsn
+            data_type: bigint
+            description: "abc"
+            index: c2
+          - name: customerid
+            data_type: bigint
+            description: "abc"
+            index: c3
+          - name: taxid
+            data_type: string
+            description: "abc"
+            index: c4 
+          - name: status
+            data_type: string
+            description: "abc"
+            index: c5 
+          - name: lastname
+            data_type: string
+            description: "abc"
+            index: c6
+          - name: firstname
+            data_type: string
+            description: "abc"
+            index: c7
+          - name: middleinitial
+            data_type: string
+            description: "abc"
+            index: c8
+          - name: gender
+            data_type: string
+            description: "abc"
+            index: c9
+          - name: tier
+            data_type: tinyint
+            description: "abc"
+            index: c10 
+          - name: dob
+            data_type: date
+            description: "abc"
+            index: c11 
+          - name: addressline1
+            data_type: string
+            description: "abc"
+            index: c12
+          - name: addressline2
+            data_type: string
+            description: "abc"
+            index: c13
+          - name: postalcode
+            data_type: string
+            description: "abc"
+            index: c14
+          - name: city
+            data_type: string
+            description: "abc"
+            index: c15
+          - name: stateprov
+            data_type: string
+            description: "abc"
+            index: c16 
+          - name: country
+            data_type: string
+            description: "abc"
+            index: c17 
+          - name: c_ctry_1
+            data_type: string
+            description: "abc"
+            index: c18
+          - name: c_ctry_1
+            data_type: string
+            description: "abc"
+            index: c19
+          - name: c_area_1
+            data_type: string
+            description: "abc"
+            index: c20
+          - name: c_local_1
+            data_type: string
+            description: "abc"
+            index: c21
+          - name: c_ext_1
+            data_type: string
+            description: "abc"
+            index: c22 
+          - name: c_ctry_2
+            data_type: string
+            description: "abc"
+            index: c23 
+          - name: c_area_2
+            data_type: string
+            description: "abc"
+            index: c24
+          - name: c_local_1
+            data_type: string
+            description: "abc"
+            index: c25
+          - name: c_ext_1
+            data_type: string
+            description: "abc"
+            index: c26
+          - name: c_ctry_2
+            data_type: string
+            description: "abc"
+            index: c27
+          - name: c_area_2
+            data_type: string
+            description: "abc"
+            index: c28 
+          - name: c_local_2
+            data_type: string
+            description: "abc"
+            index: c29 
+          - name: c_ext_2
+            data_type: string
+            description: "abc"
+            index: c30
+          - name: c_ctry_3
+            data_type: string
+            description: "abc"
+            index: c31
+          - name: c_area_3
+            data_type: string
+            description: "abc"
+            index: c32
+          - name: c_local_3
+            data_type: string
+            description: "abc"
+            index: c33
+          - name: c_ext_3
+            data_type: string
+            description: "abc"
+            index: c34 
+          - name: email1
+            data_type: string
+            description: "abc"
+            index: c35 
+          - name: email2
+            data_type: string
+            description: "abc"
+            index: c36
+          - name: lcl_tx_id
+            data_type: string
+            description: "abc"
+            index: c37 
+          - name: nat_tx_id
+            data_type: string
+            description: "abc"
+            index: c38          
+
+
+              
+      - name: customerincrementaltres
+        external:
+          location: "@tpcdi_sf10000_raw/Batch3"
+          pattern: '.*Customer[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: cdc_flag
+            data_type: string
+            description: "abc"
+            index: c1
+          - name: cdc_dsn
+            data_type: bigint
+            description: "abc"
+            index: c2
+          - name: customerid
+            data_type: bigint
+            description: "abc"
+            index: c3
+          - name: taxid
+            data_type: string
+            description: "abc"
+            index: c4 
+          - name: status
+            data_type: string
+            description: "abc"
+            index: c5 
+          - name: lastname
+            data_type: string
+            description: "abc"
+            index: c6
+          - name: firstname
+            data_type: string
+            description: "abc"
+            index: c7
+          - name: middleinitial
+            data_type: string
+            description: "abc"
+            index: c8
+          - name: gender
+            data_type: string
+            description: "abc"
+            index: c9
+          - name: tier
+            data_type: tinyint
+            description: "abc"
+            index: c10 
+          - name: dob
+            data_type: date
+            description: "abc"
+            index: c11 
+          - name: addressline1
+            data_type: string
+            description: "abc"
+            index: c12
+          - name: addressline2
+            data_type: string
+            description: "abc"
+            index: c13
+          - name: postalcode
+            data_type: string
+            description: "abc"
+            index: c14
+          - name: city
+            data_type: string
+            description: "abc"
+            index: c15
+          - name: stateprov
+            data_type: string
+            description: "abc"
+            index: c16 
+          - name: country
+            data_type: string
+            description: "abc"
+            index: c17 
+          - name: c_ctry_1
+            data_type: string
+            description: "abc"
+            index: c18
+          - name: c_ctry_1
+            data_type: string
+            description: "abc"
+            index: c19
+          - name: c_area_1
+            data_type: string
+            description: "abc"
+            index: c20
+          - name: c_local_1
+            data_type: string
+            description: "abc"
+            index: c21
+          - name: c_ext_1
+            data_type: string
+            description: "abc"
+            index: c22 
+          - name: c_ctry_2
+            data_type: string
+            description: "abc"
+            index: c23 
+          - name: c_area_2
+            data_type: string
+            description: "abc"
+            index: c24
+          - name: c_local_1
+            data_type: string
+            description: "abc"
+            index: c25
+          - name: c_ext_1
+            data_type: string
+            description: "abc"
+            index: c26
+          - name: c_ctry_2
+            data_type: string
+            description: "abc"
+            index: c27
+          - name: c_area_2
+            data_type: string
+            description: "abc"
+            index: c28 
+          - name: c_local_2
+            data_type: string
+            description: "abc"
+            index: c29 
+          - name: c_ext_2
+            data_type: string
+            description: "abc"
+            index: c30
+          - name: c_ctry_3
+            data_type: string
+            description: "abc"
+            index: c31
+          - name: c_area_3
+            data_type: string
+            description: "abc"
+            index: c32
+          - name: c_local_3
+            data_type: string
+            description: "abc"
+            index: c33
+          - name: c_ext_3
+            data_type: string
+            description: "abc"
+            index: c34 
+          - name: email1
+            data_type: string
+            description: "abc"
+            index: c35 
+          - name: email2
+            data_type: string
+            description: "abc"
+            index: c36
+          - name: lcl_tx_id
+            data_type: string
+            description: "abc"
+            index: c37 
+          - name: nat_tx_id
+            data_type: string
+            description: "abc"
+            index: c38    
+            
+      - name: DailyMarketHistorical
+        external:
+          location: "@tpcdi_sf10000_raw/Batch1"
+          pattern: '.*DailyMarket[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: dm_date
+            data_type: date
+            description: "abc"
+            index: c1
+          - name: dm_s_symb
+            data_type: string
+            description: "abc"
+            index: c2
+          - name: dm_close
+            data_type: double
+            description: "abc"
+            index: c3
+          - name: dm_high
+            data_type: double
+            description: "abc"
+            index: c4 
+          - name: dm_low
+            data_type: double
+            description: "abc"
+            index: c5 
+          - name: dm_vol
+            data_type: int
+            description: "abc"
+            index: c6 
+            
+      - name: DailyMarketIncrementaldos
+        external:
+          location: "@tpcdi_sf10000_raw/Batch2"
+          pattern: '.*DailyMarket[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: cdc_flag
+            data_type: string
+            description: "abc"
+            index: c1
+          - name: cdc_dsn
+            data_type: bigint
+            description: "abc"
+            index: c2
+          - name: dm_date
+            data_type: date
+            description: "abc"
+            index: c3
+          - name: dm_s_symb
+            data_type: string
+            description: "abc"
+            index: c4 
+          - name: dm_close
+            data_type: double
+            description: "abc"
+            index: c5 
+          - name: dm_high
+            data_type: double
+            description: "abc"
+            index: c6
+          - name: dm_low
+            data_type: double
+            description: "abc"
+            index: c7 
+          - name: dm_vol
+            data_type: int
+            description: "abc"
+            index: c8
+
+      - name: DailyMarketIncrementaltres
+        external:
+          location: "@tpcdi_sf10000_raw/Batch3"
+          pattern: '.*DailyMarket[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: cdc_flag
+            data_type: string
+            description: "abc"
+            index: c1
+          - name: cdc_dsn
+            data_type: bigint
+            description: "abc"
+            index: c2
+          - name: dm_date
+            data_type: date
+            description: "abc"
+            index: c3
+          - name: dm_s_symb
+            data_type: string
+            description: "abc"
+            index: c4 
+          - name: dm_close
+            data_type: double
+            description: "abc"
+            index: c5 
+          - name: dm_high
+            data_type: double
+            description: "abc"
+            index: c6
+          - name: dm_low
+            data_type: double
+            description: "abc"
+            index: c7 
+          - name: dm_vol
+            data_type: int
+            description: "abc"
+            index: c8   
+
+      - name: DimDate
+        external:
+          location: "@tpcdi_sf10000_raw/Batch1"
+          pattern: '.*[/]Date[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: sk_dateid
+            data_type: bigint
+            description: "abc"
+            index: c1
+          - name: datevalue
+            data_type: date
+            description: "abc"
+            index: c2
+          - name: datedesc
+            data_type: string
+            description: "abc"
+            index: c3
+          - name: calendaryearid
+            data_type: int
+            description: "abc" 
+            index: c4
+          - name: calendaryeardesc
+            data_type: string
+            description: "abc"
+            index: c5 
+          - name: calendarqtrid
+            data_type: int
+            description: "abc"
+            index: c6
+          - name: calendarqtrdesc
+            data_type: string
+            description: "abc"
+            index: c7
+          - name: calendarmonthid
+            data_type: int
+            description: "abc"
+            index: c8
+          - name: calendarmonthdesc
+            data_type: string
+            description: "abc"
+            index: c9    
+          - name: calendarweekid
+            data_type: int
+            description: "abc"
+            index: c10
+          - name: calendarweekdesc
+            data_type: string
+            description: "abc"
+            index: c11
+          - name: dayofweeknum
+            data_type: int
+            description: "abc"
+            index: c12
+          - name: dayofweekdesc
+            data_type: string
+            description: "abc"
+            index: c13
+          - name: fiscalyearid
+            data_type: int
+            description: "abc"
+            index: c14 
+          - name: fiscalyeardesc
+            data_type: string
+            description: "abc"
+            index: c15 
+          - name: fiscalqtrid
+            data_type: int
+            description: "abc"
+            index: c16
+          - name: fiscalqtrdesc
+            data_type: string
+            description: "abc"
+            index: c17 
+          - name: holidayflag
+            data_type: boolean
+            description: "abc"
+            index: c18  
+
+      - name: HR
+        external:
+          location: "@tpcdi_sf10000_raw/Batch1"
+          pattern: '.*HR[.]csv' 
+          file_format: "( format_name = 'TXT_CSV')"
+
+        columns:
+          - name: employeeid
+            data_type: string
+            description: "abc"
+            index: c1
+          - name: managerid
+            data_type: string
+            description: "abc"
+            index: c2
+          - name: employeefirstname
+            data_type: string
+            description: "abc"
+            index: c3
+          - name: employeelastname
+            data_type: string
+            description: "abc"
+            index: c4 
+          - name: employeemi
+            data_type: string
+            description: "abc"
+            index: c5 
+          - name: employeejobcode
+            data_type: string
+            description: "abc"
+            index: c6
+          - name: employeebranch
+            data_type: string
+            description: "abc"
+            index: c7 
+          - name: employeeoffice
+            data_type: string
+            description: "abc"
+            index: c8
+          - name: employeephone
+            data_type: string
+            description: "abc"
+            index: c9   
+            
+      - name: HoldingHistory
+        external:
+          location: "@tpcdi_sf10000_raw/Batch1"
+          pattern: '.*HoldingHistory[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: hh_h_t_id
+            data_type: int
+            description: "abc"
+            index: c1
+          - name: hh_t_id
+            data_type: int
+            description: "abc"
+            index: c2
+          - name: hh_before_qty
+            data_type: int
+            description: "abc"
+            index: c3
+          - name: hh_after_qty
+            data_type: int
+            description: "abc"
+            index: c4 
+
+            
+      - name: HoldingIncrementaldos
+        external:
+          location: "@tpcdi_sf10000_raw/Batch2"
+          pattern: '.*HoldingHistory[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: cdc_flag
+            data_type: string
+            description: "abc"
+            index: c1
+          - name: cdc_dsn
+            data_type: bigint
+            description: "abc"
+            index: c2
+          - name: hh_h_t_id
+            data_type: int
+            description: "abc"
+            index: c3
+          - name: hh_t_id
+            data_type: int
+            description: "abc"
+            index: c4  
+          - name: hh_before_qty
+            data_type: int
+            description: "abc"
+            index: c5 
+          - name: hh_after_qty
+            data_type: int
+            description: "abc"
+            index: c6 
+
+      - name: HoldingIncrementaltres
+        external:
+          location: "@tpcdi_sf10000_raw/Batch3"
+          pattern: '.*HoldingHistory[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: cdc_flag
+            data_type: string
+            description: "abc"
+            index: c1
+          - name: cdc_dsn
+            data_type: bigint
+            description: "abc"
+            index: c2
+          - name: hh_h_t_id
+            data_type: int
+            description: "abc"
+            index: c3
+          - name: hh_t_id
+            data_type: int
+            description: "abc"
+            index: c4  
+          - name: hh_before_qty
+            data_type: int
+            description: "abc"
+            index: c5 
+          - name: hh_after_qty
+            data_type: int
+            description: "abc"
+            index: c6 
+            
+      - name: BatchDateuno
+        external:
+          location: "@tpcdi_sf10000_raw/Batch1"
+          pattern: '.*BatchDate[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: batchdate
+            data_type: date
+            description: "abc"
+            index: c1
+
+      - name: BatchDatedos
+        external:
+          location: "@tpcdi_sf10000_raw/Batch2"
+          pattern: '.*BatchDate[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: batchdate
+            data_type: date
+            description: "abc"
+            index: c1
+          
+      - name: BatchDatetres
+        external:
+          location: "@tpcdi_sf10000_raw/Batch3"
+          pattern: '.*BatchDate[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: batchdate
+            data_type: date
+            description: "abc"
+            index: c1    
+            
+      - name: Industry
+        external:
+          location: "@tpcdi_sf10000_raw/Batch1"
+          pattern: '.*Industry[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: in_id
+            data_type: string
+            description: "abc"
+            index: c1
+          - name: in_name
+            data_type: string
+            description: "abc"
+            index: c2
+          - name: in_sc_id
+            data_type: string
+            description: "abc"
+            index: c3
+
+      - name: TradeHistory
+        external:
+          location: "@tpcdi_sf10000_raw/Batch1"
+          pattern: '.*Trade[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: t_id
+            data_type: bigint
+            description: "abc"
+            index: c1
+          - name: t_dts
+            data_type: timestamp
+            description: "abc"
+            index: c2
+          - name: t_st_id
+            data_type: string
+            description: "abc"
+            index: c3
+          - name: t_tt_id
+            data_type: string
+            description: "abc"
+            index: c4
+          - name: t_is_cash
+            data_type: tinyint
+            description: "abc"
+            index: c5 
+          - name: t_s_symb
+            data_type: string
+            description: "abc"
+            index: c6
+          - name: t_qty
+            data_type: int
+            description: "abc"
+            index: c7
+          - name: t_bid_price
+            data_type: double
+            description: "abc"
+            index: c8
+          - name: t_ca_id
+            data_type: bigint
+            description: "abc"
+            index: c9
+          - name: t_exec_name
+            data_type: string
+            description: "abc"
+            index: c10 
+          - name: t_trade_price
+            data_type: double
+            description: "abc"
+            index: c11
+          - name: t_chrg
+            data_type: double
+            description: "abc"
+            index: c12
+          - name: t_comm
+            data_type: double
+            description: "abc"
+            index: c13
+          - name: t_tax
+            data_type: double
+            description: "abc"
+            index: c14
+           
+
+            
+      - name: TradeHistoryRaw
+        external:
+          location: "@tpcdi_sf10000_raw/Batch1"
+          pattern: '.*TradeHistory[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: th_t_id
+            data_type: bigint
+            description: "abc"
+            index: c1
+          - name: th_dts
+            data_type: timestamp
+            description: "abc"
+            index: c2
+          - name: th_st_id
+            data_type: string
+            description: "abc"
+            index: c3
+          
+
+      - name: TradeIncrementaldos
+        external:
+          location: "@tpcdi_sf10000_raw/Batch2"
+          pattern: '.*TradeHistory[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: cdc_flag
+            data_type: string
+            description: "abc"
+            index: c1
+          - name: cdc_dsn
+            data_type: bigint
+            description: "abc"
+            index: c2
+          - name: t_id
+            data_type: bigint
+            description: "abc"
+            index: c3
+          - name: t_dts
+            data_type: timestamp
+            description: "abc"
+            index: c4
+          - name: t_st_id
+            data_type: string
+            description: "abc"
+            index: c5
+          - name: t_tt_id
+            data_type: string
+            description: "abc"
+            index: c6
+          - name: t_is_cash
+            data_type: tinyint
+            description: "abc"
+            index: c7 
+          - name: t_s_symb
+            data_type: string
+            description: "abc"
+            index: c8
+          - name: t_qty
+            data_type: int
+            description: "abc"
+            index: c9
+          - name: t_bid_price
+            data_type: double
+            description: "abc"
+            index: c10
+          - name: t_ca_id
+            data_type: bigint
+            description: "abc"
+            index: c11
+          - name: t_exec_name
+            data_type: string
+            description: "abc"
+            index: c12 
+          - name: t_trade_price
+            data_type: double
+            description: "abc"
+            index: c13
+          - name: t_chrg
+            data_type: double
+            description: "abc"
+            index: c14
+          - name: t_comm
+            data_type: double
+            description: "abc"
+            index: c15
+          - name: t_tax
+            data_type: double
+            description: "abc"
+            index: c16
+
+      - name: TradeIncrementaltres
+        external:
+          location: "@tpcdi_sf10000_raw/Batch3"
+          pattern: '.*TradeHistory[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: cdc_flag
+            data_type: string
+            description: "abc"
+            index: c1
+          - name: cdc_dsn
+            data_type: bigint
+            description: "abc"
+            index: c2
+          - name: t_id
+            data_type: bigint
+            description: "abc"
+            index: c3
+          - name: t_dts
+            data_type: timestamp
+            description: "abc"
+            index: c4
+          - name: t_st_id
+            data_type: string
+            description: "abc"
+            index: c5
+          - name: t_tt_id
+            data_type: string
+            description: "abc"
+            index: c6
+          - name: t_is_cash
+            data_type: tinyint
+            description: "abc"
+            index: c7 
+          - name: t_s_symb
+            data_type: string
+            description: "abc"
+            index: c8
+          - name: t_qty
+            data_type: int
+            description: "abc"
+            index: c9
+          - name: t_bid_price
+            data_type: double
+            description: "abc"
+            index: c10
+          - name: t_ca_id
+            data_type: bigint
+            description: "abc"
+            index: c11
+          - name: t_exec_name
+            data_type: string
+            description: "abc"
+            index: c12 
+          - name: t_trade_price
+            data_type: double
+            description: "abc"
+            index: c13
+          - name: t_chrg
+            data_type: double
+            description: "abc"
+            index: c14
+          - name: t_comm
+            data_type: double
+            description: "abc"
+            index: c15
+          - name: t_tax
+            data_type: double
+            description: "abc"
+            index: c16
+
+      - name: TradeType
+        external:
+          location: "@tpcdi_sf10000_raw/Batch1"
+          pattern: '.*TradeType[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: tt_id
+            data_type: string
+            description: "abc"
+            index: c1
+          - name: tt_name
+            data_type: string
+            description: "abc"
+            index: c2
+          - name: tt_is_sell
+            data_type: int
+            description: "abc"
+            index: c3
+          - name: tt_is_mrkt
+            data_type: int
+            description: "abc"
+            index: c4 
+        
+            
+      - name: WatchIncrementaldos
+        external:
+          location: "@tpcdi_sf10000_raw/Batch2"
+          pattern: '.*WatchHistory[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: cdc_flag
+            data_type: string
+            description: "abc"
+            index: c1
+          - name: cdc_dsn
+            data_type: bigint
+            description: "abc"
+            index: c2
+          - name: w_c_id
+            data_type: bigint
+            description: "abc"
+            index: c3
+          - name: w_s_symb
+            data_type: string
+            description: "abc"
+            index: c4 
+          - name: w_dts
+            data_type: timestamp
+            description: "abc"
+            index: c5 
+          - name: w_action
+            data_type: string
+            description: "abc"
+            index: c6 
+
+      - name: WatchIncrementaltres
+        external:
+          location: "@tpcdi_sf10000_raw/Batch3"
+          pattern: '.*WatchHistory[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: cdc_flag
+            data_type: string
+            description: "abc"
+            index: c1
+          - name: cdc_dsn
+            data_type: bigint
+            description: "abc"
+            index: c2
+          - name: w_c_id
+            data_type: bigint
+            description: "abc"
+            index: c3
+          - name: w_s_symb
+            data_type: string
+            description: "abc"
+            index: c4 
+          - name: w_dts
+            data_type: timestamp
+            description: "abc"
+            index: c5 
+          - name: w_action
+            data_type: string
+            description: "abc"
+            index: c6
+            
+      - name: WatchHistory
+        external:
+          location: "@tpcdi_sf10000_raw/Batch1"
+          pattern: '.*WatchHistory[.]txt' 
+          file_format: "( format_name = 'TXT_PIPE')"
+
+        columns:
+          - name: w_c_id
+            data_type: bigint
+            description: "abc"
+            index: c1
+          - name: w_s_symb
+            data_type: string
+            description: "abc"
+            index: c2 
+          - name: w_dts
+            data_type: timestamp
+            description: "abc"
+            index: c3 
+          - name: w_action
+            data_type: string
+            description: "abc"
+            index: c4 
+            
+     
+           
+            
+      - name: ProspectRawuno
+        external:
+          location: "@tpcdi_sf10000_raw/Batch1"
+          pattern: '.*Prospect[.]csv' 
+          file_format: "( format_name = 'TXT_CSV')"
+
+        columns:
+          - name: agencyid
+            data_type: string
+            description: "abc"
+            index: c1 
+          - name: lastname
+            data_type: string
+            description: "abc"
+            index: c2
+          - name: firstname
+            data_type: string
+            description: "abc"
+            index: c3
+          - name: middleinitial
+            data_type: string
+            description: "abc"
+            index: c4
+          - name: gender
+            data_type: string
+            description: "abc"
+            index: c5 
+          - name: addressline1
+            data_type: string
+            description: "abc"
+            index: c6
+          - name: addressline2
+            data_type: string
+            description: "abc"
+            index: c7
+          - name: postalcode
+            data_type: string
+            description: "abc"
+            index: c8
+          - name: city
+            data_type: string
+            description: "abc"
+            index: c9
+          - name: state
+            data_type: string
+            description: "abc"
+            index: c10 
+          - name: country
+            data_type: string
+            description: "abc"
+            index: c11
+          - name: phone
+            data_type: string
+            description: "abc"
+            index: c12
+          - name: income
+            data_type: string
+            description: "abc"
+            index: c13
+          - name: numbercars
+            data_type: int
+            description: "abc"
+            index: c14 
+          - name: numberchildren
+            data_type: int
+            description: "abc"
+            index: c15
+          - name: maritalstatus
+            data_type: string
+            description: "abc"
+            index: c16
+          - name: age
+            data_type: int
+            description: "abc"
+            index: c17
+          - name: creditrating
+            data_type: int
+            description: "abc"
+            index: c18
+          - name: ownorrentflag
+            data_type: string
+            description: "abc"
+            index: c19
+          - name: employer
+            data_type: string
+            description: "abc"
+            index: c20
+          - name: numbercreditcards
+            data_type: int
+            description: "abc"
+            index: c21
+          - name: networth
+            data_type: int
+            description: "abc"
+            index: c22     
+
+      - name: ProspectRawdos
+        external:
+          location: "@tpcdi_sf10000_raw/Batch2"
+          pattern: '.*Prospect[.]csv' 
+          file_format: "( format_name = 'TXT_CSV')"
+
+        columns:
+          - name: agencyid
+            data_type: string
+            description: "abc"
+            index: c1 
+          - name: lastname
+            data_type: string
+            description: "abc"
+            index: c2
+          - name: firstname
+            data_type: string
+            description: "abc"
+            index: c3
+          - name: middleinitial
+            data_type: string
+            description: "abc"
+            index: c4
+          - name: gender
+            data_type: string
+            description: "abc"
+            index: c5 
+          - name: addressline1
+            data_type: string
+            description: "abc"
+            index: c6
+          - name: addressline2
+            data_type: string
+            description: "abc"
+            index: c7
+          - name: postalcode
+            data_type: string
+            description: "abc"
+            index: c8
+          - name: city
+            data_type: string
+            description: "abc"
+            index: c9
+          - name: state
+            data_type: string
+            description: "abc"
+            index: c10 
+          - name: country
+            data_type: string
+            description: "abc"
+            index: c11
+          - name: phone
+            data_type: string
+            description: "abc"
+            index: c12
+          - name: income
+            data_type: string
+            description: "abc"
+            index: c13
+          - name: numbercars
+            data_type: int
+            description: "abc"
+            index: c14 
+          - name: numberchildren
+            data_type: int
+            description: "abc"
+            index: c15
+          - name: maritalstatus
+            data_type: string
+            description: "abc"
+            index: c16
+          - name: age
+            data_type: int
+            description: "abc"
+            index: c17
+          - name: creditrating
+            data_type: int
+            description: "abc"
+            index: c18
+          - name: ownorrentflag
+            data_type: string
+            description: "abc"
+            index: c19
+          - name: employer
+            data_type: string
+            description: "abc"
+            index: c20
+          - name: numbercreditcards
+            data_type: int
+            description: "abc"
+            index: c21
+          - name: networth
+            data_type: int
+            description: "abc"
+            index: c22   
+            
+
+      - name: ProspectRawtres
+        external:
+          location: "@tpcdi_sf10000_raw/Batch3"
+          pattern: '.*Prospect[.]csv' 
+          file_format: "( format_name = 'TXT_CSV')"
+
+        columns:
+          - name: agencyid
+            data_type: string
+            description: "abc"
+            index: c1 
+          - name: lastname
+            data_type: string
+            description: "abc"
+            index: c2
+          - name: firstname
+            data_type: string
+            description: "abc"
+            index: c3
+          - name: middleinitial
+            data_type: string
+            description: "abc"
+            index: c4
+          - name: gender
+            data_type: string
+            description: "abc"
+            index: c5 
+          - name: addressline1
+            data_type: string
+            description: "abc"
+            index: c6
+          - name: addressline2
+            data_type: string
+            description: "abc"
+            index: c7
+          - name: postalcode
+            data_type: string
+            description: "abc"
+            index: c8
+          - name: city
+            data_type: string
+            description: "abc"
+            index: c9
+          - name: state
+            data_type: string
+            description: "abc"
+            index: c10 
+          - name: country
+            data_type: string
+            description: "abc"
+            index: c11
+          - name: phone
+            data_type: string
+            description: "abc"
+            index: c12
+          - name: income
+            data_type: string
+            description: "abc"
+            index: c13
+          - name: numbercars
+            data_type: int
+            description: "abc"
+            index: c14 
+          - name: numberchildren
+            data_type: int
+            description: "abc"
+            index: c15
+          - name: maritalstatus
+            data_type: string
+            description: "abc"
+            index: c16
+          - name: age
+            data_type: int
+            description: "abc"
+            index: c17
+          - name: creditrating
+            data_type: int
+            description: "abc"
+            index: c18
+          - name: ownorrentflag
+            data_type: string
+            description: "abc"
+            index: c19
+          - name: employer
+            data_type: string
+            description: "abc"
+            index: c20
+          - name: numbercreditcards
+            data_type: int
+            description: "abc"
+            index: c21
+          - name: networth
+            data_type: int
+            description: "abc"
+            index: c22 
+
+            
