@@ -1,14 +1,43 @@
 sql_endpoints:
-  target: dev
+  target: snow
+
   outputs:
+
     # Use this if connecting to a hosted spark (e.g. Databricks)
-    dev:
+    snow:
+      type: snowflake
+      account: accounthere
+
+      # User/password auth
+      user: user
+      password: password
+
+      role: "ACCOUNTADMIN"
+      database: "test" # Replace string after "_" with appropriate scale factor (i.e. sf10, sf100, sf1000)
+      warehouse: "TEST" # Create this warehouse in Snowflake before running dbt build
+      schema: "springbricks"
+      threads: 25
+      client_session_keep_alive: False
+      query_tag: "tpcdi_sf1000_run_1"
+
+      # optional
+      connect_retries: 0 # default 0
+      connect_timeout: 10 # default: 10
+      retry_on_database_errors: False # default: false
+      retry_all: False  # default: false
+      reuse_connections: False # default: false (available v1.4+)
+
+    dbx:
       type: databricks
       method: http
       catalog: hive_metastore
-      schema: insertschemahere
-      threads: 100
-      host: inserthosthere
-      token: insertokenhere
-      http_path: insertpathhere
+      schema: springbricks
+      threads: 25
+      host: e2-dogfood.staging.cloud.databricks.com
+
+      token: dapia5983e4a87d3cef04d766512516adedb
+       
+      # optional
+      #http_path: /sql/1.0/endpoints/ead10bf07050390f
+      http_path: /sql/1.0/warehouses/1cef66d7b4e17fe9
       
