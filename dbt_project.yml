@@ -6,6 +6,8 @@ profile: 'sql_endpoints'
 
 vars:
   benchmark: 1000
+  bucketname: bucketname
+  scalefactor: 1000
 
 
 
