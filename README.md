@@ -21,6 +21,6 @@ Please refer to the individual readmes to determine how to best handle the custo
 i) create your prod and staging schemas (if not already created) \
 ii) Update profiles.yml with your prod schema and other warehouse specific configurations. \
 iii) Update sources.yml with your staging schema\
-iv) Update project.yml with desired scalefactor and bucket(for bigquery) \
+iv) Update project.yml with desired scalefactor and bucketname \
 v) dbt run-operation stage_external_sources \
 vi) dbt run
