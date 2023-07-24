@@ -27,7 +27,7 @@ azcopy copy https://<storageaccount>.blob.core.windows.net/<container>/<scalefac
 
 ### CustomerMgmt files preparation
 Convert the CustomerMgmt.xml to tabular format as Synapse Dedicated SQL Pool does not support XML directly.
-1. Import the notebook [TPC-DI CustomerMgmt ADLSgen2](./_tools/TPC-DI%20CustomerMgmt%20ADLSgen2.ipynb)
+1. Import the notebook in the helpers directory.
 2. Create and attach Spark pool, e.g. 3 to 8 Medium nodes.
 3. Adjust note book parameters in **Setup** section. This includes scale factor, storage account, container, folder.
 4. Execute the notebook
@@ -35,7 +35,7 @@ Convert the CustomerMgmt.xml to tabular format as Synapse Dedicated SQL Pool doe
 ## Synapse preparation
 ### External tables
 In order to Synapse being able to read data from ADLSgen2 we need to configure external data source and external file formats. For that you need to execute the following SQL-script using administrator permission. Note that it is assumed to use Managed Service Identity for authentication ADLSgen2. Therefore, you also need to assign **Storage Blob Data Reader** role for your Synapse managed service identity.
-The code is also available in [_tools/Synapse-ExternalTables.sql](./_tools/Synapse-ExternalTables.sql) script.
+The code is also available in the helpers directory.
 
 ```sql
 CREATE MASTER KEY ENCRYPTION BY PASSOWORD = '<strong_password>';
@@ -55,7 +55,7 @@ GO
 ### Workload Management
 In order to use Synapse resources efficiently we need to configure Workload Management using the following script. In the script we define a login, a user, a workload group, and a workload classifier which will assign the configure workload group to all queries initiated by dbt.
 In the present configuration all queries will be assigned at least 33% of resources, hence up to 3 concurrent queries. This configuration proved to be the most efficient in our tests.
-The code is also available in [_tools/Synapse-WLM.sql](./_tools/Synapse-WLM.sql) script.
+The code is also available in the helpers directory.
 
 ```sql
 CREATE LOGIN dbt WITH PASSWORD = '<strong_password>'     -- to be executed in master database
