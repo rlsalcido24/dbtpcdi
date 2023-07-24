@@ -2,7 +2,7 @@
 
 This implementation assumes that the customermgmt.xml file has already been parsed, and that the path of the table is hard-coded in the CustomerMgmtView.sql file in the base directory.
 
-The implementation also assumes that an external stage has been built and that three custom file formats have been built-- the logic for the custom file formats resides in the helper directory. 
+The implementation also assumes that an external stage has been built and that three custom file formats have been built-- the logic for the custom file formats resides in the helper directory within root.
 
 ### Configuration and running
 
