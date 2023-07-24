@@ -7,7 +7,7 @@ sources:
 
       - name: StatusType
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch1/StatusType.txt   
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/StatusType.txt   
           options:
             format: csv
             field_delimiter: '|'
@@ -24,7 +24,7 @@ sources:
 
       - name: TaxRate
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch1/TaxRate.txt   
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/TaxRate.txt   
           options:
            format: csv
            field_delimiter: '|'
@@ -43,7 +43,7 @@ sources:
 
       - name: DimTime
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch1/Time.txt   
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/Time.txt   
           options:
             format: csv                       
             field_delimiter: '|'
@@ -84,7 +84,7 @@ sources:
 
       - name: AccountIncrementaldos
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch2/Account.txt   
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/Account.txt   
           options:
             format: csv
             field_delimiter: '|'
@@ -118,7 +118,7 @@ sources:
 
       - name: AccountIncrementaltres
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch3/Account.txt   
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/Account.txt   
           options:
             format: csv
             field_delimiter: '|'
@@ -152,7 +152,7 @@ sources:
         
       - name: CashTransactionHistory
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch1/CashTransaction.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/CashTransaction.txt  
           options:
             format: csv
             field_delimiter: '|'
@@ -175,7 +175,7 @@ sources:
 
       - name: CashTransactionIncrementaldos
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch2/CashTransaction.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/CashTransaction.txt  
           options:
             format: csv
             field_delimiter: '|'
@@ -203,7 +203,7 @@ sources:
 
       - name: CashTransactionIncrementaltres
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch3/CashTransaction.txt   
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/CashTransaction.txt   
           options:
             format: csv
             field_delimiter: '|'
@@ -231,7 +231,7 @@ sources:
 
       - name: customerincrementaldos
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch2/Customer.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/Customer.txt  
           options:
             format: csv
             field_delimiter: '|'
@@ -357,7 +357,7 @@ sources:
               
       - name: customerincrementaltres
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch3/Customer.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/Customer.txt  
           options:
             format: csv
             field_delimiter: '|'
@@ -481,7 +481,7 @@ sources:
             
       - name: DailyMarket
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch1/DailyMarket.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/DailyMarket.txt  
           options:
             format: csv
             field_delimiter: '|'
@@ -509,7 +509,7 @@ sources:
             
       - name: DailyMarketIncrementaldos
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch2/DailyMarket.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/DailyMarket.txt  
           options:
             format: csv
             field_delimiter: '|'
@@ -543,7 +543,7 @@ sources:
 
       - name: DailyMarketIncrementaltres
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch3/DailyMarket.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/DailyMarket.txt  
           options:
             format: csv
             field_delimiter: '|'
@@ -577,7 +577,7 @@ sources:
 
       - name: DimDate
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch1/Date.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/Date.txt  
           options:
             format: csv
             field_delimiter: '|'
@@ -643,7 +643,7 @@ sources:
 
       - name: HR
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch1/HR.csv  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/HR.csv  
           options:
             format: csv
             field_delimiter: ','
@@ -680,7 +680,7 @@ sources:
             
       - name: HoldingHistory
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch1/HoldingHistory.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/HoldingHistory.txt  
           options:
             format: csv
             field_delimiter: '|'
@@ -703,7 +703,7 @@ sources:
             
       - name: HoldingIncrementaldos
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch2/HoldingHistory.txt   
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/HoldingHistory.txt   
           options:
             format: csv
             field_delimiter: '|'
@@ -731,7 +731,7 @@ sources:
 
       - name: HoldingIncrementaltres
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch3/HoldingHistory.txt   
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/HoldingHistory.txt   
           options:
             format: csv
             field_delimiter: '|'
@@ -759,7 +759,7 @@ sources:
             
       - name: BatchDateuno
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch1/BatchDate.txt   
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/BatchDate.txt   
           options:
             format: csv
             field_delimiter: '|'
@@ -772,7 +772,7 @@ sources:
 
       - name: BatchDatedos
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch2/BatchDate.txt   
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/BatchDate.txt   
           options:
             format: csv
             field_delimiter: '|'
@@ -785,7 +785,7 @@ sources:
           
       - name: BatchDatetres
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch3/BatchDate.txt   
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/BatchDate.txt   
           options:
             format: csv
             field_delimiter: '|'
@@ -798,7 +798,7 @@ sources:
             
       - name: Industry
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch1/Industry.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/Industry.txt  
           options:
             format: csv
             field_delimiter: '|'
@@ -817,7 +817,7 @@ sources:
 
       - name: TradeHistory
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch1/Trade.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/Trade.txt  
           options:
             format: csv
             field_delimiter: '|'
@@ -871,7 +871,7 @@ sources:
             
       - name: TradeHistoryRaw
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch1/TradeHistory.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/TradeHistory.txt  
           options:
             format: csv
             field_delimiter: '|'
@@ -891,7 +891,7 @@ sources:
 
       - name: TradeIncrementaldos
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch2/Trade.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/Trade.txt  
           options:
             format: csv
             field_delimiter: '|'
@@ -949,7 +949,7 @@ sources:
 
       - name: TradeIncrementaltres
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch3/Trade.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/Trade.txt  
           options:
             format: csv
             field_delimiter: '|'
@@ -1007,7 +1007,7 @@ sources:
 
       - name: TradeType
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch1/TradeType.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/TradeType.txt  
           options:
             format: csv
             field_delimiter: '|'
@@ -1030,7 +1030,7 @@ sources:
             
       - name: WatchIncrementaldos
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch2/WatchHistory.txt   
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/WatchHistory.txt   
           options:
             format: csv
             field_delimiter: '|'
@@ -1058,7 +1058,7 @@ sources:
 
       - name: WatchIncrementaltres
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch3/WatchHistory.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/WatchHistory.txt  
           options:
             format: csv
             field_delimiter: '|'
@@ -1087,7 +1087,7 @@ sources:
             
       - name: WatchHistory
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch1/WatchHistory.txt
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/WatchHistory.txt
           options:
             format: csv
             field_delimiter: '|'
@@ -1112,7 +1112,7 @@ sources:
 
       - name: FinWireStg
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch1/FinWire/*
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/FinWire/*
           options:
             format: csv
             skip_leading_rows: 0      
@@ -1121,7 +1121,7 @@ sources:
             
       - name: ProspectRawuno
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch1/Prospect.csv  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/Prospect.csv  
           options:
             format: csv                     
             field_delimiter: ','
@@ -1197,7 +1197,7 @@ sources:
 
       - name: ProspectRawdos
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch2/Prospect.csv  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/Prospect.csv  
           options:
             format: csv                     
             field_delimiter: ','
@@ -1274,7 +1274,7 @@ sources:
 
       - name: ProspectRawtres
         external:
-          location: gs://{{var("bucketname")}}/{{var("benchmark")}}/Batch3/Prospect.csv  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/Prospect.csv  
           options:
             format: csv                     
             field_delimiter: ','
