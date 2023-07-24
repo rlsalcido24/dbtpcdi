@@ -5,11 +5,9 @@ config-version: 2
 profile: 'sql_endpoints'
 
 vars:
-  benchmark: 1000
-  bucketname: bucketname
   scalefactor: 1000
-
-
+  bucketname: bucketname #bigquery, redshift only
+  
 
 
 model-paths: ["models"]
