@@ -1313,6 +1313,126 @@ sources:
             data_type: string
             description: "abc"
             index: c4 
+
+      - name: CustomerMgmt
+        external:
+          location: "@tpcdi_sf10000_raw/Batch1"
+          pattern: '.*CustomerMgmt[.]xml' 
+          file_format: "( format_name = 'XML')"
+
+        columns:
+          - name: customerid
+            data_type: int
+            description: "abc"
+            index: c1
+          - name: accountid
+            data_type: int
+            description: "abc"
+            index: c2 
+          - name: brokerid
+            data_type: int
+            description: "abc"
+            index: c3 
+          - name: taxid
+            data_type: string
+            description: "abc"
+            index: c4
+          - name: accountdesc
+            data_type: string
+            description: "abc"
+            index: c5
+          - name: taxstatus
+            data_type: int
+            description: "abc"
+            index: c6 
+          - name: status
+            data_type: string
+            description: "abc"
+            index: c7 
+          - name: lastname
+            data_type: string
+            description: "abc"
+            index: c8 
+          - name: firstname
+            data_type: string
+            description: "abc"
+            index: c9
+          - name: middleinitial
+            data_type: string
+            description: "abc"
+            index: c10 
+          - name: gender
+            data_type: string
+            description: "abc"
+            index: c11 
+          - name: tier
+            data_type: int
+            description: "abc"
+            index: c12
+          - name: dob
+            data_type: date
+            description: "abc"
+            index: c13
+          - name: addressline1
+            data_type: string
+            description: "abc"
+            index: c14 
+          - name: addressline2
+            data_type: string
+            description: "abc"
+            index: c15 
+          - name: postalcode
+            data_type: string
+            description: "abc"
+            index: c16
+          - name: city
+            data_type: string
+            description: "abc"
+            index: c17
+          - name: stateprov
+            data_type: string
+            description: "abc"
+            index: c18 
+          - name: country
+            data_type: string
+            description: "abc"
+            index: c19 
+          - name: phone1
+            data_type: string
+            description: "abc"
+            index: c20
+          - name: phone2
+            data_type: string
+            description: "abc"
+            index: c21
+          - name: phone3
+            data_type: string
+            description: "abc"
+            index: c22
+          - name: email1
+            data_type: string
+            description: "abc"
+            index: c23 
+          - name: email2
+            data_type: string
+            description: "abc"
+            index: c24
+          - name: lcl_tx_id
+            data_type: string
+            description: "abc"
+            index: c25
+          - name: nat_tx_id
+            data_type: string
+            description: "abc"
+            index: c26 
+          - name: update_ts
+            data_type: timestamp
+            description: "abc"
+            index: c27 
+          - name: actiontype
+            data_type: string
+            description: "abc"
+            index: c28   
             
      
            
