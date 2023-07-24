@@ -1,0 +1,148 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Description: |
+  Creation of a AWS Resources required to run DBT benchmarks
+
+Parameters:
+
+  Environment:
+    Description: Environment of the resources.
+    Type: String
+    Default: staging
+    AllowedValues:
+      - production
+      - staging
+      - testing
+  Name:
+    Description: Cluster name.
+    Type: String
+    Default: 'rs-tpcdi'
+  Service:
+    Description: Service name.
+    Type: String
+    Default: redshift
+    AllowedValues:
+      - redshift 
+  MasterUsername:
+    Description: The redshift master user
+    Type: String
+    Default: 'awsuser'
+
+  MasterUserPassword:
+    Description: The redshift master password
+    Type: String
+    NoEcho: true
+    Default: '5bbNZHK5ey'
+  
+  BechmarkBucket:
+    Description: The bucket containing TPCDI Dataset
+    Type: String
+    Default: 'tpcdi-temp-bench'
+  NodeType:
+    Description: The type of node to be provisioned
+    Type: String
+    Default: dc2.large
+    AllowedValues: 
+    - dc2.large
+    - dc2.8xlarge
+    - ra3.xlplus
+    - ra3.4xlarge
+    - ra3.16xlarge
+  ClusterType:
+    Description: The type of cluster
+    Type: String
+    Default: multi-node
+    AllowedValues:
+    - single-node
+    - multi-node
+  NumberOfNodes:
+    Description: Compute nodes count. For multi-node clusters,
+      the NumberOfNodes parameter must be greater than 1
+    Type: Number
+    Default: '2'
+
+Conditions:
+  IsMultiNodeCluster:
+    Fn::Equals:
+    - Ref: ClusterType
+    - multi-node
+Resources:
+  RedshiftCluster:
+    DependsOn: RSClusterInstanceProfile
+    Type: "AWS::Redshift::Cluster"
+    Properties:
+      ClusterType: multi-node
+      NodeType: !Ref NodeType
+      ClusterIdentifier: rs-tpcdi-bench
+      NumberOfNodes: 2
+      DBName: tpcdi
+      MasterUsername: !Ref MasterUsername
+      MasterUserPassword: !Ref MasterUserPassword
+      PubliclyAccessible: true
+      IamRoles:
+      - Fn::GetAtt: [ SpectrumIAMRole, Arn ]
+      NodeType:
+        Ref: NodeType
+      ElasticIp: !Ref ElasticIP
+      ClusterType:
+        Ref: ClusterType
+      NumberOfNodes:
+        Fn::If:
+        - IsMultiNodeCluster
+        - Ref: NumberOfNodes
+        - Ref: AWS::NoValue
+  ElasticIP:
+    Type: "AWS::EC2::EIP"
+
+  # EIPAssociation:
+  #   Type: "AWS::EC2::EIPAssociation"
+  #   Properties:
+  #     InstanceId: !Ref RedshiftCluster
+  #     EIP: !Ref ElasticIP
+
+  IAMPolicy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: Spectrum-policy
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - "s3:*"
+            Resource:
+              - !Sub "arn:aws:s3:::${BechmarkBucket}/*"
+              - !Sub "arn:aws:s3:::${BechmarkBucket}"
+          - Effect: Allow
+            Action:
+              - "glue:*"
+            Resource:
+              - "*"
+      Roles:
+        - !Ref SpectrumIAMRole
+
+  SpectrumIAMRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: RS-Spectrum-Role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: 
+                - redshift.amazonaws.com
+                - redshift-serverless.amazonaws.com
+            Action: "sts:AssumeRole"
+            Condition:
+              StringEquals:
+                sts:ExternalId: !Sub 'arn:aws:redshift:${AWS::Region}:${AWS::AccountId}:dbuser:${Environment}-${Name}-${Service}/${MasterUsername}'
+
+  RSClusterInstanceProfile:
+    DependsOn: SpectrumIAMRole
+    Type: AWS::IAM::InstanceProfile
+    Properties: 
+      InstanceProfileName: RS-Spectrum-Role
+      Path: "/"
+      Roles: 
+        - RS-Spectrum-Role

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TPCDI:Actions xmlns:TPCDI="http://www.tpc.org/tpc-di">
+	<TPCDI:Action ActionType="NEW" ActionTS="2007-07-07T02:56:25">
+		<Customer C_ID="0" C_TAX_ID="923-54-6498" C_GNDR="F" C_TIER="3" C_DOB="1940-12-02">
+			<Name>
+				<C_L_NAME>Joannis</C_L_NAME>
+				<C_F_NAME>Adara</C_F_NAME>
+				<C_M_NAME/>
+			</Name>
+			<Address>
+				<C_ADLINE1>4779 Weller Way</C_ADLINE1>
+				<C_ADLINE2/>
+				<C_ZIPCODE>92624</C_ZIPCODE>
+				<C_CITY>Columbus</C_CITY>
+				<C_STATE_PROV>Ontario</C_STATE_PROV>
+				<C_CTRY>Canada</C_CTRY>
+			</Address>
+			<ContactInfo>
+				<C_PRIM_EMAIL>Adara.Joannis@moose-mail.com</C_PRIM_EMAIL>
+				<C_ALT_EMAIL>Adara.Joannis@gmx.com</C_ALT_EMAIL>
+				<C_PHONE_1>
+					<C_CTRY_CODE>1</C_CTRY_CODE>
+					<C_AREA_CODE>872</C_AREA_CODE>
+					<C_LOCAL>523-8928</C_LOCAL>
+					<C_EXT/>
+				</C_PHONE_1>
+				<C_PHONE_2>
+					<C_CTRY_CODE/>
+					<C_AREA_CODE/>
+					<C_LOCAL>492-3961</C_LOCAL>
+					<C_EXT/>
+				</C_PHONE_2>
+				<C_PHONE_3>
+					<C_CTRY_CODE/>
+					<C_AREA_CODE/>
+					<C_LOCAL/>
+					<C_EXT/>
+				</C_PHONE_3>
+			</ContactInfo>
+			<TaxInfo>
+				<C_LCL_TX_ID>CA3</C_LCL_TX_ID>
+				<C_NAT_TX_ID>YT3</C_NAT_TX_ID>
+			</TaxInfo>
+			<Account CA_ID="0" CA_TAX_ST="1">
+				<CA_B_ID>17713</CA_B_ID>
+				<CA_NAME>CJlmMuFyibKOmKLHIaTeWugvCgZdmcfpDsYb</CA_NAME>
+			</Account>
+		</Customer>
+	</TPCDI:Action>
+	<TPCDI:Action ActionType="NEW" ActionTS="2007-07-07T20:27:38">
+		<Customer C_ID="10" C_TAX_ID="030-52-1460" C_TIER="3" C_DOB="1943-09-01">
+			<Name>
+				<C_L_NAME>Gannon</C_L_NAME>
+				<C_F_NAME>Charene</C_F_NAME>
+				<C_M_NAME/>
+			</Name>
+			<Address>
+				<C_ADLINE1>3388 Concord Crescent</C_ADLINE1>
+				<C_ADLINE2/>
+				<C_ZIPCODE>80072</C_ZIPCODE>
+				<C_CITY>Fairbanks</C_CITY>
+				<C_STATE_PROV>MA</C_STATE_PROV>
+				<C_CTRY>Canada</C_CTRY>
+			</Address>
+			<ContactInfo>
+				<C_PRIM_EMAIL>Charene.Gannon@lavabit.com</C_PRIM_EMAIL>
+				<C_ALT_EMAIL>Charene.Gannon@gmx.es</C_ALT_EMAIL>
+				<C_PHONE_1>
+					<C_CTRY_CODE/>
+					<C_AREA_CODE/>
+					<C_LOCAL>444-6160</C_LOCAL>
+					<C_EXT/>
+				</C_PHONE_1>
+				<C_PHONE_2>
+					<C_CTRY_CODE/>
+					<C_AREA_CODE/>
+					<C_LOCAL/>
+					<C_EXT/>
+				</C_PHONE_2>
+				<C_PHONE_3>
+					<C_CTRY_CODE/>
+					<C_AREA_CODE/>
+					<C_LOCAL/>
+					<C_EXT/>
+				</C_PHONE_3>
+			</ContactInfo>
+			<TaxInfo>
+				<C_LCL_TX_ID>IA9</C_LCL_TX_ID>
+				<C_NAT_TX_ID>OH6</C_NAT_TX_ID>
+			</TaxInfo>
+			<Account CA_ID="10" CA_TAX_ST="1">
+				<CA_B_ID>49786</CA_B_ID>
+				<CA_NAME>XqXAwgQVDMSwCiOXSONPyAFlUFUujbAaB</CA_NAME>
+			</Account>
+		</Customer>
+	</TPCDI:Action>
+	<TPCDI:Action ActionType="UPDACCT" ActionTS="2017-07-07T18:14:13">
+		<Customer C_ID="6438" >
+			<Account CA_ID="12773" CA_TAX_ST="1">
+				<CA_B_ID>36750</CA_B_ID>
+			</Account>
+		</Customer>
+	</TPCDI:Action>
+	<TPCDI:Action ActionType="ADDACCT" ActionTS="2017-07-07T18:49:12">
+		<Customer C_ID="13998" >
+			<Account CA_ID="30468" CA_TAX_ST="1">
+				<CA_B_ID>11645</CA_B_ID>
+				<CA_NAME>LQlhlTKFnebRIWibJrOnyDJVdvaznqaJxjKPL yIEuILQAT</CA_NAME>
+			</Account>
+		</Customer>
+	</TPCDI:Action>
+	<TPCDI:Action ActionType="CLOSEACCT" ActionTS="2017-07-07T20:32:24">
+		<Customer C_ID="10707">
+			<Account CA_ID="21312" />
+		</Customer>
+	</TPCDI:Action>
+	<TPCDI:Action ActionType="ADDACCT" ActionTS="2017-07-07T22:30:40">
+		<Customer C_ID="3077" >
+			<Account CA_ID="30469" CA_TAX_ST="1">
+				<CA_B_ID>29211</CA_B_ID>
+				<CA_NAME>bDcTZxUNV  bOKokUZrrTEVNonErRCceXGHSchmCIDSs</CA_NAME>
+			</Account>
+		</Customer>
+	</TPCDI:Action>
+	<TPCDI:Action ActionType="INACT" ActionTS="2017-07-07T23:59:59">
+		<Customer C_ID="12190">
+		</Customer>
+	</TPCDI:Action>
+</TPCDI:Actions>
