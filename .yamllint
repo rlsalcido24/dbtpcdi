@@ -22,7 +22,9 @@ rules:
   empty-values: disable
   float-values: disable
   hyphens: enable
-  indentation: enable
+  indentation:
+    spaces: 2
+    indent-sequences: true
   key-duplicates: enable
   key-ordering: disable
   line-length:
