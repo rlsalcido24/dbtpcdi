@@ -7,6 +7,9 @@ assignees: ''
 
 ---
 
+### _Search before asking_
+> Please make sure to search in the [issues](https://github.com/rlsalcido24/dbtpcdi/issues) first to see whether the same issue was reported already.
+
 ### Describe the feature
 A clear and concise description of what you want to happen.
 
