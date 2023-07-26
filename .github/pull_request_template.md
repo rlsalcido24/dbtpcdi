@@ -13,5 +13,5 @@
 - [ ] Verified that these changes work locally
 - [ ] Updated the README.md and Documentation (if applicable)
 - [ ] Verified that existing unit tests pass (may need to run dbt seed first)
-- [ ] Added a unit test for each new macro I created and I have verifed that these new unit tests pass.
+- [ ] Added a unit test for each new macro I created and I have verified that these new unit tests pass.
 - [ ] Created GitHub issues for any relevant follow-up/future enhancements if appropriate.
