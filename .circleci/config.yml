@@ -1,10 +1,11 @@
+---
+
 version: 2
 
 jobs:
   build:
     docker:
       - image: cimg/python:3.9.9
-      
 
     steps:
       - checkout
@@ -30,8 +31,6 @@ jobs:
 
             mkdir -p ~/.dbt
             cp integration_tests/ci/sample.profiles.yml ~/.dbt/profiles.yml
-
-    
 
       - run:
           name: "Run Tests - Redshift"
@@ -90,7 +89,7 @@ jobs:
           paths:
             - "dbt_venv"
 
-            
+
       - store_artifacts:
           path: integration_tests/logs
       - store_artifacts:
