@@ -4,63 +4,53 @@ sql_endpoints:
   target: snowflake
 
   outputs:
-
-    snowflake:
-      type: snowflake
-      account: account
-
-      # User/password auth
-      user: user
-      password: password
-
-      role: "role"
-      database: "database"
-      warehouse: "warehouse"
-      schema: "schema"
-      threads: 25
-      client_session_keep_alive: false
-
-    databricks:
-      type: databricks
-      method: http
-      catalog: catalog
-      schema: schema
-      threads: 25
-      host: host
-      token: token
-      http_path: path
-
     redshift:
       type: redshift
-      dbname: db
-      host: host
-      cluster_id: id
-      method: iam
-      port: 5439
-      schema: schema
-      threads: 25
-      iam_profile: profile
-      user: user
-      region: region
-
-    synapse:
-      type: synapse
-      driver: 'ODBC Driver 18 for SQL Server'  # (The ODBC Driver installed on your system)
-      server: server
-      port: 1433
-      encrypt: true
-      trust_cert: true
-      database: database
-      schema: schema
-      authentication: CLI
+      host: "{{ env_var('REDSHIFT_TEST_HOST') }}"
+      user: "{{ env_var('REDSHIFT_TEST_USER') }}"
+      pass: "{{ env_var('REDSHIFT_TEST_PASS') }}"
+      dbname: "{{ env_var('REDSHIFT_TEST_DBNAME') }}"
+      port: "{{ env_var('REDSHIFT_TEST_PORT') | as_number }}"
+      schema: audit_helper_integration_tests_redshift
       threads: 25
 
     bigquery:
       type: bigquery
       method: service-account
-      project: project
-      dataset: dataset
+      keyfile: "{{ env_var('BIGQUERY_SERVICE_KEY_PATH') }}"
+      project: "{{ env_var('BIGQUERY_TEST_DATABASE') }}"
+      schema: audit_helper_integration_tests_bigquery
       threads: 25
-      priority: interactive
-      location: location
-      keyfile: "User/keyfile"
+
+    snowflake:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_TEST_ACCOUNT') }}"
+      user: "{{ env_var('SNOWFLAKE_TEST_USER') }}"
+      password: "{{ env_var('SNOWFLAKE_TEST_PASSWORD') }}"
+      role: "{{ env_var('SNOWFLAKE_TEST_ROLE') }}"
+      database: "{{ env_var('SNOWFLAKE_TEST_DATABASE') }}"
+      warehouse: "{{ env_var('SNOWFLAKE_TEST_WAREHOUSE') }}"
+      schema: audit_helper_integration_tests_snowflake
+      threads: 25
+
+    databricks:
+      type: databricks
+      method: http
+      catalog: "{{ env_var('DATABRICKS_TEST_CATALOG') }}"
+      schema: "{{ env_var('DATABRICKS_TEST_SCHEMA') }}"
+      host: "{{ env_var('DATABRICKS_TEST_HOST') }}"
+      token: "{{ env_var('DATABRICKS_TEST_TOKEN') }}"
+      http_path: "{{ env_var('DATABRICKS_TEST_PATH') }}"
+      threads: 25
+
+    synapse:
+      type: synapse
+      driver: 'ODBC Driver 18 for SQL Server' # (The ODBC Driver installed on your system)
+      server: "{{ env_var('SYNAPSE_SERVER') }}"
+      port: 1433
+      encrypt: true
+      trust_cert: true
+      database: "{{ env_var('SYNAPSE_DATABASE') }}"
+      schema: "{{ env_var('SYNAPSE_SCHEMA') }}"
+      authentication: "{{ env_var('SYNAPSE_AUTH') }}"
+      threads: 25  

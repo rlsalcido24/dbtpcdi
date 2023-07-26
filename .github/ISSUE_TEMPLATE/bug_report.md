@@ -7,6 +7,9 @@ assignees: ''
 
 ---
 
+### _Search before asking_
+> Please make sure to search in the [issues](https://github.com/rlsalcido24/dbtpcdi/issues) first to see whether the same issue was reported already.
+
 ### Describe the bug
 <!---
 A clear and concise description of what the bug is. You can also use the issue title to do this
@@ -35,11 +38,12 @@ If applicable, add screenshots or log output to help explain your problem.
 ### System information
 **The contents of your `packages.yml` file:**
 
-**Which database are you using dbt with?**
-- [ ] postgres
-- [ ] redshift
+**Which model are you using dbtpcdi with?**
 - [ ] bigquery
+- [ ] databricks
+- [ ] redshift
 - [ ] snowflake
+- [ ] synapse
 - [ ] other (specify: ____________)
 
 
@@ -57,7 +61,7 @@ If applicable, add screenshots or log output to help explain your problem.
 Add any other context about the problem here. For example, if you think you know which line of code is causing the issue.
 --->
 
-### Are you interested in contributing the fix?
+### Are you interested in contributing to the fix?
 <!---
-Let us know if you want to contribute the fix, and whether would need a hand getting started
+Let us know if you want to contribute to the fix, and whether would need a hand getting started
 --->
