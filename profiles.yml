@@ -1,3 +1,5 @@
+---
+
 sql_endpoints:
   target: snowflake
 
@@ -12,13 +14,11 @@ sql_endpoints:
       password: password
 
       role: "role"
-      database: "database" 
-      warehouse: "warehouse" 
+      database: "database"
+      warehouse: "warehouse"
       schema: "schema"
       threads: 25
-      client_session_keep_alive: False
-
-      
+      client_session_keep_alive: false
 
     databricks:
       type: databricks
@@ -29,7 +29,7 @@ sql_endpoints:
       host: host
       token: token
       http_path: path
-      
+
     redshift:
       type: redshift
       dbname: db
@@ -45,7 +45,7 @@ sql_endpoints:
 
     synapse:
       type: synapse
-      driver: 'ODBC Driver 18 for SQL Server' # (The ODBC Driver installed on your system)
+      driver: 'ODBC Driver 18 for SQL Server'  # (The ODBC Driver installed on your system)
       server: server
       port: 1433
       encrypt: true
@@ -63,5 +63,4 @@ sql_endpoints:
       threads: 25
       priority: interactive
       location: location
-      keyfile: "User/keyfile"    
-      
+      keyfile: "User/keyfile"

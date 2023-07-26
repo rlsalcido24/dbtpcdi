@@ -1,3 +1,5 @@
+---
+
 version: 2
 
 sources:
@@ -6,7 +8,7 @@ sources:
     loader: S3
 
     tables:
-      
+
       - name: people_csv_unpartitioned
         external: &csv-people
           location: "s3://dbt-external-tables-testing/csv/"
@@ -36,11 +38,11 @@ sources:
           partitions: &parts-of-the-people
             - name: section
               data_type: varchar
-              vals: ['a','b','c','d']
+              vals: ['a', 'b', 'c', 'd']
               path_macro: dbt_external_tables.key_value
         columns: *cols-of-the-people
         tests: *equal-to-the-people
-        
+
       # ensure that all partitions are created
       - name: people_csv_multipartitioned
         external:
@@ -53,7 +55,7 @@ sources:
               path_macro: dbt_external_tables.value_only
             - name: section
               data_type: varchar
-              vals: ['a','b','c','d']
+              vals: ['a', 'b', 'c', 'd']
               path_macro: dbt_external_tables.key_value
             - name: some_date
               data_type: date

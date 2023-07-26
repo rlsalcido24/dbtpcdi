@@ -1,3 +1,5 @@
+---
+
 integration_tests:
   target: snow
 
@@ -10,13 +12,13 @@ integration_tests:
       # User/password auth
       user: userhere
       password: pwhere
-      
+
       role: rolehere
       database: dbhere
       warehouse: warehousehere
       schema: schemahere
       threads: 1
-      client_session_keep_alive: False
+      client_session_keep_alive: false
 
     databricks:
       type: databricks
@@ -26,5 +28,4 @@ integration_tests:
       host: e2-demo-field-eng.cloud.databricks.com
 
       token: "{{ env_var('DATABRICKS_TOKEN') }}"
-      http_path: /sql/1.0/warehouses/ead10bf07050390f 
-      
+      http_path: /sql/1.0/warehouses/ead10bf07050390f

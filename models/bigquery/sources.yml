@@ -1,17 +1,18 @@
+---
+
 version: 2
 
-
-sources: 
+sources:
   - name: tpcdi_sf10000
-    tables:    
+    tables:
 
       - name: StatusType
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/StatusType.txt   
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/StatusType.txt
           options:
             format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0   
+            skip_leading_rows: 0
 
         columns:
           - name: st_id
@@ -20,15 +21,14 @@ sources:
           - name: st_name
             data_type: string
             description: "Status Description"
-  
 
       - name: TaxRate
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/TaxRate.txt   
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/TaxRate.txt
           options:
-           format: csv
-           field_delimiter: '|'
-           skip_leading_rows: 0   
+            format: csv
+            field_delimiter: '|'
+            skip_leading_rows: 0
 
         columns:
           - name: tx_id
@@ -43,11 +43,11 @@ sources:
 
       - name: DimTime
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/Time.txt   
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/Time.txt
           options:
-            format: csv                       
+            format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0   
+            skip_leading_rows: 0
 
         columns:
           - name: sk_timeid
@@ -61,30 +61,30 @@ sources:
             description: "abc"
           - name: hourdesc
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: minuteid
             data_type: int
-            description: "abc" 
+            description: "abc"
           - name: minutedesc
             data_type: int
-            description: "abc" 
+            description: "abc"
           - name: secondid
             data_type: int
-            description: "abc" 
+            description: "abc"
 
           - name: seconddesc
             data_type: int
-            description: "string" 
+            description: "string"
           - name: markethoursflag
             data_type: boolean
-            description: "abc" 
+            description: "abc"
           - name: officehoursflag
             data_type: boolean
             description: "abc"
 
       - name: AccountIncrementaldos
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/Account.txt   
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/Account.txt
           options:
             format: csv
             field_delimiter: '|'
@@ -102,27 +102,27 @@ sources:
             description: "abc"
           - name: ca_b_id
             data_type: bigint
-            description: "abc" 
+            description: "abc"
           - name: ca_c_id
             data_type: bigint
-            description: "abc" 
+            description: "abc"
           - name: accountDesc
             data_type: string
             description: "abc"
           - name: taxstatus
             data_type: tinyint
-            description: "abc" 
+            description: "abc"
           - name: ca_st_id
             data_type: string
             description: "abc"
 
       - name: AccountIncrementaltres
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/Account.txt   
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/Account.txt
           options:
             format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0  
+            skip_leading_rows: 0
 
         columns:
           - name: cdc_flag
@@ -136,27 +136,27 @@ sources:
             description: "abc"
           - name: ca_b_id
             data_type: bigint
-            description: "abc" 
+            description: "abc"
           - name: ca_c_id
             data_type: bigint
-            description: "abc" 
+            description: "abc"
           - name: accountDesc
             data_type: string
             description: "abc"
           - name: taxstatus
             data_type: tinyint
-            description: "abc" 
+            description: "abc"
           - name: ca_st_id
             data_type: string
-            description: "abc"      
-        
+            description: "abc"
+
       - name: CashTransactionHistory
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/CashTransaction.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/CashTransaction.txt
           options:
             format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0   
+            skip_leading_rows: 0
 
         columns:
           - name: ct_ca_id
@@ -170,16 +170,16 @@ sources:
             description: "abc"
           - name: ct_name
             data_type: string
-            description: "abc" 
+            description: "abc"
 
 
       - name: CashTransactionIncrementaldos
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/CashTransaction.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/CashTransaction.txt
           options:
             format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0  
+            skip_leading_rows: 0
 
         columns:
           - name: cdc_flag
@@ -193,21 +193,21 @@ sources:
             description: "abc"
           - name: ct_dts
             data_type: timestamp
-            description: "abc" 
+            description: "abc"
           - name: ct_amt
             data_type: float64
-            description: "abc" 
+            description: "abc"
           - name: ct_name
             data_type: string
             description: "abc"
 
       - name: CashTransactionIncrementaltres
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/CashTransaction.txt   
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/CashTransaction.txt
           options:
             format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0  
+            skip_leading_rows: 0
 
         columns:
           - name: cdc_flag
@@ -221,21 +221,21 @@ sources:
             description: "abc"
           - name: ct_dts
             data_type: timestamp
-            description: "abc" 
+            description: "abc"
           - name: ct_amt
             data_type: float64
-            description: "abc" 
+            description: "abc"
           - name: ct_name
             data_type: string
             description: "abc"
 
       - name: customerincrementaldos
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/Customer.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/Customer.txt
           options:
             format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0  
+            skip_leading_rows: 0
 
         columns:
           - name: cdc_flag
@@ -249,10 +249,10 @@ sources:
             description: "abc"
           - name: taxid
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: status
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: lastname
             data_type: string
             description: "abc"
@@ -267,10 +267,10 @@ sources:
             description: "abc"
           - name: tier
             data_type: tinyint
-            description: "abc" 
+            description: "abc"
           - name: dob
             data_type: date
-            description: "abc" 
+            description: "abc"
           - name: addressline1
             data_type: string
             description: "abc"
@@ -285,10 +285,10 @@ sources:
             description: "abc"
           - name: stateprov
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: country
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: c_ctry_1
             data_type: string
             description: "abc"
@@ -303,10 +303,10 @@ sources:
             description: "abc"
           - name: c_ext_1
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: c_ctry_2
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: c_area_2
             data_type: string
             description: "abc"
@@ -321,10 +321,10 @@ sources:
             description: "abc"
           - name: c_area_2
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: c_local_2
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: c_ext_2
             data_type: string
             description: "abc"
@@ -339,29 +339,27 @@ sources:
             description: "abc"
           - name: c_ext_3
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: email1
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: email2
             data_type: string
             description: "abc"
           - name: lcl_tx_id
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: nat_tx_id
             data_type: string
-            description: "abc"          
+            description: "abc"
 
-
-              
       - name: customerincrementaltres
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/Customer.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/Customer.txt
           options:
             format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0  
+            skip_leading_rows: 0
 
         columns:
           - name: cdc_flag
@@ -375,10 +373,10 @@ sources:
             description: "abc"
           - name: taxid
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: status
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: lastname
             data_type: string
             description: "abc"
@@ -393,10 +391,10 @@ sources:
             description: "abc"
           - name: tier
             data_type: tinyint
-            description: "abc" 
+            description: "abc"
           - name: dob
             data_type: date
-            description: "abc" 
+            description: "abc"
           - name: addressline1
             data_type: string
             description: "abc"
@@ -411,10 +409,10 @@ sources:
             description: "abc"
           - name: stateprov
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: country
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: c_ctry_1
             data_type: string
             description: "abc"
@@ -429,10 +427,10 @@ sources:
             description: "abc"
           - name: c_ext_1
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: c_ctry_2
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: c_area_2
             data_type: string
             description: "abc"
@@ -447,10 +445,10 @@ sources:
             description: "abc"
           - name: c_area_2
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: c_local_2
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: c_ext_2
             data_type: string
             description: "abc"
@@ -465,27 +463,27 @@ sources:
             description: "abc"
           - name: c_ext_3
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: email1
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: email2
             data_type: string
             description: "abc"
           - name: lcl_tx_id
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: nat_tx_id
             data_type: string
-            description: "abc"   
-            
+            description: "abc"
+
       - name: DailyMarket
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/DailyMarket.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/DailyMarket.txt
           options:
             format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0   
+            skip_leading_rows: 0
 
         columns:
           - name: dm_date
@@ -499,21 +497,21 @@ sources:
             description: "abc"
           - name: dm_high
             data_type: float64
-            description: "abc" 
+            description: "abc"
           - name: dm_low
             data_type: float64
-            description: "abc" 
+            description: "abc"
           - name: dm_vol
             data_type: int
-            description: "abc" 
-            
+            description: "abc"
+
       - name: DailyMarketIncrementaldos
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/DailyMarket.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/DailyMarket.txt
           options:
             format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0  
+            skip_leading_rows: 0
 
         columns:
           - name: cdc_flag
@@ -527,27 +525,27 @@ sources:
             description: "abc"
           - name: dm_s_symb
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: dm_close
             data_type: float64
-            description: "abc" 
+            description: "abc"
           - name: dm_high
             data_type: float64
             description: "abc"
           - name: dm_low
             data_type: float64
-            description: "abc" 
+            description: "abc"
           - name: dm_vol
             data_type: int
             description: "abc"
 
       - name: DailyMarketIncrementaltres
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/DailyMarket.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/DailyMarket.txt
           options:
             format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0  
+            skip_leading_rows: 0
 
         columns:
           - name: cdc_flag
@@ -561,27 +559,27 @@ sources:
             description: "abc"
           - name: dm_s_symb
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: dm_close
             data_type: float64
-            description: "abc" 
+            description: "abc"
           - name: dm_high
             data_type: float64
             description: "abc"
           - name: dm_low
             data_type: float64
-            description: "abc" 
+            description: "abc"
           - name: dm_vol
             data_type: int
-            description: "abc"   
+            description: "abc"
 
       - name: DimDate
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/Date.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/Date.txt
           options:
             format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0  
+            skip_leading_rows: 0
 
         columns:
           - name: sk_dateid
@@ -595,10 +593,10 @@ sources:
             description: "abc"
           - name: calendaryearid
             data_type: int
-            description: "abc" 
+            description: "abc"
           - name: calendaryeardesc
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: calendarqtrid
             data_type: int
             description: "abc"
@@ -612,7 +610,7 @@ sources:
           - name: calendarmonthdesc
             data_type: string
             description: "abc"
-            index: c7     
+            index: c7
           - name: calendarweekid
             data_type: int
             description: "abc"
@@ -627,23 +625,23 @@ sources:
             description: "abc"
           - name: fiscalyearid
             data_type: int
-            description: "abc" 
+            description: "abc"
           - name: fiscalyeardesc
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: fiscalqtrid
             data_type: int
             description: "abc"
           - name: fiscalqtrdesc
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: holidayflag
             data_type: boolean
-            description: "abc"  
+            description: "abc"
 
       - name: HR
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/HR.csv  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/HR.csv
           options:
             format: csv
             field_delimiter: ','
@@ -661,30 +659,30 @@ sources:
             description: "abc"
           - name: employeelastname
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: employeemi
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: employeejobcode
             data_type: string
             description: "abc"
           - name: employeebranch
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: employeeoffice
             data_type: string
             description: "abc"
           - name: employeephone
             data_type: string
-            description: "abc"   
-            
+            description: "abc"
+
       - name: HoldingHistory
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/HoldingHistory.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/HoldingHistory.txt
           options:
             format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0   
+            skip_leading_rows: 0
 
         columns:
           - name: hh_h_t_id
@@ -698,16 +696,15 @@ sources:
             description: "abc"
           - name: hh_after_qty
             data_type: int
-            description: "abc" 
+            description: "abc"
 
-            
       - name: HoldingIncrementaldos
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/HoldingHistory.txt   
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/HoldingHistory.txt
           options:
             format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0  
+            skip_leading_rows: 0
 
         columns:
           - name: cdc_flag
@@ -721,21 +718,21 @@ sources:
             description: "abc"
           - name: hh_t_id
             data_type: int
-            description: "abc"  
+            description: "abc"
           - name: hh_before_qty
             data_type: int
-            description: "abc" 
+            description: "abc"
           - name: hh_after_qty
             data_type: int
-            description: "abc" 
+            description: "abc"
 
       - name: HoldingIncrementaltres
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/HoldingHistory.txt   
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/HoldingHistory.txt
           options:
             format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0  
+            skip_leading_rows: 0
 
         columns:
           - name: cdc_flag
@@ -749,21 +746,21 @@ sources:
             description: "abc"
           - name: hh_t_id
             data_type: int
-            description: "abc"  
+            description: "abc"
           - name: hh_before_qty
             data_type: int
-            description: "abc" 
+            description: "abc"
           - name: hh_after_qty
             data_type: int
             description: "abc"
-            
+
       - name: BatchDateuno
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/BatchDate.txt   
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/BatchDate.txt
           options:
             format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0  
+            skip_leading_rows: 0
 
         columns:
           - name: batchdate
@@ -772,37 +769,37 @@ sources:
 
       - name: BatchDatedos
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/BatchDate.txt   
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/BatchDate.txt
           options:
             format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0  
+            skip_leading_rows: 0
 
         columns:
           - name: batchdate
             data_type: date
             description: "abc"
-          
+
       - name: BatchDatetres
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/BatchDate.txt   
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/BatchDate.txt
           options:
             format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0  
+            skip_leading_rows: 0
 
         columns:
           - name: batchdate
             data_type: date
-            description: "abc"    
-            
+            description: "abc"
+
       - name: Industry
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/Industry.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/Industry.txt
           options:
             format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0   
+            skip_leading_rows: 0
 
         columns:
           - name: in_id
@@ -817,11 +814,11 @@ sources:
 
       - name: TradeHistory
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/Trade.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/Trade.txt
           options:
             format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0  
+            skip_leading_rows: 0
 
         columns:
           - name: t_id
@@ -838,7 +835,7 @@ sources:
             description: "abc"
           - name: t_is_cash
             data_type: tinyint
-            description: "abc" 
+            description: "abc"
           - name: t_s_symb
             data_type: string
             description: "abc"
@@ -853,7 +850,7 @@ sources:
             description: "abc"
           - name: t_exec_name
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: t_trade_price
             data_type: float64
             description: "abc"
@@ -866,16 +863,14 @@ sources:
           - name: t_tax
             data_type: float64
             description: "abc"
-           
 
-            
       - name: TradeHistoryRaw
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/TradeHistory.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/TradeHistory.txt
           options:
             format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0  
+            skip_leading_rows: 0
 
         columns:
           - name: th_t_id
@@ -887,15 +882,14 @@ sources:
           - name: th_st_id
             data_type: string
             description: "abc"
-          
 
       - name: TradeIncrementaldos
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/Trade.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/Trade.txt
           options:
             format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0  
+            skip_leading_rows: 0
 
         columns:
           - name: cdc_flag
@@ -918,7 +912,7 @@ sources:
             description: "abc"
           - name: t_is_cash
             data_type: tinyint
-            description: "abc" 
+            description: "abc"
           - name: t_s_symb
             data_type: string
             description: "abc"
@@ -933,7 +927,7 @@ sources:
             description: "abc"
           - name: t_exec_name
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: t_trade_price
             data_type: float64
             description: "abc"
@@ -949,11 +943,11 @@ sources:
 
       - name: TradeIncrementaltres
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/Trade.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/Trade.txt
           options:
             format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0  
+            skip_leading_rows: 0
 
         columns:
           - name: cdc_flag
@@ -976,7 +970,7 @@ sources:
             description: "abc"
           - name: t_is_cash
             data_type: tinyint
-            description: "abc" 
+            description: "abc"
           - name: t_s_symb
             data_type: string
             description: "abc"
@@ -991,7 +985,7 @@ sources:
             description: "abc"
           - name: t_exec_name
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: t_trade_price
             data_type: float64
             description: "abc"
@@ -1007,11 +1001,11 @@ sources:
 
       - name: TradeType
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/TradeType.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/TradeType.txt
           options:
             format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0  
+            skip_leading_rows: 0
 
         columns:
           - name: tt_id
@@ -1025,16 +1019,15 @@ sources:
             description: "abc"
           - name: tt_is_mrkt
             data_type: int
-            description: "abc" 
-        
-            
+            description: "abc"
+
       - name: WatchIncrementaldos
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/WatchHistory.txt   
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/WatchHistory.txt
           options:
             format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0  
+            skip_leading_rows: 0
 
         columns:
           - name: cdc_flag
@@ -1048,21 +1041,21 @@ sources:
             description: "abc"
           - name: w_s_symb
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: w_dts
             data_type: timestamp
-            description: "abc" 
+            description: "abc"
           - name: w_action
             data_type: string
-            description: "abc" 
+            description: "abc"
 
       - name: WatchIncrementaltres
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/WatchHistory.txt  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/WatchHistory.txt
           options:
             format: csv
             field_delimiter: '|'
-            skip_leading_rows: 0   
+            skip_leading_rows: 0
 
         columns:
           - name: cdc_flag
@@ -1076,15 +1069,14 @@ sources:
             description: "abc"
           - name: w_s_symb
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: w_dts
             data_type: timestamp
-            description: "abc" 
+            description: "abc"
           - name: w_action
             data_type: string
             description: "abc"
-            
-            
+
       - name: WatchHistory
         external:
           location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/WatchHistory.txt
@@ -1093,44 +1085,42 @@ sources:
             field_delimiter: '|'
             skip_leading_rows: 0
         columns:
-        - name: w_c_id
-          data_type: bigint
-          description: "abc"
-          index: c1
-        - name: w_s_symb
-          data_type: string
-          description: "abc"
-          index: c2 
-        - name: w_dts
-          data_type: timestamp
-          description: "abc"
-          index: c3 
-        - name: w_action
-          data_type: string
-          description: "abc"
-          index: c4   
+          - name: w_c_id
+            data_type: bigint
+            description: "abc"
+            index: c1
+          - name: w_s_symb
+            data_type: string
+            description: "abc"
+            index: c2
+          - name: w_dts
+            data_type: timestamp
+            description: "abc"
+            index: c3
+          - name: w_action
+            data_type: string
+            description: "abc"
+            index: c4
 
       - name: FinWireStg
         external:
           location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/FinWire/*
           options:
             format: csv
-            skip_leading_rows: 0      
+            skip_leading_rows: 0
 
-           
-            
       - name: ProspectRawuno
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/Prospect.csv  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch1/Prospect.csv
           options:
-            format: csv                     
+            format: csv
             field_delimiter: ','
-            skip_leading_rows: 0   
+            skip_leading_rows: 0
 
         columns:
           - name: agencyid
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: lastname
             data_type: string
             description: "abc"
@@ -1142,7 +1132,7 @@ sources:
             description: "abc"
           - name: gender
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: addressline1
             data_type: string
             description: "abc"
@@ -1157,7 +1147,7 @@ sources:
             description: "abc"
           - name: state
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: country
             data_type: string
             description: "abc"
@@ -1169,7 +1159,7 @@ sources:
             description: "abc"
           - name: numbercars
             data_type: int
-            description: "abc" 
+            description: "abc"
           - name: numberchildren
             data_type: int
             description: "abc"
@@ -1193,20 +1183,20 @@ sources:
             description: "abc"
           - name: networth
             data_type: int
-            description: "abc"     
+            description: "abc"
 
       - name: ProspectRawdos
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/Prospect.csv  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch2/Prospect.csv
           options:
-            format: csv                     
+            format: csv
             field_delimiter: ','
-            skip_leading_rows: 0   
+            skip_leading_rows: 0
 
         columns:
           - name: agencyid
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: lastname
             data_type: string
             description: "abc"
@@ -1218,7 +1208,7 @@ sources:
             description: "abc"
           - name: gender
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: addressline1
             data_type: string
             description: "abc"
@@ -1233,7 +1223,7 @@ sources:
             description: "abc"
           - name: state
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: country
             data_type: string
             description: "abc"
@@ -1245,7 +1235,7 @@ sources:
             description: "abc"
           - name: numbercars
             data_type: int
-            description: "abc" 
+            description: "abc"
           - name: numberchildren
             data_type: int
             description: "abc"
@@ -1269,21 +1259,20 @@ sources:
             description: "abc"
           - name: networth
             data_type: int
-            description: "abc"  
-            
+            description: "abc"
 
       - name: ProspectRawtres
         external:
-          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/Prospect.csv  
+          location: gs://{{var("bucketname")}}/{{var("scalefactor")}}/Batch3/Prospect.csv
           options:
-            format: csv                     
+            format: csv
             field_delimiter: ','
-            skip_leading_rows: 0   
+            skip_leading_rows: 0
 
         columns:
           - name: agencyid
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: lastname
             data_type: string
             description: "abc"
@@ -1295,7 +1284,7 @@ sources:
             description: "abc"
           - name: gender
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: addressline1
             data_type: string
             description: "abc"
@@ -1310,7 +1299,7 @@ sources:
             description: "abc"
           - name: state
             data_type: string
-            description: "abc" 
+            description: "abc"
           - name: country
             data_type: string
             description: "abc"
@@ -1322,7 +1311,7 @@ sources:
             description: "abc"
           - name: numbercars
             data_type: int
-            description: "abc" 
+            description: "abc"
           - name: numberchildren
             data_type: int
             description: "abc"
@@ -1346,4 +1335,4 @@ sources:
             description: "abc"
           - name: networth
             data_type: int
-            description: "abc"     
+            description: "abc"

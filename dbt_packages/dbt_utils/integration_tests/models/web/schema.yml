@@ -1,3 +1,5 @@
+---
+
 version: 2
 
 models:
@@ -6,13 +8,13 @@ models:
       - assert_equal:
           actual: actual
           expected: expected
-          
+
   - name: test_url_host
     tests:
       - assert_equal:
           actual: actual
           expected: expected
-          
+
   - name: test_url_path
     tests:
       - assert_equal:

@@ -1,3 +1,5 @@
+---
+
 name: 'springbricks_integration_tests'
 version: '1.0.0'
 config-version: 2
@@ -20,5 +22,5 @@ vars:
   max_ship_date: "'1998-12-01'"
 
 dispatch:
- - macro_namespace: dbt_utils
-   search_order: ['dbsql_dbt_tpch', 'dbt_utils']
+  - macro_namespace: dbt_utils
+    search_order: ['dbsql_dbt_tpch', 'dbt_utils']

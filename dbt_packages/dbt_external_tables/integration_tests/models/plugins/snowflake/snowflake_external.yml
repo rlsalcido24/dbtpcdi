@@ -1,3 +1,5 @@
+---
+
 version: 2
 
 sources:
@@ -6,7 +8,7 @@ sources:
     loader: S3
 
     tables:
-      
+
       - name: people_csv_unpartitioned
         external: &csv-people
           location: '@{{ target.schema }}.dbt_external_tables_testing/csv'
@@ -53,7 +55,7 @@ sources:
           partitions: *parts-of-the-people
         columns: *cols-of-the-people
         tests: *equal-to-the-people
-        
+
       - name: people_json_snowpipe
         external:
           <<: *json-people
@@ -72,20 +74,20 @@ sources:
             copy_options: ''
         columns: *cols-of-the-people
         tests: *equal-to-the-people
-        
+
       # just to test syntax
       - name: people_csv_unpartitioned_no_columns
         external: *csv-people
         tests: &same-rowcount
           - dbt_utils.equal_rowcount:
               compare_model: ref('people')
-        
+
       - name: people_csv_partitioned_no_columns
         external:
           <<: *csv-people
           partitions: *parts-of-the-people
         tests: *same-rowcount
-      
+
       - name: people_csv_with_keyword_colname
         external: *csv-people
         columns:
@@ -93,17 +95,17 @@ sources:
             quote: true
             data_type: varchar(64)
         tests: *same-rowcount
-          
+
       - name: people_json_unpartitioned_no_columns
         external: *json-people
         tests: *same-rowcount
-        
+
       - name: people_json_partitioned_no_columns
         external:
           <<: *json-people
           partitions: *parts-of-the-people
         tests: *same-rowcount
-          
+
       - name: people_json_multipartitioned_no_columns
         external:
           <<: *json-people
