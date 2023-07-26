@@ -7,6 +7,9 @@ assignees: ''
 
 ---
 
+### _Search before asking_
+> Please make sure to search in the [issues](https://github.com/rlsalcido24/dbtpcdi/issues) first to see whether the same issue was reported already.
+
 ### Describe the bug
 <!---
 A clear and concise description of what the bug is. You can also use the issue title to do this
