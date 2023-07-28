@@ -2,16 +2,16 @@
 
 extends: default
 
-ignore: |
+ignore:
   .tox/
   .venv/
   dbt_modules/
   dbt_packages/
 
-yaml-files: |
-  '*.yaml'
-  '*.yml'
-  '.yamllint'
+yaml-files:
+  - '*.yaml'
+  - '*.yml'
+  - '.yamllint'
 
 rules:
   indentation:
