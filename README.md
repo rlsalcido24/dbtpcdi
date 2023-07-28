@@ -18,6 +18,8 @@ Please refer to the individual readmes to determine how to best handle the custo
 
 ### Configuration and running
 
+(Note that do not run dbt deps as some of the packages/macros the code relies on are custom)
+
 i) create your prod and staging schemas (if not already created) \
 ii) Update profiles.yml with your prod schema and other warehouse specific configurations. \
 iii) Update sources.yml with your staging schema\
