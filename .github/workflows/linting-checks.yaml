@@ -1,6 +1,8 @@
+---
+
 name: Linting Checks
 
-on:
+on:  # yamllint disable-line rule:truthy
   pull_request:
     paths:
       - '**.yml'

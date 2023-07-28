@@ -1,4 +1,6 @@
 ---
+# NB: key duplicates are acceptable here since this gets passed to Cloud Formation
+# yamllint disable rule:key-duplicates
 
 AWSTemplateFormatVersion: 2010-09-09
 
