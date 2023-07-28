@@ -23,8 +23,7 @@ sources:
           ansi_nulls: true
           quoted_identifier: true
 
-          # Cross database query (i.e. RDBMS) Azure SQL ONLY
-          data_source: AEDW  # made with TYPE= 'RDBMS'
+        # Cross database query (i.e. RDBMS) Azure SQL ONLY
           schema_name: Business
           object_name: LeadActivities
 
