@@ -31,6 +31,7 @@ customermgmt xml file.
 
 ### Configuration and running
 
+(Note that do not run dbt deps as some of the packages/macros the code relies on are custom)
 1. create your prod and staging schemas (if not already created)
 2. Update profiles.yml with your prod schema and other warehouse specific
 configurations.
