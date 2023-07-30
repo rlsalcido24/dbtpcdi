@@ -44,6 +44,7 @@ configurations.
 Additional contributions are welcome.
 
 For small changes, please submit a pull request with your changes.
+
 For larger changes that would change the majority of code in a single
 file or span multiple files, please open an issue first for discussion.
 
