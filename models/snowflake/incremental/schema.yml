@@ -1,3 +1,5 @@
+---
+
 version: 2
 
 models:
@@ -9,26 +11,22 @@ models:
               config:
                 store_failures: true
           - accepted_values:
-              values: [1,2,3]
+              values: [1, 2, 3]
               config:
                 store_failures: true
 
-
-    
   - name: DimAccount
     columns:
       - name: sk_customerid
         tests:
-           - not_null:
+          - not_null:
               config:
                 store_failures: true
       - name: sk_brokerid
         tests:
-           - not_null:
+          - not_null:
               config:
                 store_failures: true
-
-  
 
   - name: DimCustomerStg
     columns:
@@ -38,17 +36,16 @@ models:
               config:
                 store_failures: true
 
-
   - name: FactMarketHistory
     columns:
       - name: sk_securityid
         tests:
-           - not_null:
+          - not_null:
               config:
                 store_failures: true
       - name: PERatio
         tests:
-           - not_null:
+          - not_null:
               config:
                 store_failures: true
 
@@ -56,15 +53,14 @@ models:
     columns:
       - name: sk_securityid
         tests:
-           - not_null:
+          - not_null:
               config:
                 store_failures: true
       - name: sk_customerid
         tests:
-           - not_null:
+          - not_null:
               config:
-                store_failures: true  
-
+                store_failures: true
 
   - name: FactHoldings
     columns:
@@ -86,24 +82,22 @@ models:
     columns:
       - name: sk_securityid
         tests:
-           - not_null:
+          - not_null:
               config:
                 store_failures: true
       - name: sk_accountid
         tests:
-           - not_null:
+          - not_null:
               config:
                 store_failures: true
       - name: commission
         tests:
-           - tradecom:
+          - tradecom:
               config:
-                store_failures: true 
-                
+                store_failures: true
+
       - name: fee
         tests:
-           - tradefee:
+          - tradefee:
               config:
-                store_failures: true                                                    
-
-
+                store_failures: true

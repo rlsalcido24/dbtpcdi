@@ -1,3 +1,4 @@
+---
 
 name: 'spark_utils_dbt_utils_integration_tests'
 version: '1.0'
@@ -6,16 +7,16 @@ config-version: 2
 profile: 'integration_tests'
 
 source-paths: ["models"]
-analysis-paths: ["analysis"] 
+analysis-paths: ["analysis"]
 test-paths: ["tests"]
 data-paths: ["data"]
 macro-paths: ["macros"]
 
 target-path: "target"  # directory which will store compiled SQL files
-clean-targets:         # directories to be removed by `dbt clean`
-    - "target"
-    - "dbt_modules"
-    
+clean-targets:  # directories to be removed by `dbt clean`
+  - "target"
+  - "dbt_modules"
+
 dispatch:
   - macro_namespace: dbt_utils
     search_order:

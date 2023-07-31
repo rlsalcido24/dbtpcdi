@@ -1,10 +1,11 @@
+---
+
 version: 2
 
 jobs:
   build:
     docker:
       - image: cimg/python:3.9.9
-      
 
     steps:
       - checkout
@@ -19,7 +20,7 @@ jobs:
 
       - run:
           name: "Setup dbt"
-          command: | 
+          command: |
             set -x
 
             python -m venv dbt_venv
@@ -30,8 +31,6 @@ jobs:
 
             mkdir -p ~/.dbt
             cp integration_tests/ci/sample.profiles.yml ~/.dbt/profiles.yml
-
-    
 
       - run:
           name: "Run Tests - Redshift"
@@ -72,7 +71,7 @@ jobs:
       - run:
           name: "Run Tests - BigQuery"
           environment:
-              BIGQUERY_SERVICE_KEY_PATH: "/home/circleci/bigquery-service-key.json"
+            BIGQUERY_SERVICE_KEY_PATH: "/home/circleci/bigquery-service-key.json"
 
           command: |
             . dbt_venv/bin/activate
@@ -90,7 +89,7 @@ jobs:
           paths:
             - "dbt_venv"
 
-            
+
       - store_artifacts:
           path: integration_tests/logs
       - store_artifacts:
@@ -105,4 +104,4 @@ workflows:
             - profile-redshift
             - profile-snowflake
             - profile-bigquery
-            - profile-databricks  
+            - profile-databricks

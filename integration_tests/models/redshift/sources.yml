@@ -1,3 +1,5 @@
+---
+
 version: 2
 
 sources:
@@ -5,11 +7,11 @@ sources:
     schema: ext_stage
     loader: s3
     tables:
-      - name: CustomerMgmt  
+      - name: CustomerMgmt
         external:
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/CustomerMgmt    # path on above data sourc
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/CustomerMgmt  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = ','
@@ -103,8 +105,8 @@ sources:
 
       - name: FinWireStg
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/finwire/    # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/finwire/  # path on above data sourc
 
         columns:
           - name: value
@@ -113,15 +115,15 @@ sources:
 
       - name: StatusType
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/StatusType    # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/StatusType  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
             )
-      
+
         columns:
           - name: st_id
             data_type: varchar(100)
@@ -132,10 +134,10 @@ sources:
 
       - name: TaxRate
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/TaxRate   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/TaxRate  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -156,10 +158,10 @@ sources:
 
       - name: DimTime
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/Time    # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/Time  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -180,26 +182,26 @@ sources:
           - name: hourdesc
             data_type: varchar(100)
             description: "abc"
-            index: c4 
+            index: c4
           - name: minuteid
             data_type: int
-            description: "abc" 
+            description: "abc"
             index: c4
           - name: minutedesc
             data_type: varchar(100)
             description: "abc"
-            index: c5 
+            index: c5
           - name: secondid
             data_type: int
             description: "abc"
-            index: c6 
+            index: c6
           - name: seconddesc
             data_type: int
             description: "varchar(100)"
-            index: c7 
+            index: c7
           - name: markethoursflag
             data_type: BOOLEAN
-            description: "abc" 
+            description: "abc"
             index: c8
           - name: officehoursflag
             data_type: BOOLEAN
@@ -208,10 +210,10 @@ sources:
 
       - name: AccountIncremental2
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch2/Account   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch2/Account  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -232,11 +234,11 @@ sources:
           - name: ca_b_id
             data_type: bigint
             description: "abc"
-            index: c4 
+            index: c4
           - name: ca_c_id
             data_type: bigint
             description: "abc"
-            index: c5 
+            index: c5
           - name: accountDesc
             data_type: varchar(100)
             description: "abc"
@@ -244,7 +246,7 @@ sources:
           - name: taxstatus
             data_type: smallint
             description: "abc"
-            index: c7 
+            index: c7
           - name: ca_st_id
             data_type: varchar(100)
             description: "abc"
@@ -252,10 +254,10 @@ sources:
 
       - name: AccountIncremental3
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch3/Account   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch3/Account  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -276,11 +278,11 @@ sources:
           - name: ca_b_id
             data_type: bigint
             description: "abc"
-            index: c4 
+            index: c4
           - name: ca_c_id
             data_type: bigint
             description: "abc"
-            index: c5 
+            index: c5
           - name: accountDesc
             data_type: varchar(100)
             description: "abc"
@@ -288,22 +290,22 @@ sources:
           - name: taxstatus
             data_type: smallint
             description: "abc"
-            index: c7 
+            index: c7
           - name: ca_st_id
             data_type: varchar(100)
             description: "abc"
-            index: c8      
+            index: c8
 
       - name: CashTransactionHistory
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/CashTransaction   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/CashTransaction  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
-            )  
+            )
         columns:
           - name: ct_ca_id
             data_type: bigint
@@ -320,14 +322,14 @@ sources:
           - name: ct_name
             data_type: varchar(100)
             description: "abc"
-            index: c4 
+            index: c4
 
       - name: CashTransactionIncremental2
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch2/CashTransaction   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch2/CashTransaction  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -348,11 +350,11 @@ sources:
           - name: ct_dts
             data_type: timestamp
             description: "abc"
-            index: c4 
+            index: c4
           - name: ct_amt
             data_type: float
             description: "abc"
-            index: c5 
+            index: c5
           - name: ct_name
             data_type: varchar(100)
             description: "abc"
@@ -360,10 +362,10 @@ sources:
 
       - name: CashTransactionIncremental3
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch3/CashTransaction   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch3/CashTransaction  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -384,11 +386,11 @@ sources:
           - name: ct_dts
             data_type: timestamp
             description: "abc"
-            index: c4 
+            index: c4
           - name: ct_amt
             data_type: float
             description: "abc"
-            index: c5 
+            index: c5
           - name: ct_name
             data_type: varchar(100)
             description: "abc"
@@ -396,10 +398,10 @@ sources:
 
       - name: CustomerIncremental2
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch2/Customer   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch2/Customer  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -420,11 +422,11 @@ sources:
           - name: taxid
             data_type: varchar(100)
             description: "abc"
-            index: c4 
+            index: c4
           - name: status
             data_type: varchar(100)
             description: "abc"
-            index: c5 
+            index: c5
           - name: lastname
             data_type: varchar(100)
             description: "abc"
@@ -444,11 +446,11 @@ sources:
           - name: tier
             data_type: varchar(100)
             description: "abc"
-            index: c10 
+            index: c10
           - name: dob
             data_type: varchar(100)
             description: "abc"
-            index: c11 
+            index: c11
           - name: addressline1
             data_type: varchar(100)
             description: "abc"
@@ -468,11 +470,11 @@ sources:
           - name: stateprov
             data_type: varchar(100)
             description: "abc"
-            index: c16 
+            index: c16
           - name: country
             data_type: varchar(100)
             description: "abc"
-            index: c17 
+            index: c17
           - name: c_ctry_1
             data_type: varchar(100)
             description: "abc"
@@ -492,11 +494,11 @@ sources:
           - name: c_ext_1
             data_type: varchar(100)
             description: "abc"
-            index: c22 
+            index: c22
           - name: c_ctry_2
             data_type: varchar(100)
             description: "abc"
-            index: c23 
+            index: c23
           - name: c_area_2
             data_type: varchar(100)
             description: "abc"
@@ -516,11 +518,11 @@ sources:
           - name: c_area_2
             data_type: varchar(100)
             description: "abc"
-            index: c28 
+            index: c28
           - name: c_local_2
             data_type: varchar(100)
             description: "abc"
-            index: c29 
+            index: c29
           - name: c_ext_2
             data_type: varchar(100)
             description: "abc"
@@ -540,11 +542,11 @@ sources:
           - name: c_ext_3
             data_type: varchar(100)
             description: "abc"
-            index: c34 
+            index: c34
           - name: email1
             data_type: varchar(100)
             description: "abc"
-            index: c35 
+            index: c35
           - name: email2
             data_type: varchar(100)
             description: "abc"
@@ -552,18 +554,18 @@ sources:
           - name: lcl_tx_id
             data_type: varchar(100)
             description: "abc"
-            index: c37 
+            index: c37
           - name: nat_tx_id
             data_type: varchar(100)
             description: "abc"
-            index: c38          
-              
+            index: c38
+
       - name: CustomerIncremental3
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch3/Customer   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch3/Customer  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -584,11 +586,11 @@ sources:
           - name: taxid
             data_type: varchar(100)
             description: "abc"
-            index: c4 
+            index: c4
           - name: status
             data_type: varchar(100)
             description: "abc"
-            index: c5 
+            index: c5
           - name: lastname
             data_type: varchar(100)
             description: "abc"
@@ -608,11 +610,11 @@ sources:
           - name: tier
             data_type: varchar(100)
             description: "abc"
-            index: c10 
+            index: c10
           - name: dob
             data_type: varchar(100)
             description: "abc"
-            index: c11 
+            index: c11
           - name: addressline1
             data_type: varchar(100)
             description: "abc"
@@ -632,11 +634,11 @@ sources:
           - name: stateprov
             data_type: varchar(100)
             description: "abc"
-            index: c16 
+            index: c16
           - name: country
             data_type: varchar(100)
             description: "abc"
-            index: c17 
+            index: c17
           - name: c_ctry_1
             data_type: varchar(100)
             description: "abc"
@@ -656,11 +658,11 @@ sources:
           - name: c_ext_1
             data_type: varchar(100)
             description: "abc"
-            index: c22 
+            index: c22
           - name: c_ctry_2
             data_type: varchar(100)
             description: "abc"
-            index: c23 
+            index: c23
           - name: c_area_2
             data_type: varchar(100)
             description: "abc"
@@ -680,11 +682,11 @@ sources:
           - name: c_area_2
             data_type: varchar(100)
             description: "abc"
-            index: c28 
+            index: c28
           - name: c_local_2
             data_type: varchar(100)
             description: "abc"
-            index: c29 
+            index: c29
           - name: c_ext_2
             data_type: varchar(100)
             description: "abc"
@@ -704,11 +706,11 @@ sources:
           - name: c_ext_3
             data_type: varchar(100)
             description: "abc"
-            index: c34 
+            index: c34
           - name: email1
             data_type: varchar(100)
             description: "abc"
-            index: c35 
+            index: c35
           - name: email2
             data_type: varchar(100)
             description: "abc"
@@ -716,18 +718,18 @@ sources:
           - name: lcl_tx_id
             data_type: varchar(100)
             description: "abc"
-            index: c37 
+            index: c37
           - name: nat_tx_id
             data_type: varchar(100)
             description: "abc"
-            index: c38     
+            index: c38
 
       - name: DailyMarketHistorical
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/DailyMarket   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/DailyMarket  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -748,22 +750,22 @@ sources:
           - name: dm_high
             data_type: float
             description: "abc"
-            index: c4 
+            index: c4
           - name: dm_low
             data_type: float
             description: "abc"
-            index: c5 
+            index: c5
           - name: dm_vol
             data_type: int
             description: "abc"
-            index: c6 
+            index: c6
 
       - name: DailyMarketIncremental2
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch2/DailyMarket   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch2/DailyMarket  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -784,11 +786,11 @@ sources:
           - name: dm_s_symb
             data_type: varchar(100)
             description: "abc"
-            index: c4 
+            index: c4
           - name: dm_close
             data_type: float
             description: "abc"
-            index: c5 
+            index: c5
           - name: dm_high
             data_type: float
             description: "abc"
@@ -796,7 +798,7 @@ sources:
           - name: dm_low
             data_type: float
             description: "abc"
-            index: c7 
+            index: c7
           - name: dm_vol
             data_type: int
             description: "abc"
@@ -804,10 +806,10 @@ sources:
 
       - name: DailyMarketIncremental3
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch3/DailyMarket   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch3/DailyMarket  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -828,11 +830,11 @@ sources:
           - name: dm_s_symb
             data_type: varchar(100)
             description: "abc"
-            index: c4 
+            index: c4
           - name: dm_close
             data_type: float
             description: "abc"
-            index: c5 
+            index: c5
           - name: dm_high
             data_type: float
             description: "abc"
@@ -840,17 +842,17 @@ sources:
           - name: dm_low
             data_type: float
             description: "abc"
-            index: c7 
+            index: c7
           - name: dm_vol
             data_type: int
             description: "abc"
-            index: c8   
+            index: c8
 
       - name: DimDate
         external:
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/Date   # path on above data sourc
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/Date  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -870,12 +872,12 @@ sources:
             index: c3
           - name: calendaryearid
             data_type: int
-            description: "abc" 
+            description: "abc"
             index: c4
           - name: calendaryeardesc
             data_type: varchar(100)
             description: "abc"
-            index: c5 
+            index: c5
           - name: calendarqtrid
             data_type: int
             description: "abc"
@@ -891,7 +893,7 @@ sources:
           - name: calendarmonthdesc
             data_type: varchar(100)
             description: "abc"
-            index: c9    
+            index: c9
           - name: calendarweekid
             data_type: int
             description: "abc"
@@ -911,11 +913,11 @@ sources:
           - name: fiscalyearid
             data_type: int
             description: "abc"
-            index: c14 
+            index: c14
           - name: fiscalyeardesc
             data_type: varchar(100)
             description: "abc"
-            index: c15 
+            index: c15
           - name: fiscalqtrid
             data_type: int
             description: "abc"
@@ -923,18 +925,18 @@ sources:
           - name: fiscalqtrdesc
             data_type: varchar(100)
             description: "abc"
-            index: c17 
+            index: c17
           - name: holidayflag
             data_type: BOOLEAN
             description: "abc"
-            index: c18  
+            index: c18
 
       - name: HR
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/HR   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/HR  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = ','
@@ -955,11 +957,11 @@ sources:
           - name: employeelastname
             data_type: varchar(100)
             description: "abc"
-            index: c4 
+            index: c4
           - name: employeemi
             data_type: varchar(100)
             description: "abc"
-            index: c5 
+            index: c5
           - name: employeejobcode
             data_type: varchar(100)
             description: "abc"
@@ -967,7 +969,7 @@ sources:
           - name: employeebranch
             data_type: varchar(100)
             description: "abc"
-            index: c7 
+            index: c7
           - name: employeeoffice
             data_type: varchar(100)
             description: "abc"
@@ -975,14 +977,14 @@ sources:
           - name: employeephone
             data_type: varchar(100)
             description: "abc"
-            index: c9   
+            index: c9
 
       - name: HoldingHistory
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/HoldingHistory   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/HoldingHistory  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -1003,15 +1005,14 @@ sources:
           - name: hh_after_qty
             data_type: int
             description: "abc"
-            index: c4 
+            index: c4
 
-            
       - name: HoldingIncremental2
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch2/HoldingHistory   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch2/HoldingHistory  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -1032,22 +1033,22 @@ sources:
           - name: hh_t_id
             data_type: int
             description: "abc"
-            index: c4  
+            index: c4
           - name: hh_before_qty
             data_type: int
             description: "abc"
-            index: c5 
+            index: c5
           - name: hh_after_qty
             data_type: int
             description: "abc"
-            index: c6 
+            index: c6
 
       - name: HoldingIncremental3
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch3/HoldingHistory   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch3/HoldingHistory  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -1068,22 +1069,22 @@ sources:
           - name: hh_t_id
             data_type: int
             description: "abc"
-            index: c4  
+            index: c4
           - name: hh_before_qty
             data_type: int
             description: "abc"
-            index: c5 
+            index: c5
           - name: hh_after_qty
             data_type: int
             description: "abc"
-            index: c6 
+            index: c6
 
       - name: BatchDate1
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/BatchDate   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/BatchDate  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -1096,10 +1097,10 @@ sources:
 
       - name: BatchDate2
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch2/BatchDate   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch2/BatchDate  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -1109,13 +1110,13 @@ sources:
             data_type: varchar(100)
             description: "abc"
             index: c1
-          
+
       - name: BatchDate3
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch3/BatchDate   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch3/BatchDate  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -1124,14 +1125,14 @@ sources:
           - name: batchdate
             data_type: varchar(100)
             description: "abc"
-            index: c1    
+            index: c1
 
       - name: Industry
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/Industry   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/Industry  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -1152,10 +1153,10 @@ sources:
 
       - name: TradeHistory
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/Trade   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/Trade  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -1180,7 +1181,7 @@ sources:
           - name: t_is_cash
             data_type: smallint
             description: "abc"
-            index: c5 
+            index: c5
           - name: t_s_symb
             data_type: varchar(100)
             description: "abc"
@@ -1200,7 +1201,7 @@ sources:
           - name: t_exec_name
             data_type: varchar(100)
             description: "abc"
-            index: c10 
+            index: c10
           - name: t_trade_price
             data_type: float
             description: "abc"
@@ -1220,10 +1221,10 @@ sources:
 
       - name: TradeHistoryRaw
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/TradeHistory   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/TradeHistory  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -1241,14 +1242,13 @@ sources:
             data_type: varchar(100)
             description: "abc"
             index: c3
-          
 
       - name: TradeIncremental2
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch2/Trade   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch2/Trade  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -1281,7 +1281,7 @@ sources:
           - name: t_is_cash
             data_type: smallint
             description: "abc"
-            index: c7 
+            index: c7
           - name: t_s_symb
             data_type: varchar(100)
             description: "abc"
@@ -1301,7 +1301,7 @@ sources:
           - name: t_exec_name
             data_type: varchar(100)
             description: "abc"
-            index: c12 
+            index: c12
           - name: t_trade_price
             data_type: float
             description: "abc"
@@ -1321,10 +1321,10 @@ sources:
 
       - name: TradeIncremental3
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch3/Trade   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch3/Trade  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -1357,7 +1357,7 @@ sources:
           - name: t_is_cash
             data_type: smallint
             description: "abc"
-            index: c7 
+            index: c7
           - name: t_s_symb
             data_type: varchar(100)
             description: "abc"
@@ -1377,7 +1377,7 @@ sources:
           - name: t_exec_name
             data_type: varchar(100)
             description: "abc"
-            index: c12 
+            index: c12
           - name: t_trade_price
             data_type: float
             description: "abc"
@@ -1397,10 +1397,10 @@ sources:
 
       - name: TradeType
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/TradeType   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/TradeType  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -1421,14 +1421,14 @@ sources:
           - name: tt_is_mrkt
             data_type: int
             description: "abc"
-            index: c4 
+            index: c4
 
       - name: WatchIncremental2
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch2/WatchHistory   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch2/WatchHistory  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -1449,22 +1449,22 @@ sources:
           - name: w_s_symb
             data_type: varchar(100)
             description: "abc"
-            index: c4 
+            index: c4
           - name: w_dts
             data_type: timestamp
             description: "abc"
-            index: c5 
+            index: c5
           - name: w_action
             data_type: varchar(100)
             description: "abc"
-            index: c6 
+            index: c6
 
       - name: WatchIncremental3
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch3/WatchHistory   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch3/WatchHistory  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -1485,11 +1485,11 @@ sources:
           - name: w_s_symb
             data_type: varchar(100)
             description: "abc"
-            index: c4 
+            index: c4
           - name: w_dts
             data_type: timestamp
             description: "abc"
-            index: c5 
+            index: c5
           - name: w_action
             data_type: varchar(100)
             description: "abc"
@@ -1497,10 +1497,10 @@ sources:
 
       - name: WatchHistory
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/WatchHistory   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/WatchHistory  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = '|'
@@ -1513,22 +1513,22 @@ sources:
           - name: w_s_symb
             data_type: varchar(100)
             description: "abc"
-            index: c2 
+            index: c2
           - name: w_dts
             data_type: timestamp
             description: "abc"
-            index: c3 
+            index: c3
           - name: w_action
             data_type: varchar(100)
             description: "abc"
-            index: c4 
+            index: c4
 
       - name: ProspectRaw1
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/Prospect   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch1/Prospect  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = ','
@@ -1537,7 +1537,7 @@ sources:
           - name: agencyid
             data_type: varchar(100)
             description: "abc"
-            index: c1 
+            index: c1
           - name: lastname
             data_type: varchar(100)
             description: "abc"
@@ -1553,7 +1553,7 @@ sources:
           - name: gender
             data_type: varchar(100)
             description: "abc"
-            index: c5 
+            index: c5
           - name: addressline1
             data_type: varchar(100)
             description: "abc"
@@ -1573,7 +1573,7 @@ sources:
           - name: state
             data_type: varchar(100)
             description: "abc"
-            index: c10 
+            index: c10
           - name: country
             data_type: varchar(100)
             description: "abc"
@@ -1589,7 +1589,7 @@ sources:
           - name: numbercars
             data_type: int
             description: "abc"
-            index: c14 
+            index: c14
           - name: numberchildren
             data_type: int
             description: "abc"
@@ -1621,14 +1621,14 @@ sources:
           - name: networth
             data_type: int
             description: "abc"
-            index: c22     
+            index: c22
 
       - name: ProspectRaw2
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch2/Prospect   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch2/Prospect  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = ','
@@ -1637,7 +1637,7 @@ sources:
           - name: agencyid
             data_type: varchar(100)
             description: "abc"
-            index: c1 
+            index: c1
           - name: lastname
             data_type: varchar(100)
             description: "abc"
@@ -1653,7 +1653,7 @@ sources:
           - name: gender
             data_type: varchar(100)
             description: "abc"
-            index: c5 
+            index: c5
           - name: addressline1
             data_type: varchar(100)
             description: "abc"
@@ -1673,7 +1673,7 @@ sources:
           - name: state
             data_type: varchar(100)
             description: "abc"
-            index: c10 
+            index: c10
           - name: country
             data_type: varchar(100)
             description: "abc"
@@ -1689,7 +1689,7 @@ sources:
           - name: numbercars
             data_type: int
             description: "abc"
-            index: c14 
+            index: c14
           - name: numberchildren
             data_type: int
             description: "abc"
@@ -1721,15 +1721,14 @@ sources:
           - name: networth
             data_type: int
             description: "abc"
-            index: c22     
-            
+            index: c22
 
       - name: ProspectRaw3
         external:
-          
-          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch3/Prospect   # path on above data sourc
+
+          location: s3://{{var('bucketname')}}/{{var("scalefactor")}}/Batch3/Prospect  # path on above data sourc
           file_format: TEXTFILE
-          row_format: >                      
+          row_format: >
             serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
             with serdeproperties (
                 'separatorChar' = ','
@@ -1738,7 +1737,7 @@ sources:
           - name: agencyid
             data_type: varchar(100)
             description: "abc"
-            index: c1 
+            index: c1
           - name: lastname
             data_type: varchar(100)
             description: "abc"
@@ -1754,7 +1753,7 @@ sources:
           - name: gender
             data_type: varchar(100)
             description: "abc"
-            index: c5 
+            index: c5
           - name: addressline1
             data_type: varchar(100)
             description: "abc"
@@ -1774,7 +1773,7 @@ sources:
           - name: state
             data_type: varchar(100)
             description: "abc"
-            index: c10 
+            index: c10
           - name: country
             data_type: varchar(100)
             description: "abc"
@@ -1790,7 +1789,7 @@ sources:
           - name: numbercars
             data_type: int
             description: "abc"
-            index: c14 
+            index: c14
           - name: numberchildren
             data_type: int
             description: "abc"
@@ -1822,4 +1821,4 @@ sources:
           - name: networth
             data_type: int
             description: "abc"
-            index: c22     
+            index: c22

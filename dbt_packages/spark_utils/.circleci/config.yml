@@ -1,3 +1,5 @@
+---
+
 version: 2.1
 
 jobs:
@@ -5,7 +7,7 @@ jobs:
   integration-dbt-utils-databricks: &databricks-odbc
     environment:
       DBT_INVOCATION_ENV: circle
-      ODBC_DRIVER: Simba # TODO: move env var to Docker image
+      ODBC_DRIVER: Simba  # TODO: move env var to Docker image
     docker:
       # image based on `fishtownanalytics/test-container` w/ Simba ODBC Spark driver installed
       - image: 828731156495.dkr.ecr.us-east-1.amazonaws.com/dbt-spark-odbc-test-container:latest
@@ -15,7 +17,7 @@ jobs:
 
     steps:
       - checkout
-      
+
       - run: &pull-submodules
           name: "Pull Submodules"
           command: |
@@ -36,7 +38,7 @@ jobs:
 
       - run:
           name: "Run Tests - dbt-utils"
-            
+
           command: |
             . venv/bin/activate
             cd integration_tests/dbt_utils
@@ -55,7 +57,7 @@ jobs:
       - run: *pull-submodules
       - run: *setup-dbt
 
-      - run:  
+      - run:
           name: "Run Tests - Snowplow"
           command: |
             . venv/bin/activate

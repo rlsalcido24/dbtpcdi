@@ -1,3 +1,7 @@
+---
+# NB: key duplicates are acceptable here since this gets passed to Cloud Formation
+# yamllint disable rule:key-duplicates
+
 AWSTemplateFormatVersion: 2010-09-09
 
 Description: |
@@ -22,7 +26,7 @@ Parameters:
     Type: String
     Default: redshift
     AllowedValues:
-      - redshift 
+      - redshift
   MasterUsername:
     Description: The redshift master user
     Type: String
@@ -33,7 +37,7 @@ Parameters:
     Type: String
     NoEcho: true
     Default: '5bbNZHK5ey'
-  
+
   BechmarkBucket:
     Description: The bucket containing TPCDI Dataset
     Type: String
@@ -42,19 +46,19 @@ Parameters:
     Description: The type of node to be provisioned
     Type: String
     Default: dc2.large
-    AllowedValues: 
-    - dc2.large
-    - dc2.8xlarge
-    - ra3.xlplus
-    - ra3.4xlarge
-    - ra3.16xlarge
+    AllowedValues:
+      - dc2.large
+      - dc2.8xlarge
+      - ra3.xlplus
+      - ra3.4xlarge
+      - ra3.16xlarge
   ClusterType:
     Description: The type of cluster
     Type: String
     Default: multi-node
     AllowedValues:
-    - single-node
-    - multi-node
+      - single-node
+      - multi-node
   NumberOfNodes:
     Description: Compute nodes count. For multi-node clusters,
       the NumberOfNodes parameter must be greater than 1
@@ -64,8 +68,8 @@ Parameters:
 Conditions:
   IsMultiNodeCluster:
     Fn::Equals:
-    - Ref: ClusterType
-    - multi-node
+      - Ref: ClusterType
+      - multi-node
 Resources:
   RedshiftCluster:
     DependsOn: RSClusterInstanceProfile
@@ -80,7 +84,7 @@ Resources:
       MasterUserPassword: !Ref MasterUserPassword
       PubliclyAccessible: true
       IamRoles:
-      - Fn::GetAtt: [ SpectrumIAMRole, Arn ]
+        - Fn::GetAtt: [SpectrumIAMRole, Arn]
       NodeType:
         Ref: NodeType
       ElasticIp: !Ref ElasticIP
@@ -88,9 +92,9 @@ Resources:
         Ref: ClusterType
       NumberOfNodes:
         Fn::If:
-        - IsMultiNodeCluster
-        - Ref: NumberOfNodes
-        - Ref: AWS::NoValue
+          - IsMultiNodeCluster
+          - Ref: NumberOfNodes
+          - Ref: AWS::NoValue
   ElasticIP:
     Type: "AWS::EC2::EIP"
 
@@ -130,19 +134,21 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              Service: 
+              Service:
                 - redshift.amazonaws.com
                 - redshift-serverless.amazonaws.com
             Action: "sts:AssumeRole"
             Condition:
               StringEquals:
-                sts:ExternalId: !Sub 'arn:aws:redshift:${AWS::Region}:${AWS::AccountId}:dbuser:${Environment}-${Name}-${Service}/${MasterUsername}'
+                sts:ExternalId: >
+                  !Sub 'arn:aws:redshift:${AWS::Region}:${AWS::AccountId}:dbuser:\
+                  ${Environment}-${Name}-${Service}/${MasterUsername}'
 
   RSClusterInstanceProfile:
     DependsOn: SpectrumIAMRole
     Type: AWS::IAM::InstanceProfile
-    Properties: 
+    Properties:
       InstanceProfileName: RS-Spectrum-Role
       Path: "/"
-      Roles: 
+      Roles:
         - RS-Spectrum-Role

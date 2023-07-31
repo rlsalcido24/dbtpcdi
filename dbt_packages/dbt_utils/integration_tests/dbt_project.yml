@@ -1,3 +1,4 @@
+---
 
 name: 'dbt_utils_integration_tests'
 version: '1.0'
@@ -16,9 +17,9 @@ macro-paths: ["macros"]
 
 target-path: "target"  # directory which will store compiled SQL files
 clean-targets:         # directories to be removed by `dbt clean`
-    - "target"
-    - "dbt_modules"
-    - "dbt_packages"
+  - "target"
+  - "dbt_modules"
+  - "dbt_packages"
 
 dispatch:
   - macro_namespace: 'dbt_utils'
@@ -55,7 +56,7 @@ seeds:
     sql:
       data_events_20180103:
         +schema: events
-      
+
       data_get_column_values_dropped:
         # this.incorporate() to hardcode the node's type as otherwise dbt doesn't know it yet
         +post-hook: "{% do adapter.drop_relation(this.incorporate(type='table')) %}"

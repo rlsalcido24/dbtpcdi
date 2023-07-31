@@ -1,3 +1,5 @@
+---
+
 name: 'dbsql_dbt_tpch'
 version: '1.0.0'
 config-version: 2
@@ -6,9 +8,7 @@ profile: 'sql_endpoints'
 
 vars:
   scalefactor: 1000
-  bucketname: bucketname #bigquery, redshift only
-  
-
+  bucketname: bucketname  # bigquery, redshift only
 
 model-paths: ["models"]
 analysis-paths: ["analyses"]
@@ -22,7 +22,6 @@ clean-targets:
   - "target"
   - "dbt_packages"
 
-
 dispatch:
- - macro_namespace: dbt_utils
-   search_order: ['dbsql_dbt_tpch', 'dbt_utils']
+  - macro_namespace: dbt_utils
+    search_order: ['dbsql_dbt_tpch', 'dbt_utils']

@@ -1,3 +1,5 @@
+---
+
 version: 2
 
 models:
@@ -127,7 +129,7 @@ models:
     tests:
       - dbt_utils.equality:
           compare_model: ref('data_union_expected')
-          
+
   - name: test_get_relations_by_pattern
     tests:
       - dbt_utils.equality:

@@ -1,0 +1,22 @@
+---
+
+extends: default
+
+ignore:
+  .tox/
+  .venv/
+  dbt_modules/
+  dbt_packages/
+
+yaml-files:
+  - '*.yaml'
+  - '*.yml'
+  - '.yamllint'
+
+rules:
+  indentation:
+    spaces: 2
+    indent-sequences: true
+  line-length:
+    max: 120
+    allow-non-breakable-words: true
