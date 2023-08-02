@@ -8,6 +8,7 @@ profile: 'sql_endpoints'
 
 vars:
   scalefactor: 1000
+  stage: @tpcdi_sf10000_raw
   bucketname: bucketname  # bigquery, redshift only
 
 model-paths: ["models"]
