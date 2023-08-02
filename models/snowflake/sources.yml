@@ -11,7 +11,7 @@ sources:
 
       - name: StatusType
         external:
-          location: "@tpcdi_sf10000_raw/Batch1"
+          location: "{{var('stage')}}/Batch1"
           pattern: '.*StatusType[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -27,7 +27,7 @@ sources:
 
       - name: TaxRate
         external:
-          location: "@tpcdi_sf10000_raw/Batch1"
+          location: "{{var('stage')}}/Batch1"
           pattern: '.*TaxRate[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -47,7 +47,7 @@ sources:
 
       - name: DimTime
         external:
-          location: "@tpcdi_sf10000_raw/Batch1"
+          location: "{{var('stage')}}/Batch1"
           pattern: '.*Time[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -96,7 +96,7 @@ sources:
 
       - name: AccountIncrementaldos
         external:
-          location: "@tpcdi_sf10000_raw/Batch2"
+          location: "{{var('stage')}}/Batch2"
           pattern: '.*Account[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -136,7 +136,7 @@ sources:
 
       - name: AccountIncrementaltres
         external:
-          location: "@tpcdi_sf10000_raw/Batch3"
+          location: "{{var('stage')}}/Batch3"
           pattern: '.*Account[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -176,7 +176,7 @@ sources:
 
       - name: CashTransactionHistory
         external:
-          location: "@tpcdi_sf10000_raw/Batch1"
+          location: "{{var('stage')}}/Batch1"
           pattern: '.*CashTransaction[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -201,7 +201,7 @@ sources:
 
       - name: CashTransactionIncrementaldos
         external:
-          location: "@tpcdi_sf10000_raw/Batch2"
+          location: "{{var('stage')}}/Batch2"
           pattern: '.*CashTransaction[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -234,7 +234,7 @@ sources:
 
       - name: CashTransactionIncrementaltres
         external:
-          location: "@tpcdi_sf10000_raw/Batch3"
+          location: "{{var('stage')}}/Batch3"
           pattern: '.*CashTransaction[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -266,7 +266,7 @@ sources:
 
       - name: customerincrementaldos
         external:
-          location: "@tpcdi_sf10000_raw/Batch2"
+          location: "{{var('stage')}}/Batch2"
           pattern: '.*Customer[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -426,7 +426,7 @@ sources:
 
       - name: customerincrementaltres
         external:
-          location: "@tpcdi_sf10000_raw/Batch3"
+          location: "{{var('stage')}}/Batch3"
           pattern: '.*Customer[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -586,7 +586,7 @@ sources:
 
       - name: DailyMarketHistorical
         external:
-          location: "@tpcdi_sf10000_raw/Batch1"
+          location: "{{var('stage')}}/Batch1"
           pattern: '.*DailyMarket[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -618,7 +618,7 @@ sources:
 
       - name: DailyMarketIncrementaldos
         external:
-          location: "@tpcdi_sf10000_raw/Batch2"
+          location: "{{var('stage')}}/Batch2"
           pattern: '.*DailyMarket[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -658,7 +658,7 @@ sources:
 
       - name: DailyMarketIncrementaltres
         external:
-          location: "@tpcdi_sf10000_raw/Batch3"
+          location: "{{var('stage')}}/Batch3"
           pattern: '.*DailyMarket[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -698,7 +698,7 @@ sources:
 
       - name: DimDate
         external:
-          location: "@tpcdi_sf10000_raw/Batch1"
+          location: "{{var('stage')}}/Batch1"
           pattern: '.*[/]Date[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -778,7 +778,7 @@ sources:
 
       - name: HR
         external:
-          location: "@tpcdi_sf10000_raw/Batch1"
+          location: "{{var('stage')}}/Batch1"
           pattern: '.*HR[.]csv'
           file_format: "( format_name = 'TXT_CSV')"
 
@@ -822,7 +822,7 @@ sources:
 
       - name: HoldingHistory
         external:
-          location: "@tpcdi_sf10000_raw/Batch1"
+          location: "{{var('stage')}}/Batch1"
           pattern: '.*HoldingHistory[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -846,7 +846,7 @@ sources:
 
       - name: HoldingIncrementaldos
         external:
-          location: "@tpcdi_sf10000_raw/Batch2"
+          location: "{{var('stage')}}/Batch2"
           pattern: '.*HoldingHistory[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -878,7 +878,7 @@ sources:
 
       - name: HoldingIncrementaltres
         external:
-          location: "@tpcdi_sf10000_raw/Batch3"
+          location: "{{var('stage')}}/Batch3"
           pattern: '.*HoldingHistory[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -910,7 +910,7 @@ sources:
 
       - name: BatchDateuno
         external:
-          location: "@tpcdi_sf10000_raw/Batch1"
+          location: "{{var('stage')}}/Batch1"
           pattern: '.*BatchDate[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -922,7 +922,7 @@ sources:
 
       - name: BatchDatedos
         external:
-          location: "@tpcdi_sf10000_raw/Batch2"
+          location: "{{var('stage')}}/Batch2"
           pattern: '.*BatchDate[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -934,7 +934,7 @@ sources:
 
       - name: BatchDatetres
         external:
-          location: "@tpcdi_sf10000_raw/Batch3"
+          location: "{{var('stage')}}/Batch3"
           pattern: '.*BatchDate[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -946,7 +946,7 @@ sources:
 
       - name: Industry
         external:
-          location: "@tpcdi_sf10000_raw/Batch1"
+          location: "{{var('stage')}}/Batch1"
           pattern: '.*Industry[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -966,7 +966,7 @@ sources:
 
       - name: TradeHistory
         external:
-          location: "@tpcdi_sf10000_raw/Batch1"
+          location: "{{var('stage')}}/Batch1"
           pattern: '.*Trade[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -1030,7 +1030,7 @@ sources:
 
       - name: TradeHistoryRaw
         external:
-          location: "@tpcdi_sf10000_raw/Batch1"
+          location: "{{var('stage')}}/Batch1"
           pattern: '.*TradeHistory[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -1050,7 +1050,7 @@ sources:
 
       - name: TradeIncrementaldos
         external:
-          location: "@tpcdi_sf10000_raw/Batch2"
+          location: "{{var('stage')}}/Batch2"
           pattern: '.*TradeHistory[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -1122,7 +1122,7 @@ sources:
 
       - name: TradeIncrementaltres
         external:
-          location: "@tpcdi_sf10000_raw/Batch3"
+          location: "{{var('stage')}}/Batch3"
           pattern: '.*TradeHistory[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -1194,7 +1194,7 @@ sources:
 
       - name: TradeType
         external:
-          location: "@tpcdi_sf10000_raw/Batch1"
+          location: "{{var('stage')}}/Batch1"
           pattern: '.*TradeType[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -1218,7 +1218,7 @@ sources:
 
       - name: WatchIncrementaldos
         external:
-          location: "@tpcdi_sf10000_raw/Batch2"
+          location: "{{var('stage')}}/Batch2"
           pattern: '.*WatchHistory[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -1250,7 +1250,7 @@ sources:
 
       - name: WatchIncrementaltres
         external:
-          location: "@tpcdi_sf10000_raw/Batch3"
+          location: "{{var('stage')}}/Batch3"
           pattern: '.*WatchHistory[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -1282,7 +1282,7 @@ sources:
 
       - name: WatchHistory
         external:
-          location: "@tpcdi_sf10000_raw/Batch1"
+          location: "{{var('stage')}}/Batch1"
           pattern: '.*WatchHistory[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
 
@@ -1306,7 +1306,7 @@ sources:
 
       - name: CustomerMgmt
         external:
-          location: "@tpcdi_sf10000_raw/Batch1"
+          location: "{{var('stage')}}/Batch1"
           pattern: '.*CustomerMgmt[.]xml'
           file_format: "( format_name = 'XML')"
 
@@ -1426,7 +1426,7 @@ sources:
 
       - name: ProspectRawuno
         external:
-          location: "@tpcdi_sf10000_raw/Batch1"
+          location: "{{var('stage')}}/Batch1"
           pattern: '.*Prospect[.]csv'
           file_format: "( format_name = 'TXT_CSV')"
 
@@ -1522,7 +1522,7 @@ sources:
 
       - name: ProspectRawdos
         external:
-          location: "@tpcdi_sf10000_raw/Batch2"
+          location: "{{var('stage')}}/Batch2"
           pattern: '.*Prospect[.]csv'
           file_format: "( format_name = 'TXT_CSV')"
 
@@ -1618,7 +1618,7 @@ sources:
 
       - name: ProspectRawtres
         external:
-          location: "@tpcdi_sf10000_raw/Batch3"
+          location: "{{var('stage')}}/Batch3"
           pattern: '.*Prospect[.]csv'
           file_format: "( format_name = 'TXT_CSV')"
 
