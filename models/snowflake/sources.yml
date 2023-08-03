@@ -1304,8 +1304,6 @@ sources:
             description: "abc"
             index: c4
 
-      
-
       - name: ProspectRawuno
         external:
           location: "@{{var('stage')}}/Batch1"
