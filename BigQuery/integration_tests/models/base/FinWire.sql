@@ -7,6 +7,6 @@
 
 SELECT
     string_field_0 AS value,
-    substring(string_field_0, 16, 3) rectype
+    SUBSTRING(string_field_0, 16, 3) rectype
 FROM
     {{ source(var('benchmark'), 'FinWireStg') }}

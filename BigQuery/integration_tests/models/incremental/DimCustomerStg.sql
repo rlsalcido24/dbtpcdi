@@ -132,8 +132,8 @@ SELECT
         LEAD(update_ts)
             OVER (PARTITION BY customerid ORDER BY update_ts)
         IS NOT NULL,
-        FALSE,
-        TRUE
+        false,
+        true
     ) AS iscurrent,
     DATE(update_ts) AS effectivedate,
     COALESCE(

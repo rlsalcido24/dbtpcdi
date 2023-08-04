@@ -8,15 +8,15 @@ SELECT
     a.sk_customerid,
     a.sk_accountid,
     d.sk_dateid,
-    sum(account_daily_total)
+    SUM(account_daily_total)
         OVER (PARTITION BY c.accountid ORDER BY c.datevalue)
         cash,
     c.batchid
 FROM (
     SELECT
         ct_ca_id accountid,
-        date(ct_dts) datevalue,
-        sum(ct_amt) account_daily_total,
+        DATE(ct_dts) datevalue,
+        SUM(ct_amt) account_daily_total,
         batchid
     FROM (
         SELECT

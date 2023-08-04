@@ -31,7 +31,7 @@ SELECT
         'CC',
         'C',
         'D'
-    ), sprating, CAST(NULL AS STRING
+    ), sprating, CAST(null AS STRING
     )) sprating,
     CASE
         WHEN
@@ -47,7 +47,7 @@ SELECT
                 'BBB+',
                 'BBB-'
             )
-            THEN FALSE
+            THEN false
         WHEN sprating IN (
             'BB',
             'B',
@@ -61,9 +61,9 @@ SELECT
             'BB-',
             'B-',
             'CCC-'
-        ) THEN TRUE
+        ) THEN true
         ELSE
-            CAST(NULL AS BOOLEAN)
+            CAST(null AS BOOLEAN)
     END
         AS islowgrade,
     ceoname ceo,
@@ -76,7 +76,7 @@ SELECT
     description,
     foundingdate,
     COALESCE(
-        LEAD(pts) OVER (PARTITION BY cik ORDER BY pts) IS NOT NULL, FALSE
+        LEAD(pts) OVER (PARTITION BY cik ORDER BY pts) IS NOT NULL, false
     ) AS iscurrent,
     1 batchid,
     DATE(pts) effectivedate,
@@ -97,7 +97,7 @@ FROM (
             '%E4Y%m%d',
             IF(
                 CAST(TRIM(SUBSTRING(value, 99, 8)) AS STRING) = '',
-                NULL,
+                null,
                 CAST(TRIM(SUBSTRING(value, 99, 8)) AS STRING)
             )
         ) AS foundingdate,

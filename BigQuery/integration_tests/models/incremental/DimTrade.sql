@@ -92,28 +92,28 @@ FROM (
                 IF(
                     create_flg,
                     sk_dateid,
-                    CAST(NULL AS BIGINT)
+                    CAST(null AS BIGINT)
                 ) sk_createdateid,
                 IF(
                     create_flg,
                     sk_timeid,
-                    CAST(NULL AS BIGINT)
+                    CAST(null AS BIGINT)
                 ) sk_createtimeid,
                 IF(
                     create_flg,
                     sk_dateid,
-                    CAST(NULL AS BIGINT)
+                    CAST(null AS BIGINT)
                 ) sk_closedateid,
                 IF(
                     create_flg,
                     sk_timeid,
-                    CAST(NULL AS BIGINT)
+                    CAST(null AS BIGINT)
                 ) sk_closetimeid,
                 CASE
-                    WHEN t_is_cash = 1 THEN TRUE
-                    WHEN t_is_cash = 0 THEN FALSE
+                    WHEN t_is_cash = 1 THEN true
+                    WHEN t_is_cash = 0 THEN false
                     ELSE
-                        CAST(NULL AS BOOLEAN)
+                        CAST(null AS BOOLEAN)
                 END
                     AS cashflag,
                 t_st_id,
@@ -149,13 +149,13 @@ FROM (
                         WHEN
                             (th_st_id = 'SBMT' AND t_tt_id IN ('TMB', 'TMS'))
                             OR th_st_id = 'PNDG'
-                            THEN TRUE
+                            THEN true
                         WHEN th_st_id IN (
                             'CMPT',
                             'CNCL'
-                        ) THEN FALSE
+                        ) THEN false
                         ELSE
-                            CAST(NULL AS BOOLEAN)
+                            CAST(null AS BOOLEAN)
                     END
                         AS create_flg
                 FROM
@@ -182,13 +182,13 @@ FROM (
                     t_tax AS tax,
                     t.batchid,
                     CASE
-                        WHEN cdc_flag = 'I' THEN TRUE
+                        WHEN cdc_flag = 'I' THEN true
                         WHEN t_st_id IN (
                             'CMPT',
                             'CNCL'
-                        ) THEN FALSE
+                        ) THEN false
                         ELSE
-                            CAST(NULL AS BOOLEAN)
+                            CAST(null AS BOOLEAN)
                     END
                         AS create_flg
                 FROM

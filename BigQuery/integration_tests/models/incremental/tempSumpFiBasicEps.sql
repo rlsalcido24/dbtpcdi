@@ -6,7 +6,7 @@
 SELECT
     sk_companyid,
     fi_qtr_start_date,
-    sum(fi_basic_eps)
+    SUM(fi_basic_eps)
         OVER (
             PARTITION BY companyid
             ORDER BY fi_qtr_start_date ROWS BETWEEN 4 PRECEDING AND CURRENT ROW

@@ -6,11 +6,11 @@
 SELECT
     dmh.*,
     sk_dateid,
-    min(dm_low) OVER (
+    MIN(dm_low) OVER (
         PARTITION BY dm_s_symb
         ORDER BY dm_date ASC ROWS BETWEEN 364 PRECEDING AND CURRENT ROW
     ) fiftytwoweeklow,
-    max(dm_high) OVER (
+    MAX(dm_high) OVER (
         PARTITION BY dm_s_symb
         ORDER BY dm_date ASC ROWS BETWEEN 364 PRECEDING AND CURRENT ROW
     ) fiftytwoweekhigh
