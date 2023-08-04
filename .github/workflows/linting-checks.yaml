@@ -53,5 +53,5 @@ jobs:
           sqlfluff lint --dialect bigquery BigQuery/.
           sqlfluff lint --dialect databricks Databricks/.
           sqlfluff lint --dialect redshift Redshift/.
-          sqlfluff lint --dialect snowflake Snowflake/.
-#          sqlfluff lint --dialect synapse Synapse/.  NB: SQLFluff does not have a Synapse Dialect implemented
+          sqlfluff lint --dialect snowflake Snowflake/.          
+          sqlfluff lint --dialect tsql Synapse/.
