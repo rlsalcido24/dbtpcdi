@@ -1,3 +1,5 @@
+---
+
 integration_tests:
   target: redshift
 
