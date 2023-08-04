@@ -31,7 +31,7 @@ jobs:
         # NB: --strict flag will treat warnings as errors
         run: yamllint . --strict
 
-  squfluff-lint-bigquery:
+  squfluff-lint:
     runs-on: ubuntu-latest
 
     steps:
