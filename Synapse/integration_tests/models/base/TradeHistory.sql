@@ -4,10 +4,7 @@
     )
 }}
 
-        
-select
-    *
-from
+
+SELECT *
+FROM
     {{ source('tpcdi', 'TradeHistory') }}
-
-

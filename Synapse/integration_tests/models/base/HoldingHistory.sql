@@ -4,7 +4,6 @@
     )
 }}
 
-select
-    *
-from
+SELECT *
+FROM
     {{ source('tpcdi', 'HoldingHistory') }}

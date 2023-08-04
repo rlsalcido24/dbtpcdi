@@ -5,7 +5,6 @@
 }}
 
 
-select
-    *
-from
+SELECT *
+FROM
     {{ source('tpcdi', 'HR') }}

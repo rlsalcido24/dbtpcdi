@@ -7,7 +7,6 @@
 }}
 
 
-select
-    *
-from
+SELECT *
+FROM
     {{ source('tpcdi', 'TradeType') }}

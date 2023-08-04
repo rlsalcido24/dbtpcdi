@@ -8,7 +8,6 @@
 
 
 
-select
-    *
-from
+SELECT *
+FROM
     {{ source('tpcdi', 'DimDate') }}

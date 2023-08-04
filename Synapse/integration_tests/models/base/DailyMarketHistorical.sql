@@ -5,8 +5,8 @@
 }}
 
 
-select
+SELECT
     *,
-    1 as batchid
-from
+    1 AS batchid
+FROM
     {{ source('tpcdi', 'DailyMarketHistorical') }}
