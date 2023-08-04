@@ -1,0 +1,17 @@
+---
+
+integration_tests:
+  target: synapse
+
+outputs:
+  synapse:
+    type: synapse
+    driver: 'ODBC Driver 18 for SQL Server'  # (The ODBC Driver installed on your system)
+    server: "{{ env_var('SYNAPSE_SERVER') }}"
+    port: 1433
+    encrypt: true
+    trust_cert: true
+    database: "{{ env_var('SYNAPSE_DATABASE') }}"
+    schema: "{{ env_var('SYNAPSE_SCHEMA') }}"
+    authentication: "{{ env_var('SYNAPSE_AUTH') }}"
+    threads: 25
