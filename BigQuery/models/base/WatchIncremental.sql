@@ -7,14 +7,12 @@ select
     *,
     2 as batchid
 from
-    {{source(var('benchmark'), 'WatchIncrementaldos') }}
+    {{ source(var('benchmark'), 'WatchIncrementaldos') }}
 
- UNION ALL
+union all
 
- select
+select
     *,
     3 as batchid
 from
-    {{source(var('benchmark'), 'WatchIncrementaltres') }}
-
-
+    {{ source(var('benchmark'), 'WatchIncrementaltres') }}

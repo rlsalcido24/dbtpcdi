@@ -8,20 +8,20 @@ select
     *,
     1 as batchid
 from
-    {{source(var('benchmark'), 'ProspectRawuno') }}
+    {{ source(var('benchmark'), 'ProspectRawuno') }}
 
- UNION ALL
+union all
 
 select
     *,
     2 as batchid
 from
-    {{source(var('benchmark'), 'ProspectRawdos') }}
+    {{ source(var('benchmark'), 'ProspectRawdos') }}
 
- UNION ALL
+union all
 
- select
+select
     *,
     3 as batchid
 from
-    {{source(var('benchmark'), 'ProspectRawtres') }}
+    {{ source(var('benchmark'), 'ProspectRawtres') }}

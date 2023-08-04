@@ -7,4 +7,4 @@ select
     *,
     1 as batchid
 from
-    {{source(var('benchmark'), 'DailyMarket') }}
+    {{ source(var('benchmark'), 'DailyMarket') }}
