@@ -15,8 +15,8 @@ SELECT
     Firsttrade,
     Firsttradeonexchange,
     Dividend,
-    if(Enddate = date('9999-12-31'), True, False) Iscurrent,
-    1 Batchid,
+    if(Enddate = date('9999-12-31'), True, False) AS Iscurrent,
+    1 AS Batchid,
     Effectivedate,
     concat(Exchangeid, '-', Effectivedate) AS Sk_Securityid,
     Enddate
@@ -36,10 +36,10 @@ FROM (
             Fws.Effectivedate < Dc.Effectivedate,
             Dc.Effectivedate,
             Fws.Effectivedate
-        ) Effectivedate,
-        if(Fws.Enddate > Dc.Enddate, Dc.Enddate, Fws.Enddate) Enddate
+        ) AS Effectivedate,
+        if(Fws.Enddate > Dc.Enddate, Dc.Enddate, Fws.Enddate) AS Enddate
     FROM (
-        SELECT
+        SELECT -- noqa: ST06
             Fws.* EXCEPT (Status, Conameorcik),
 
             coalesce(
@@ -47,8 +47,6 @@ FROM (
                     WHEN
                         char_length(cast(Conameorcik AS STRING)) <= 10
                         THEN safe_cast(Conameorcik AS INT64)
-                    ELSE
-                        Null
                 END AS STRING)
                 ,
                 safe_cast(CASE
@@ -56,8 +54,6 @@ FROM (
                         char_length(cast(Conameorcik AS STRING)) > 10
                         OR safe_cast(Conameorcik AS INT64) IS NULL
                         THEN Conameorcik
-                    ELSE
-                        Null
                 END
                 AS STRING)
             ) AS CIK,
@@ -68,16 +64,16 @@ FROM (
                     ORDER BY Effectivedate
                 ),
                 date('9999-12-31')
-            ) Enddate
+            ) AS Enddate
         FROM (
-            SELECT
+            SELECT -- noqa: ST06
                 date(
                     parse_timestamp('%E4Y%m%d-%H%M%S', substring(Value, 1, 15))
                 ) AS Effectivedate,
                 trim(substring(Value, 19, 15)) AS Symbol,
                 trim(substring(Value, 34, 6)) AS Issue,
                 trim(substring(Value, 40, 4)) AS Status,
-                trim(substring(Value, 44, 70)) AS Name,
+                trim(substring(Value, 44, 70)) AS Name,  -- noqa: RF04
                 trim(substring(Value, 114, 6)) AS Exchangeid,
                 cast(substring(Value, 120, 13) AS BIGINT) AS Sharesoutstanding,
                 parse_date(
@@ -90,30 +86,30 @@ FROM (
                 trim(substring(Value, 161, 60)) AS Conameorcik
 
 
-            FROM {{ ref('FinWire') }} WHERE Rectype = "SEC"
+            FROM {{ ref('FinWire') }} WHERE Rectype = 'SEC'
 
-        ) Fws
-        JOIN {{ source(var('benchmark'), 'StatusType') }} S
-            ON S.ST_ID = Fws.Status
-    ) Fws
-    JOIN (
-        SELECT
-            Sk_Companyid,
-            Name Conameorcik,
-            EffectiveDate,
-            EndDate
-        FROM {{ ref('DimCompany') }}
-        UNION ALL
-        SELECT
-            Sk_Companyid,
-            cast(Companyid AS STRING) Conameorcik,
-            EffectiveDate,
-            EndDate
-        FROM {{ ref('DimCompany') }}
-    ) Dc
-        ON
-            Fws.CIK = Dc.Conameorcik
-            AND Fws.EffectiveDate < Dc.EndDate
-            AND Fws.EndDate > Dc.EffectiveDate
-) Fws
+        ) AS Fws
+            INNER JOIN {{ source(var('benchmark'), 'StatusType') }} AS S
+                ON S.ST_ID = Fws.Status
+    ) AS Fws
+        INNER JOIN (
+            SELECT
+                Sk_Companyid,
+                Name AS Conameorcik,
+                EffectiveDate,
+                EndDate
+            FROM {{ ref('DimCompany') }}
+            UNION ALL
+            SELECT
+                Sk_Companyid,
+                cast(Companyid AS STRING) AS Conameorcik,
+                EffectiveDate,
+                EndDate
+            FROM {{ ref('DimCompany') }}
+        ) AS Dc
+            ON
+                Fws.CIK = Dc.Conameorcik
+                AND Fws.EffectiveDate < Dc.EndDate
+                AND Fws.EndDate > Dc.EffectiveDate
+) AS Fws
 WHERE Effectivedate != Enddate

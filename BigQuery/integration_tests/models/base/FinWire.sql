@@ -5,8 +5,8 @@
     )
 }}
 
-select
-    string_field_0 as value,
+SELECT
+    string_field_0 AS value,
     substring(string_field_0, 16, 3) rectype
-from
+FROM
     {{ source(var('benchmark'), 'FinWireStg') }}

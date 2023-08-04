@@ -160,10 +160,10 @@ FROM (
                         AS create_flg
                 FROM
                     {{ source(var('benchmark'),'TradeHistory') }} t
-                JOIN
-                    {{ source(var('benchmark'),'TradeHistoryRaw') }} th
-                    ON
-                        th_t_id = t_id
+                    JOIN
+                        {{ source(var('benchmark'),'TradeHistoryRaw') }} th
+                        ON
+                            th_t_id = t_id
                 UNION ALL
                 SELECT
                     t_id tradeid,
@@ -194,37 +194,37 @@ FROM (
                 FROM
                     {{ ref('TradeIncremental') }} t
             ) t
-            JOIN
-                {{ source(var('benchmark'),'DimDate') }} dd
-                ON
-                    DATE(t.t_dts) = dd.datevalue
-            JOIN
-                {{ source(var('benchmark'),'DimTime') }} dt
-                ON
-                    FORMAT_TIMESTAMP('%H:%M:%S', t.t_dts) = dt.timevalue
+                JOIN
+                    {{ source(var('benchmark'),'DimDate') }} dd
+                    ON
+                        DATE(t.t_dts) = dd.datevalue
+                JOIN
+                    {{ source(var('benchmark'),'DimTime') }} dt
+                    ON
+                        FORMAT_TIMESTAMP('%H:%M:%S', t.t_dts) = dt.timevalue
         )
     ) QUALIFY ROW_NUMBER() OVER (PARTITION BY tradeid ORDER BY t_dts DESC) = 1
 ) trade
-JOIN
-    {{ source(var('benchmark'),'StatusType') }} status
-    ON
-        status.st_id = trade.t_st_id
-JOIN
-    {{ source(var('benchmark'),'TradeType') }} tt
-    ON
-        tt.tt_id = trade.t_tt_id
--- Converts to LEFT JOIN if this is run as DQ EDITION. On some higher Scale Factors, a small number of Security symbols or Account IDs are missing from DimSecurity/DimAccount, causing audit check failures.
---${dq_left_flg}
-LEFT JOIN
-    {{ ref('DimSecurity') }} ds
-    ON
-        ds.symbol = trade.t_s_symb
-        AND createdate >= ds.effectivedate
-        AND createdate < ds.enddate
---${dq_left_flg}
-LEFT JOIN
-    {{ ref('DimAccount') }} da
-    ON
-        trade.t_ca_id = da.accountid
-        AND createdate >= da.effectivedate
-        AND createdate < da.enddate
+    JOIN
+        {{ source(var('benchmark'),'StatusType') }} status
+        ON
+            status.st_id = trade.t_st_id
+    JOIN
+        {{ source(var('benchmark'),'TradeType') }} tt
+        ON
+            tt.tt_id = trade.t_tt_id
+    -- Converts to LEFT JOIN if this is run as DQ EDITION. On some higher Scale Factors, a small number of Security symbols or Account IDs are missing from DimSecurity/DimAccount, causing audit check failures.
+    --${dq_left_flg}
+    LEFT JOIN
+        {{ ref('DimSecurity') }} ds
+        ON
+            ds.symbol = trade.t_s_symb
+            AND createdate >= ds.effectivedate
+            AND createdate < ds.enddate
+    --${dq_left_flg}
+    LEFT JOIN
+        {{ ref('DimAccount') }} da
+        ON
+            trade.t_ca_id = da.accountid
+            AND createdate >= da.effectivedate
+            AND createdate < da.enddate

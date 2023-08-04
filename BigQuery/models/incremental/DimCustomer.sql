@@ -16,7 +16,7 @@ SELECT
         'F'
     ),
     c.gender,
-    'U') gender,
+    'U') AS gender,
     c.tier,
     c.dob,
     c.addressline1,
@@ -43,25 +43,25 @@ SELECT
     c.effectivedate,
     c.enddate
 FROM
-    {{ ref('DimCustomerStg') }} c
-LEFT JOIN
-    {{ source(var('benchmark'), 'TaxRate') }} r_lcl
-    ON
-        c.lcl_tx_id = r_lcl.tx_id
-LEFT JOIN
-    {{ source(var('benchmark'), 'TaxRate') }} r_nat
-    ON
-        c.nat_tx_id = r_nat.tx_id
-LEFT JOIN
-    {{ ref('Prospect') }} p
-    ON
-        UPPER(p.lastname) = UPPER(c.lastname)
-        AND UPPER(p.firstname) = UPPER(c.firstname)
-        AND UPPER(p.addressline1) = UPPER(c.addressline1)
-        AND UPPER(NULLIF(
-            p.addressline2,
-            '')) = UPPER(NULLIF(
-            c.addressline2,
-            ''
-        ))
-        AND UPPER(p.postalcode) = UPPER(c.postalcode)
+    {{ ref('DimCustomerStg') }} AS c
+    LEFT JOIN
+        {{ source(var('benchmark'), 'TaxRate') }} AS r_lcl
+        ON
+            c.lcl_tx_id = r_lcl.tx_id
+    LEFT JOIN
+        {{ source(var('benchmark'), 'TaxRate') }} AS r_nat
+        ON
+            c.nat_tx_id = r_nat.tx_id
+    LEFT JOIN
+        {{ ref('Prospect') }} AS p
+        ON
+            UPPER(p.lastname) = UPPER(c.lastname)
+            AND UPPER(p.firstname) = UPPER(c.firstname)
+            AND UPPER(p.addressline1) = UPPER(c.addressline1)
+            AND UPPER(NULLIF(
+                p.addressline2,
+                '')) = UPPER(NULLIF(
+                c.addressline2,
+                ''
+            ))
+            AND UPPER(p.postalcode) = UPPER(c.postalcode)

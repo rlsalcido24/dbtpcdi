@@ -92,10 +92,10 @@ FROM (
                 FROM
                     {{ ref('WatchIncremental') }}
             ) wh
-            JOIN
-                {{ source(var('benchmark'),'DimDate') }} d
-                ON
-                    d.datevalue = DATE(wh.w_dts)
+                JOIN
+                    {{ source(var('benchmark'),'DimDate') }} d
+                    ON
+                        d.datevalue = DATE(wh.w_dts)
         )
     ) QUALIFY
         ROW_NUMBER() OVER (PARTITION BY customerid, symbol ORDER BY w_dts DESC)
@@ -103,16 +103,16 @@ FROM (
 ) wh
 -- Converts to LEFT JOINs if this is run as DQ EDITION. On some higher Scale Factors, a small number of Security symbols or Customer IDs "may" be missing from DimSecurity/DimCustomer, causing audit check failures.
 --${dq_left_flg}
-LEFT JOIN
-    {{ ref('DimSecurity') }} s
-    ON
-        s.symbol = wh.symbol
-        AND wh.dateplaced >= s.effectivedate
-        AND wh.dateplaced < s.enddate
---${dq_left_flg}
-LEFT JOIN
-    {{ ref('DimCustomer') }} c
-    ON
-        wh.customerid = c.customerid
-        AND wh.dateplaced >= c.effectivedate
-        AND wh.dateplaced < c.enddate
+    LEFT JOIN
+        {{ ref('DimSecurity') }} s
+        ON
+            s.symbol = wh.symbol
+            AND wh.dateplaced >= s.effectivedate
+            AND wh.dateplaced < s.enddate
+    --${dq_left_flg}
+    LEFT JOIN
+        {{ ref('DimCustomer') }} c
+        ON
+            wh.customerid = c.customerid
+            AND wh.dateplaced >= c.effectivedate
+            AND wh.dateplaced < c.enddate

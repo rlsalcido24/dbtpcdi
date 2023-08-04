@@ -109,7 +109,7 @@ FROM (
         CAST(networth AS INT64) AS networth,
         MIN(batchid) AS batchid
     FROM
-        {{ ref('ProspectRaw') }} p
+        {{ ref('ProspectRaw') }} AS p
     GROUP BY
         agencyid,
         lastname,
@@ -133,50 +133,50 @@ FROM (
         employer,
         numbercreditcards,
         networth
-) p
-JOIN (
-    SELECT
-        sk_dateid,
-        batchid
-    FROM
-        {{ ref('BatchDate') }} b
-    JOIN
-        {{ source(var('benchmark'),'DimDate') }} d
+) AS p
+    INNER JOIN (
+        SELECT
+            sk_dateid,
+            recdate.batchid
+        FROM
+            {{ ref('BatchDate') }} AS b
+            INNER JOIN
+                {{ source(var('benchmark'),'DimDate') }} AS d
+                ON
+                    b.batchdate = d.datevalue
+        ) AS recdate
+            ON
+                p.recordbatchid = recdate.batchid
+        INNER JOIN (
+            SELECT
+                sk_dateid,
+                batchid
+            INNER FROM
+                {{ ref('BatchDate') }} b
+            INNER JOIN
+                {{ source(var('benchmark'),'DimDate') }} AS d
+                ON
+                    b.batchdate = d.datevalue
+    ) AS origdate
         ON
-            b.batchdate = d.datevalue
-) recdate
-    ON
-        p.recordbatchid = recdate.batchid
-JOIN (
-    SELECT
-        sk_dateid,
-        batchid
-    FROM
-        {{ ref('BatchDate') }} b
-    JOIN
-        {{ source(var('benchmark'),'DimDate') }} d
+            p.batchid = origdate.batchid
+    LEFT JOIN (
+        SELECT
+            customerid,
+            lastname,
+            firstname,
+            addressline1,
+            addressline2,
+            postalcode
+        FROM
+            {{ ref('DimCustomerStg') }}
+        WHERE
+            iscurrent
+    ) AS c
         ON
-            b.batchdate = d.datevalue
-) origdate
-    ON
-        p.batchid = origdate.batchid
-LEFT JOIN (
-    SELECT
-        customerid,
-        lastname,
-        firstname,
-        addressline1,
-        addressline2,
-        postalcode
-    FROM
-        {{ ref('DimCustomerStg') }}
-    WHERE
-        iscurrent
-) c
-    ON
-        UPPER(p.lastname) = UPPER(c.lastname)
-        AND UPPER(p.firstname) = UPPER(c.firstname)
-        AND UPPER(p.addressline1) = UPPER(c.addressline1)
-        AND UPPER(COALESCE(p.addressline2, ''))
-        = UPPER(COALESCE(c.addressline2, ''))
-        AND UPPER(p.postalcode) = UPPER(c.postalcode)
+            UPPER(p.lastname) = UPPER(c.lastname)
+            AND UPPER(p.firstname) = UPPER(c.firstname)
+            AND UPPER(p.addressline1) = UPPER(c.addressline1)
+            AND UPPER(COALESCE(p.addressline2, ''))
+            = UPPER(COALESCE(c.addressline2, ''))
+            AND UPPER(p.postalcode) = UPPER(c.postalcode)

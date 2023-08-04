@@ -3,7 +3,7 @@
         materialized = 'table'
     )
 }}
-SELECT *
+SELECT *  -- noqa: RF02
 FROM (
     SELECT
         * EXCEPT (conameorcik),
@@ -13,8 +13,6 @@ FROM (
                 WHEN
                     CHAR_LENGTH(CAST(conameorcik AS STRING)) <= 10
                     THEN SAFE_CAST(conameorcik AS INT64)
-                ELSE
-                    NULL
             END AS STRING)
             ,
             SAFE_CAST(CASE
@@ -22,8 +20,6 @@ FROM (
                     CHAR_LENGTH(CAST(conameorcik AS STRING)) > 10
                     OR SAFE_CAST(conameorcik AS INT64) IS NULL
                     THEN conameorcik
-                ELSE
-                    NULL
             END
             AS STRING)
         ) AS cik
@@ -47,28 +43,28 @@ FROM (
             TRIM(SUBSTRING(value, 187, 60)) AS conameorcik
         FROM
             {{ ref('FinWire') }}
-        WHERE rectype = "FIN"
-    ) f
-) f
+        WHERE rectype = 'FIN'
+    ) AS f
+) AS f
 
-JOIN (
-    SELECT
-        sk_companyid,
-        name conameorcik,
-        effectivedate,
-        enddate
-    FROM
-        {{ ref('DimCompany') }}
-    UNION ALL
-    SELECT
-        sk_companyid,
-        CAST(companyid AS STRING) conameorcik,
-        effectivedate,
-        enddate
-    FROM
-        {{ ref('DimCompany') }}
-) dc
-    ON
-        f.cik = dc.conameorcik
-        AND DATE(pts) >= dc.effectivedate
-        AND DATE(pts) < dc.enddate
+    INNER JOIN (
+        SELECT
+            sk_companyid,
+            name AS conameorcik,
+            effectivedate,
+            enddate
+        FROM
+            {{ ref('DimCompany') }}
+        UNION ALL
+        SELECT
+            sk_companyid,
+            CAST(companyid AS STRING) AS conameorcik,
+            effectivedate,
+            enddate
+        FROM
+            {{ ref('DimCompany') }}
+    ) AS dc
+        ON
+            f.cik = dc.conameorcik
+            AND DATE(f.pts) >= dc.effectivedate
+            AND DATE(f.pts) < dc.enddate

@@ -230,10 +230,10 @@ FROM (
         CONCAT(c.customerid, '-', CAST(bd.batchdate AS STRING)) AS sk_customerid
     FROM
         {{ ref('CustomerIncremental') }} AS c
-    JOIN
-        {{ ref('BatchDate') }} AS bd
-        ON c.batchid = bd.batchid
-    JOIN
-        {{ source(var('benchmark'),'StatusType') }} AS s
-        ON c.status = s.st_id
+        JOIN
+            {{ ref('BatchDate') }} AS bd
+            ON c.batchid = bd.batchid
+        JOIN
+            {{ source(var('benchmark'),'StatusType') }} AS s
+            ON c.status = s.st_id
 ) c

@@ -13,5 +13,5 @@ SELECT
         )
     - fi_basic_eps sum_fi_basic_eps
 FROM {{ ref('Financial') }}
-JOIN {{ ref('DimCompany') }}
-    USING (sk_companyid)
+    JOIN {{ ref('DimCompany') }}
+        USING (sk_companyid)

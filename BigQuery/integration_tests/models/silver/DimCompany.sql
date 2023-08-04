@@ -113,11 +113,11 @@ FROM (
         {{ ref('FinWire') }}
     WHERE rectype = "CMP"
 ) AS cmp
-JOIN
-    {{ source(var('benchmark'),'StatusType') }} AS st
-    ON
-        cmp.status = st.st_id
-JOIN
-    {{ source(var('benchmark'),'Industry') }} AS ind
-    ON
-        cmp.industryid = ind.in_id
+    JOIN
+        {{ source(var('benchmark'),'StatusType') }} AS st
+        ON
+            cmp.status = st.st_id
+    JOIN
+        {{ source(var('benchmark'),'Industry') }} AS ind
+        ON
+            cmp.industryid = ind.in_id

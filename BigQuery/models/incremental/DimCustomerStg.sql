@@ -164,11 +164,11 @@ FROM (
         email2,
         lcl_tx_id,
         nat_tx_id,
-        1 batchid,
+        1 AS batchid,
         update_ts,
         CONCAT(customerid, '-', update_ts) AS sk_customerid
     FROM
-        {{ ref('CustomerMgmtView') }} c
+        {{ ref('CustomerMgmtView') }} AS c
     WHERE
         actiontype IN ('NEW', 'INACT', 'UPDCUST')
     UNION ALL
@@ -230,10 +230,10 @@ FROM (
         CONCAT(c.customerid, '-', CAST(bd.batchdate AS STRING)) AS sk_customerid
     FROM
         {{ ref('CustomerIncremental') }} AS c
-    JOIN
-        {{ ref('BatchDate') }} AS bd
-        ON c.batchid = bd.batchid
-    JOIN
-        {{ source(var('benchmark'),'StatusType') }} AS s
-        ON c.status = s.st_id
-) c
+        INNER JOIN
+            {{ ref('BatchDate') }} AS bd
+            ON c.batchid = bd.batchid
+        INNER JOIN
+            {{ source(var('benchmark'),'StatusType') }} AS s
+            ON c.status = s.st_id
+) AS c

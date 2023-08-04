@@ -134,49 +134,49 @@ FROM (
         numbercreditcards,
         networth
 ) p
-JOIN (
-    SELECT
-        sk_dateid,
-        batchid
-    FROM
-        {{ ref('BatchDate') }} b
-    JOIN
-        {{ source(var('benchmark'),'DimDate') }} d
+    JOIN (
+        SELECT
+            sk_dateid,
+            batchid
+        FROM
+            {{ ref('BatchDate') }} b
+            JOIN
+                {{ source(var('benchmark'),'DimDate') }} d
+                ON
+                    b.batchdate = d.datevalue
+    ) recdate
         ON
-            b.batchdate = d.datevalue
-) recdate
-    ON
-        p.recordbatchid = recdate.batchid
-JOIN (
-    SELECT
-        sk_dateid,
-        batchid
-    FROM
-        {{ ref('BatchDate') }} b
-    JOIN
-        {{ source(var('benchmark'),'DimDate') }} d
+            p.recordbatchid = recdate.batchid
+    JOIN (
+        SELECT
+            sk_dateid,
+            batchid
+        FROM
+            {{ ref('BatchDate') }} b
+            JOIN
+                {{ source(var('benchmark'),'DimDate') }} d
+                ON
+                    b.batchdate = d.datevalue
+    ) origdate
         ON
-            b.batchdate = d.datevalue
-) origdate
-    ON
-        p.batchid = origdate.batchid
-LEFT JOIN (
-    SELECT
-        customerid,
-        lastname,
-        firstname,
-        addressline1,
-        addressline2,
-        postalcode
-    FROM
-        {{ ref('DimCustomerStg') }}
-    WHERE
-        iscurrent
-) c
-    ON
-        UPPER(p.lastname) = UPPER(c.lastname)
-        AND UPPER(p.firstname) = UPPER(c.firstname)
-        AND UPPER(p.addressline1) = UPPER(c.addressline1)
-        AND UPPER(COALESCE(p.addressline2, ''))
-        = UPPER(COALESCE(c.addressline2, ''))
-        AND UPPER(p.postalcode) = UPPER(c.postalcode)
+            p.batchid = origdate.batchid
+    LEFT JOIN (
+        SELECT
+            customerid,
+            lastname,
+            firstname,
+            addressline1,
+            addressline2,
+            postalcode
+        FROM
+            {{ ref('DimCustomerStg') }}
+        WHERE
+            iscurrent
+    ) c
+        ON
+            UPPER(p.lastname) = UPPER(c.lastname)
+            AND UPPER(p.firstname) = UPPER(c.firstname)
+            AND UPPER(p.addressline1) = UPPER(c.addressline1)
+            AND UPPER(COALESCE(p.addressline2, ''))
+            = UPPER(COALESCE(c.addressline2, ''))
+            AND UPPER(p.postalcode) = UPPER(c.postalcode)

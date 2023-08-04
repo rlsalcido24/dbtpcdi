@@ -93,27 +93,27 @@ FROM (
             FROM {{ ref('FinWire') }} WHERE Rectype = "SEC"
 
         ) Fws
-        JOIN {{ source(var('benchmark'), 'StatusType') }} S
-            ON S.ST_ID = Fws.Status
+            JOIN {{ source(var('benchmark'), 'StatusType') }} S
+                ON S.ST_ID = Fws.Status
     ) Fws
-    JOIN (
-        SELECT
-            Sk_Companyid,
-            Name Conameorcik,
-            EffectiveDate,
-            EndDate
-        FROM {{ ref('DimCompany') }}
-        UNION ALL
-        SELECT
-            Sk_Companyid,
-            cast(Companyid AS STRING) Conameorcik,
-            EffectiveDate,
-            EndDate
-        FROM {{ ref('DimCompany') }}
-    ) Dc
-        ON
-            Fws.CIK = Dc.Conameorcik
-            AND Fws.EffectiveDate < Dc.EndDate
-            AND Fws.EndDate > Dc.EffectiveDate
+        JOIN (
+            SELECT
+                Sk_Companyid,
+                Name Conameorcik,
+                EffectiveDate,
+                EndDate
+            FROM {{ ref('DimCompany') }}
+            UNION ALL
+            SELECT
+                Sk_Companyid,
+                cast(Companyid AS STRING) Conameorcik,
+                EffectiveDate,
+                EndDate
+            FROM {{ ref('DimCompany') }}
+        ) Dc
+            ON
+                Fws.CIK = Dc.Conameorcik
+                AND Fws.EffectiveDate < Dc.EndDate
+                AND Fws.EndDate > Dc.EffectiveDate
 ) Fws
 WHERE Effectivedate != Enddate

@@ -5,8 +5,8 @@
     )
 }}
 
-select
-    string_field_0 as value,
-    substring(string_field_0, 16, 3) rectype
-from
+SELECT
+    string_field_0 AS value, -- noqa: RF04
+    substring(string_field_0, 16, 3) AS rectype
+FROM
     {{ source(var('benchmark'), 'FinWireStg') }}

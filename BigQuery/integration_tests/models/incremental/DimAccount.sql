@@ -84,19 +84,19 @@ FROM (
                     TIMESTAMP(bd.batchdate) AS update_ts,
                     a.batchid
                 FROM {{ ref('AccountIncremental') }} a
-                JOIN {{ ref('BatchDate') }} bd ON a.batchid = bd.batchid
-                JOIN
-                    {{ source(var('benchmark'),'StatusType') }} st
-                    ON a.ca_st_id = st.st_id
+                    JOIN {{ ref('BatchDate') }} bd ON a.batchid = bd.batchid
+                    JOIN
+                        {{ source(var('benchmark'),'StatusType') }} st
+                        ON a.ca_st_id = st.st_id
             ) a
         ) a
         WHERE a.effectivedate < a.enddate
     ) a
-    FULL OUTER JOIN {{ ref('DimCustomerStg') }} c
-        ON
-            a.customerid = c.customerid
-            AND c.enddate > a.effectivedate
-            AND c.effectivedate < a.enddate
+        FULL OUTER JOIN {{ ref('DimCustomerStg') }} c
+            ON
+                a.customerid = c.customerid
+                AND c.enddate > a.effectivedate
+                AND c.effectivedate < a.enddate
 ) a
-LEFT JOIN {{ ref('DimBroker') }} b
-    ON a.brokerid = b.brokerid
+    LEFT JOIN {{ ref('DimBroker') }} b
+        ON a.brokerid = b.brokerid

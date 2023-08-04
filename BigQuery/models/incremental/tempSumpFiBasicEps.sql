@@ -11,7 +11,7 @@ SELECT
             PARTITION BY companyid
             ORDER BY fi_qtr_start_date ROWS BETWEEN 4 PRECEDING AND CURRENT ROW
         )
-    - fi_basic_eps sum_fi_basic_eps
+    - fi_basic_eps AS sum_fi_basic_eps
 FROM {{ ref('Financial') }}
-JOIN {{ ref('DimCompany') }}
-    USING (sk_companyid)
+    INNER JOIN {{ ref('DimCompany') }}
+        ON sk_companyid = sk_companyid

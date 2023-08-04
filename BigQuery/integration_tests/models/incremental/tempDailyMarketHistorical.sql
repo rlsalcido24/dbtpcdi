@@ -19,5 +19,5 @@ FROM (
     UNION ALL
     SELECT * EXCEPT (cdc_flag, cdc_dsn) FROM {{ ref('DailyMarketIncremental') }}
 ) dmh
-JOIN {{ source(var('benchmark'), 'DimDate') }} d
-    ON d.datevalue = dm_date
+    JOIN {{ source(var('benchmark'), 'DimDate') }} d
+        ON d.datevalue = dm_date

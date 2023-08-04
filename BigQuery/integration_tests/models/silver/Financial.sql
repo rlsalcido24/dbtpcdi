@@ -51,24 +51,24 @@ FROM (
     ) f
 ) f
 
-JOIN (
-    SELECT
-        sk_companyid,
-        name conameorcik,
-        effectivedate,
-        enddate
-    FROM
-        {{ ref('DimCompany') }}
-    UNION ALL
-    SELECT
-        sk_companyid,
-        CAST(companyid AS STRING) conameorcik,
-        effectivedate,
-        enddate
-    FROM
-        {{ ref('DimCompany') }}
-) dc
-    ON
-        f.cik = dc.conameorcik
-        AND DATE(pts) >= dc.effectivedate
-        AND DATE(pts) < dc.enddate
+    JOIN (
+        SELECT
+            sk_companyid,
+            name conameorcik,
+            effectivedate,
+            enddate
+        FROM
+            {{ ref('DimCompany') }}
+        UNION ALL
+        SELECT
+            sk_companyid,
+            CAST(companyid AS STRING) conameorcik,
+            effectivedate,
+            enddate
+        FROM
+            {{ ref('DimCompany') }}
+    ) dc
+        ON
+            f.cik = dc.conameorcik
+            AND DATE(pts) >= dc.effectivedate
+            AND DATE(pts) < dc.enddate

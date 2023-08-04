@@ -3,11 +3,11 @@
         materialized = 'table'
     )
 }}
-SELECT
+SELECT -- noqa: ST06
     CAST(cik AS BIGINT) companyid,
-    st.st_name status,
-    companyname name,
-    ind.in_name industry,
+    st.st_name AS status,
+    companyname AS name,
+    ind.in_name AS industry,
     IF(sprating IN (
         'AAA',
         'AA',
@@ -32,7 +32,7 @@ SELECT
         'C',
         'D'
     ), sprating, CAST(NULL AS STRING
-    )) sprating,
+    )) AS sprating,
     CASE
         WHEN
             sprating IN (
@@ -66,20 +66,20 @@ SELECT
             CAST(NULL AS BOOLEAN)
     END
         AS islowgrade,
-    ceoname ceo,
-    addrline1 addressline1,
-    addrline2 addressline2,
+    ceoname AS ceo,
+    addrline1 AS addressline1,
+    addrline2 AS addressline2,
     postalcode,
     city,
-    stateprovince stateprov,
+    stateprovince AS stateprov,
     country,
     description,
     foundingdate,
     COALESCE(
         LEAD(pts) OVER (PARTITION BY cik ORDER BY pts) IS NOT NULL, FALSE
     ) AS iscurrent,
-    1 batchid,
-    DATE(pts) effectivedate,
+    1 AS batchid,
+    DATE(pts) AS effectivedate,
     CONCAT(CAST(cik AS BIGINT), '-', DATE(pts)) sk_companyid,
     COALESCE(
         LEAD(DATE(pts)) OVER (PARTITION BY cik ORDER BY pts),
@@ -113,11 +113,11 @@ FROM (
         {{ ref('FinWire') }}
     WHERE rectype = "CMP"
 ) AS cmp
-JOIN
-    {{ source(var('benchmark'),'StatusType') }} AS st
-    ON
-        cmp.status = st.st_id
-JOIN
-    {{ source(var('benchmark'),'Industry') }} AS ind
-    ON
-        cmp.industryid = ind.in_id
+    JOIN
+        {{ source(var('benchmark'),'StatusType') }} AS st
+        ON
+            cmp.status = st.st_id
+    JOIN
+        {{ source(var('benchmark'),'Industry') }} AS ind
+        ON
+            cmp.industryid = ind.in_id
