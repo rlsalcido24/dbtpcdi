@@ -1,0 +1,13 @@
+---
+
+integration_tests:
+  target: bigquery
+
+outputs:
+  bigquery:
+    type: bigquery
+    method: service-account
+    keyfile: "{{ env_var('BIGQUERY_SERVICE_KEY_PATH') }}"
+    project: "{{ env_var('BIGQUERY_TEST_DATABASE') }}"
+    schema: audit_helper_integration_tests_bigquery
+    threads: 25

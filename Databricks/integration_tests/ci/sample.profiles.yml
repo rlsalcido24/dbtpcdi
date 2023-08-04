@@ -1,0 +1,15 @@
+---
+
+integration_tests:
+  target: databricks
+
+outputs:
+  databricks:
+    type: databricks
+    method: http
+    catalog: "{{ env_var('DATABRICKS_TEST_CATALOG') }}"
+    schema: "{{ env_var('DATABRICKS_TEST_SCHEMA') }}"
+    host: "{{ env_var('DATABRICKS_TEST_HOST') }}"
+    token: "{{ env_var('DATABRICKS_TEST_TOKEN') }}"
+    http_path: "{{ env_var('DATABRICKS_TEST_PATH') }}"
+    threads: 25

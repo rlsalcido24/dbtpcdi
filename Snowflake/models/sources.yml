@@ -2,7 +2,6 @@
 
 version: 2
 
-
 sources:
   - name: tpcdi
     database: tpcdi_sf1000
@@ -198,13 +197,11 @@ sources:
             description: "abc"
             index: c4
 
-
       - name: CashTransactionIncrementaldos
         external:
           location: "@{{var('stage')}}/Batch2"
           pattern: '.*CashTransaction[.]txt'
           file_format: "( format_name = 'TXT_PIPE')"
-
 
         columns:
           - name: cdc_flag
@@ -1303,8 +1300,6 @@ sources:
             data_type: string
             description: "abc"
             index: c4
-
-      
 
       - name: ProspectRawuno
         external:

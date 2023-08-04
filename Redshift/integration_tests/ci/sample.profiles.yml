@@ -1,0 +1,15 @@
+---
+
+integration_tests:
+  target: redshift
+
+  outputs:
+    redshift:
+      type: redshift
+      host: "{{ env_var('REDSHIFT_TEST_HOST') }}"
+      user: "{{ env_var('REDSHIFT_TEST_USER') }}"
+      pass: "{{ env_var('REDSHIFT_TEST_PASS') }}"
+      dbname: "{{ env_var('REDSHIFT_TEST_DBNAME') }}"
+      port: "{{ env_var('REDSHIFT_TEST_PORT') | as_number }}"
+      schema: audit_helper_integration_tests_redshift
+      threads: 25
