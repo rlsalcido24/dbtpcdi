@@ -3,18 +3,16 @@
         materialized = 'view'
     )
 }}
-select
+SELECT
     *,
-    2 as batchid
-from
+    2 AS batchid
+FROM
     {{ source('tpcdi', 'TradeIncrementaldos') }}
 
- UNION ALL
+UNION ALL
 
- select
+SELECT
     *,
-    3 as batchid
-from
+    3 AS batchid
+FROM
     {{ source('tpcdi', 'TradeIncrementaltres') }}
-
-
