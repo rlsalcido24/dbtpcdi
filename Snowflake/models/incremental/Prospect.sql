@@ -34,21 +34,35 @@ SELECT
         IFF(networth > 1000000 OR income > 200000, 'HighValue+', '')
         || IFF(numberchildren > 3 OR numbercreditcards > 5, 'Expenses+', '')
         || IFF(age > 45, 'Boomer+', '')
-        || IFF(income < 50000 OR creditrating < 600 OR networth < 100000, 'MoneyAlert+', '')
+        || IFF(
+            income < 50000 OR creditrating < 600 OR networth < 100000,
+            'MoneyAlert+',
+            ''
+        )
         || IFF(numbercars > 3 OR numbercreditcards > 7, 'Spender+', '')
         || IFF(age < 25 AND networth > 1000000, 'Inherited+', '') IS NOT NULL,
         LEFT(
             IFF(networth > 1000000 OR income > 200000, 'HighValue+', '')
             || IFF(numberchildren > 3 OR numbercreditcards > 5, 'Expenses+', '')
             || IFF(age > 45, 'Boomer+', '')
-            || IFF(income < 50000 OR creditrating < 600 OR networth < 100000, 'MoneyAlert+', '')
+            || IFF(
+                income < 50000 OR creditrating < 600 OR networth < 100000,
+                'MoneyAlert+',
+                ''
+            )
             || IFF(numbercars > 3 OR numbercreditcards > 7, 'Spender+', '')
             || IFF(age < 25 AND networth > 1000000, 'Inherited+', ''),
             LENGTH(
                 IFF(networth > 1000000 OR income > 200000, 'HighValue+', '')
-                || IFF(numberchildren > 3 OR numbercreditcards > 5, 'Expenses+', '')
+                || IFF(
+                    numberchildren > 3 OR numbercreditcards > 5, 'Expenses+', ''
+                )
                 || IFF(age > 45, 'Boomer+', '')
-                || IFF(income < 50000 OR creditrating < 600 OR networth < 100000, 'MoneyAlert+', '')
+                || IFF(
+                    income < 50000 OR creditrating < 600 OR networth < 100000,
+                    'MoneyAlert+',
+                    ''
+                )
                 || IFF(numbercars > 3 OR numbercreditcards > 7, 'Spender+', '')
                 || IFF(age < 25 AND networth > 1000000, 'Inherited+', '')
             )
