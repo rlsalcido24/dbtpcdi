@@ -5,91 +5,91 @@
 }}
 SELECT
 
-    Symbol,
-    Issue,
-    Status,
-    Name,
-    Exchangeid,
-    Sk_Companyid,
-    Sharesoutstanding,
-    Firsttrade,
-    Firsttradeonexchange,
-    Dividend,
-    IFF(Enddate = DATE('9999-12-31'), true, false) Iscurrent,
-    1 Batchid,
-    Effectivedate,
-    CONCAT(Exchangeid, '-', Effectivedate) AS Sk_Securityid,
-    Enddate
+    symbol,
+    issue,
+    status,
+    name,
+    exchangeid,
+    sk_companyid,
+    sharesoutstanding,
+    firsttrade,
+    firsttradeonexchange,
+    dividend,
+    IFF(enddate = DATE('9999-12-31'), true, false) iscurrent,
+    1 batchid,
+    effectivedate,
+    CONCAT(exchangeid, '-', effectivedate) AS sk_securityid,
+    enddate
 FROM (
     SELECT
-        Fws.Symbol,
-        Fws.Issue,
-        Fws.Status,
-        Fws.Name,
-        Fws.Exchangeid,
-        Dc.Sk_Companyid,
-        Fws.Sharesoutstanding,
-        Fws.Firsttrade,
-        Fws.Firsttradeonexchange,
-        Fws.Dividend,
+        fws.symbol,
+        fws.issue,
+        fws.status,
+        fws.name,
+        fws.exchangeid,
+        dc.sk_companyid,
+        fws.sharesoutstanding,
+        fws.firsttrade,
+        fws.firsttradeonexchange,
+        fws.dividend,
         IFF(
-            Fws.Effectivedate < Dc.Effectivedate,
-            Dc.Effectivedate,
-            Fws.Effectivedate
-        ) Effectivedate,
-        IFF(Fws.Enddate > Dc.Enddate, Dc.Enddate, Fws.Enddate) Enddate
+            fws.effectivedate < dc.effectivedate,
+            dc.effectivedate,
+            fws.effectivedate
+        ) effectivedate,
+        IFF(fws.enddate > dc.enddate, dc.enddate, fws.enddate) enddate
     FROM (
         SELECT
-            Fws.* EXCLUDE (Status, Conameorcik),
-            COALESCE(TO_CHAR(TRY_CAST(Conameorcik AS BIGINT)), Conameorcik)
-                Conameorcik,
-            S.ST_NAME AS Status,
+            fws.* EXCLUDE (status, conameorcik),
+            COALESCE(TO_CHAR(TRY_CAST(conameorcik AS BIGINT)), conameorcik)
+                conameorcik,
+            s.st_name AS status,
             COALESCE(
-                LEAD(Effectivedate) OVER (
-                    PARTITION BY Symbol
-                    ORDER BY Effectivedate
+                LEAD(effectivedate) OVER (
+                    PARTITION BY symbol
+                    ORDER BY effectivedate
                 ),
                 DATE('9999-12-31')
-            ) Enddate
+            ) enddate
         FROM (
             SELECT
-                DATE(TO_TIMESTAMP(SUBSTRING(Value, 1, 15), 'yyyyMMdd-HHmiss'))
-                    AS Effectivedate,
-                TRIM(SUBSTRING(Value, 19, 15)) AS Symbol,
-                TRIM(SUBSTRING(Value, 34, 6)) AS Issue,
-                TRIM(SUBSTRING(Value, 40, 4)) AS Status,
-                TRIM(SUBSTRING(Value, 44, 70)) AS Name,
-                TRIM(SUBSTRING(Value, 114, 6)) AS Exchangeid,
-                CAST(SUBSTRING(Value, 120, 13) AS BIGINT) AS Sharesoutstanding,
-                TO_DATE(SUBSTRING(Value, 133, 8), 'yyyyMMdd') AS Firsttrade,
-                TO_DATE(SUBSTRING(Value, 141, 8), 'yyyyMMdd')
-                    AS Firsttradeonexchange,
-                CAST(SUBSTRING(Value, 149, 12) AS DOUBLE) AS Dividend,
-                TRIM(SUBSTRING(Value, 161, 60)) AS Conameorcik
+                DATE(TO_TIMESTAMP(SUBSTRING(value, 1, 15), 'yyyyMMdd-HHmiss'))
+                    AS effectivedate,
+                TRIM(SUBSTRING(value, 19, 15)) AS symbol,
+                TRIM(SUBSTRING(value, 34, 6)) AS issue,
+                TRIM(SUBSTRING(value, 40, 4)) AS status,
+                TRIM(SUBSTRING(value, 44, 70)) AS name,
+                TRIM(SUBSTRING(value, 114, 6)) AS exchangeid,
+                CAST(SUBSTRING(value, 120, 13) AS BIGINT) AS sharesoutstanding,
+                TO_DATE(SUBSTRING(value, 133, 8), 'yyyyMMdd') AS firsttrade,
+                TO_DATE(SUBSTRING(value, 141, 8), 'yyyyMMdd')
+                    AS firsttradeonexchange,
+                CAST(SUBSTRING(value, 149, 12) AS DOUBLE) AS dividend,
+                TRIM(SUBSTRING(value, 161, 60)) AS conameorcik
             FROM {{ ref('FinWire') }}
-            WHERE Rectype = 'SEC'
-        ) Fws
-            JOIN {{ source('tpcdi', 'StatusType') }} S
-                ON S.ST_ID = Fws.Status
-    ) Fws
+            WHERE rectype = 'SEC'
+        ) fws
+            JOIN {{ source('tpcdi', 'StatusType') }} s
+                ON s.st_id = fws.status
+    ) fws
         JOIN (
             SELECT
-                Sk_Companyid,
-                Name Conameorcik,
-                EffectiveDate,
-                EndDate
+                sk_companyid,
+                name conameorcik,
+                effectivedate,
+                enddate
             FROM {{ ref('DimCompany') }}
             UNION ALL
             SELECT
-                Sk_Companyid,
-                CAST(Companyid AS STRING) Conameorcik,
-                EffectiveDate,
-                EndDate
+                sk_companyid,
+                CAST(companyid AS STRING) conameorcik,
+                effectivedate,
+                enddate
             FROM {{ ref('DimCompany') }}
-        ) Dc
+        ) dc
             ON
-                Fws.Conameorcik = Dc.Conameorcik
-                AND Fws.EffectiveDate < Dc.EndDate
-                AND Fws.EndDate > Dc.EffectiveDate
-) Fws
-WHERE Effectivedate != Enddate
+                fws.conameorcik = dc.conameorcik
+                AND fws.effectivedate < dc.enddate
+                AND fws.enddate > dc.effectivedate
+) fws
+WHERE effectivedate != enddate
