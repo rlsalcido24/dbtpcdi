@@ -3,22 +3,21 @@
 ) }}
 
 SELECT
-
-    CAST(employeeid AS BIGINT) brokerid,
-    CAST(managerid AS BIGINT) managerid,
-    employeefirstname firstname,
-    employeelastname lastname,
-    employeemi middleinitial,
-    employeebranch branch,
-    employeeoffice office,
-    employeephone phone,
-    true iscurrent,
-    1 batchid,
+    CAST(employeeid AS BIGINT) AS brokerid,
+    CAST(managerid AS BIGINT) AS managerid,
+    employeefirstname AS firstname,
+    employeelastname AS lastname,
+    employeemi AS middleinitial,
+    employeebranch AS branch,
+    employeeoffice AS office,
+    employeephone AS phone,
+    true AS iscurrent,
+    1 AS batchid,
     (
         SELECT MIN(TO_DATE(datevalue)) AS effectivedate
         FROM {{ source('tpcdi', 'DimDate') }}
-    ) effectivedate,
-    DATE('9999-12-31') enddate,
+    ) AS effectivedate,
+    DATE('9999-12-31') AS enddate,
     BIGINT(
         CONCAT(DATE_FORMAT(enddate, 'yyyyMMdd'), CAST(brokerid AS STRING))
     ) AS sk_brokerid
