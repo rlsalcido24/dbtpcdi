@@ -1,0 +1,5 @@
+# Ignore the "dbt_packages" directory
+dbt_packages/
+
+# Ignore the "macros" directory
+macros/
