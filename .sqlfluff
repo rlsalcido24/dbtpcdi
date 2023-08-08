@@ -36,6 +36,6 @@ ignore_words_regex = None
 
 [sqlfluff:rules:convention.quoted_literals]
 # Consistent usage of preferred quotes for quoted literals
-preferred_quoted_literal_style = double_quotes
+preferred_quoted_literal_style = single_quotes
 # Disabled for dialects that do not support single and double quotes for quoted literals (e.g. Postgres)
 force_enable = False
