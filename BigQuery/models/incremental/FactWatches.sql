@@ -61,17 +61,17 @@ FROM (
                 wh.w_c_id AS customerid,
                 wh.w_s_symb AS symbol,
                 IF(
-                    w_action = 'ACTV',
+                    wh.w_action = 'ACTV',
                     d.sk_dateid,
                     null
                 ) AS sk_dateid_dateplaced,
                 IF(
-                    w_action = 'CNCL',
+                    wh.w_action = 'CNCL',
                     d.sk_dateid,
                     null
                 ) AS sk_dateid_dateremoved,
                 IF(
-                    w_action = 'ACTV',
+                    wh.w_action = 'ACTV',
                     d.datevalue,
                     null
                 ) AS dateplaced,
@@ -92,7 +92,7 @@ FROM (
                 FROM
                     {{ ref('WatchIncremental') }}
             ) AS wh
-                JOIN
+                INNER JOIN
                     {{ source(var('benchmark'),'DimDate') }} AS d
                     ON
                         d.datevalue = DATE(wh.w_dts)
@@ -101,9 +101,9 @@ FROM (
         ROW_NUMBER() OVER (PARTITION BY customerid, symbol ORDER BY w_dts DESC)
         = 1
 ) AS wh
--- Converts to LEFT JOINs if this is run as DQ EDITION. On some higher Scale Factors,
--- a small number of Security symbols or Customer IDs "may" be missing from DimSecurity/DimCustomer,
--- causing audit check failures.
+-- Converts to LEFT JOINs if this is run as DQ EDITION. On some higher Scale
+-- Factors, a small number of Security symbols or Customer IDs "may" be missing
+-- from DimSecurity/DimCustomer, causing audit check failures.
 --${dq_left_flg}
     LEFT JOIN
         {{ ref('DimSecurity') }} AS s
