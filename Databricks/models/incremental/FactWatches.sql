@@ -4,8 +4,8 @@
     )
 }}
 SELECT
-    c.sk_customerid sk_customerid,
-    s.sk_securityid sk_securityid,
+    c.sk_customerid AS sk_customerid,
+    s.sk_securityid AS sk_securityid,
     sk_dateid_dateplaced,
     sk_dateid_dateremoved,
     wh.batchid
@@ -20,55 +20,63 @@ FROM (
                 LAST_VALUE(sk_dateid_dateplaced) IGNORE NULLS OVER (
                     PARTITION BY customerid, symbol ORDER BY w_dts
                 )
-            ) sk_dateid_dateplaced,
+            ) AS sk_dateid_dateplaced,
             COALESCE(
                 sk_dateid_dateremoved,
                 LAST_VALUE(sk_dateid_dateremoved) IGNORE NULLS OVER (
                     PARTITION BY customerid, symbol ORDER BY w_dts
                 )
-            ) sk_dateid_dateremoved,
+            ) AS sk_dateid_dateremoved,
             COALESCE(dateplaced, LAST_VALUE(dateplaced) IGNORE NULLS OVER (
                 PARTITION BY customerid, symbol ORDER BY w_dts
-            )) dateplaced,
+            )) AS dateplaced,
             w_dts,
             COALESCE(batchid, LAST_VALUE(batchid) IGNORE NULLS OVER (
                 PARTITION BY customerid, symbol ORDER BY w_dts
-            )) batchid
+            )) AS batchid
         FROM (
             SELECT
-                wh.w_c_id customerid,
-                wh.w_s_symb symbol,
-                IF(w_action = 'ACTV', d.sk_dateid, null) sk_dateid_dateplaced,
-                IF(w_action = 'CNCL', d.sk_dateid, null) sk_dateid_dateremoved,
-                IF(w_action = 'ACTV', d.datevalue, null) dateplaced,
+                wh.w_c_id AS customerid,
+                wh.w_s_symb AS symbol,
+                IF(
+                    w_action = 'ACTV', d.sk_dateid, null
+                ) AS sk_dateid_dateplaced,
+                IF(
+                    w_action = 'CNCL', d.sk_dateid, null
+                ) AS sk_dateid_dateremoved,
+                IF(
+                    w_action = 'ACTV', d.datevalue, null
+                ) AS dateplaced,
                 wh.w_dts,
                 batchid
             FROM (
                 SELECT
                     *,
-                    1 batchid
+                    1 AS batchid
                 FROM {{ source('tpcdi', 'WatchHistory') }}
                 UNION ALL
                 SELECT * EXCEPT (cdc_flag, cdc_dsn)
                 FROM {{ ref('WatchIncremental') }}
-            ) wh
-                JOIN {{ source('tpcdi', 'DimDate') }} d
+            ) AS wh
+                INNER JOIN {{ source('tpcdi', 'DimDate') }} AS d
                     ON d.datevalue = DATE(wh.w_dts)
         )
     )
     QUALIFY
         ROW_NUMBER() OVER (PARTITION BY customerid, symbol ORDER BY w_dts DESC)
         = 1
-) wh
--- Converts to LEFT JOINs if this is run as DQ EDITION. On some higher Scale Factors, a small number of Security symbols or Customer IDs "may" be missing from DimSecurity/DimCustomer, causing audit check failures. 
---${dq_left_flg} 
-    LEFT JOIN {{ ref('DimSecurity') }} s
+) AS wh
+-- Converts to LEFT JOINs if this is run as DQ EDITION. On some higher Scale
+-- Factors, a small number of Security symbols or Customer IDs "may" be missing
+-- from DimSecurity/DimCustomer, causing audit check failures.
+--${dq_left_flg}
+    LEFT JOIN {{ ref('DimSecurity') }} AS s
         ON
             s.symbol = wh.symbol
             AND wh.dateplaced >= s.effectivedate
             AND wh.dateplaced < s.enddate
-    --${dq_left_flg} 
-    LEFT JOIN {{ ref('DimCustomer') }} c
+    --${dq_left_flg}
+    LEFT JOIN {{ ref('DimCustomer') }} AS c
         ON
             wh.customerid = c.customerid
             AND wh.dateplaced >= c.effectivedate
