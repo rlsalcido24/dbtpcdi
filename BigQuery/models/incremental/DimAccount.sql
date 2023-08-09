@@ -80,12 +80,12 @@ FROM (
                     accountdesc,
                     taxstatus,
                     a.ca_b_id AS brokerid,
-                    st_name AS status,
+                    st.st_name AS status,
                     TIMESTAMP(bd.batchdate) AS update_ts,
                     a.batchid
                 FROM {{ ref('AccountIncremental') }} AS a
                     INNER JOIN
-                        {{ ref('BatchDate') }} bd
+                        {{ ref('BatchDate') }} AS bd
                         ON a.batchid = bd.batchid
                     INNER JOIN
                         {{ source(var('benchmark'),'StatusType') }} AS st
