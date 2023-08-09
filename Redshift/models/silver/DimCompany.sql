@@ -9,18 +9,18 @@
 SELECT *
 FROM (
     SELECT
-        CAST(cik AS BIGINT) companyid,
-        st.st_name status,
-        companyname name,
-        ind.in_name industry,
+        CAST(cmp.cik AS BIGINT) AS companyid,
+        st.st_name AS status,
+        cmp.companyname AS name, -- noqa: RF04
+        ind.in_name AS industry,
         --    iff(
-        --      SPrating IN ('AAA','AA','AA+','AA-','A','A+','A-','BBB','BBB+','BBB-','BB','BB+','BB-','B','B+','B-','CCC','CCC+','CCC-','CC','C','D'), 
-        --      SPrating, 
+        --      cmp.sprating IN ('AAA','AA','AA+','AA-','A','A+','A-','BBB','BBB+','BBB-','BB','BB+','BB-','B','B+','B-','CCC','CCC+','CCC-','CC','C','D'), -- noqa: LT05
+        --      cmp.sprating,
         --      cast(null as string)
-        --    ) sprating, 
+        --    ) cmp.sprating,
         CASE
             WHEN
-                sprating IN (
+                cmp.sprating IN (
                     'AAA',
                     'AA',
                     'AA+',
@@ -44,17 +44,17 @@ FROM (
                     'C',
                     'D'
                 )
-                THEN sprating
+                THEN cmp.sprating
             ELSE CAST(null AS VARCHAR(4))
-        END sprating,
+        END AS sprating,
         --    CASE
-        --      WHEN SPrating IN ('AAA','AA','A','AA+','A+','AA-','A-','BBB','BBB+','BBB-') THEN false
-        --      WHEN SPrating IN ('BB','B','CCC','CC','C','D','BB+','B+','CCC+','BB-','B-','CCC-') THEN true
+        --      WHEN cmp.sprating IN ('AAA','AA','A','AA+','A+','AA-','A-','BBB','BBB+','BBB-') THEN false -- noqa: LT05
+        --      WHEN cmp.sprating IN ('BB','B','CCC','CC','C','D','BB+','B+','CCC+','BB-','B-','CCC-') THEN true -- noqa: LT05
         --      ELSE cast(null as boolean)
-        --    END as islowgrade, 
+        --    END as islowgrade,
         CASE
             WHEN
-                sprating IN (
+                cmp.cmp.sprating IN (
                     'AAA',
                     'AA',
                     'A',
@@ -68,7 +68,7 @@ FROM (
                 )
                 THEN CAST(0 AS BOOLEAN)
             WHEN
-                sprating IN (
+                cmp.sprating IN (
                     'BB',
                     'B',
                     'CCC',
@@ -85,42 +85,45 @@ FROM (
                 THEN CAST(1 AS BOOLEAN)
             ELSE CAST(0 AS BOOLEAN)
         END AS islowgrade,
-        ceoname ceo,
-        addrline1 addressline1,
-        addrline2 addressline2,
-        postalcode,
-        city,
-        stateprovince stateprov,
-        country,
-        description,
-        foundingdate,
-        --    nvl2(lead(pts) OVER (PARTITION BY cik ORDER BY pts), true, false) iscurrent,
-        --    CASE WHEN lead(pts) OVER (PARTITION BY cik ORDER BY pts) IS NOT NULL THEN 1 ELSE 0 END iscurrent,
-        --    CASE WHEN LEAD(pts) OVER (PARTITION BY cik ORDER BY pts) IS NOT NULL THEN CAST(1 AS INTEGER) ELSE CAST(0 AS INTEGER) END AS iscurrent,
+        cmp.ceoname AS ceo,
+        cmp.addrline1 AS addressline1,
+        cmp.addrline2 AS addressline2,
+        cmp.postalcode,
+        cmp.city,
+        cmp.stateprovince AS stateprov,
+        cmp.country,
+        cmp.description,
+        cmp.foundingdate,
+        --    nvl2(lead(cmp.pts) OVER (PARTITION BY cmp.cik ORDER BY cmp.pts), true, false) iscurrent, -- noqa: LT05
+        --    CASE WHEN lead(cmp.pts) OVER (PARTITION BY cmp.cik ORDER BY cmp.pts) IS NOT NULL THEN 1 ELSE 0 END iscurrent, -- noqa: LT05
+        --    CASE WHEN LEAD(cmp.pts) OVER (PARTITION BY cmp.cik ORDER BY cmp.pts) IS NOT NULL THEN CAST(1 AS INTEGER) ELSE CAST(0 AS INTEGER) END AS iscurrent, -- noqa: LT05
         CASE
             WHEN
-                LEAD(pts) OVER (PARTITION BY cik ORDER BY pts) IS NOT NULL
+                LEAD(cmp.pts)
+                    OVER (PARTITION BY cmp.cik ORDER BY cmp.pts)
+                IS NOT NULL
                 THEN 1
             ELSE 0
-        END iscurrent,
-
-        1 batchid,
-        --date(pts) effectivedate,
-        CAST(pts AS DATE) effectivedate,
+        END AS iscurrent,
+        1 AS batchid,
+        --date(cmp.pts) effectivedate,
+        CAST(cmp.pts AS DATE) AS effectivedate,
         --concat(companyid, '-', effectivedate) sk_companyid,
         CONCAT(
-            CONCAT(CAST(cik AS BIGINT), '-'), CAST(pts AS DATE)
-        ) sk_companyid,
+            CONCAT(CAST(cmp.cik AS BIGINT), '-'), CAST(cmp.pts AS DATE)
+        ) AS sk_companyid,
         --    coalesce(
-        --      lead(date(pts)) OVER (PARTITION BY cik ORDER BY pts),
+        --      lead(date(cmp.pts)) OVER (PARTITION BY cmp.cik ORDER BY cmp.pts), -- noqa: LT05
         --      cast('9999-12-31' as date)) enddate
         COALESCE(
-            LEAD(CAST(pts AS DATE)) OVER (PARTITION BY cik ORDER BY pts),
+            LEAD(
+                CAST(cmp.pts AS DATE))
+                OVER (PARTITION BY cmp.cik ORDER BY cmp.pts),
             CAST('9999-12-31' AS DATE)
-        ) enddate
+        ) AS enddate
     FROM (
         SELECT
-            --      to_timestamp(substring(value, 1, 15), 'yyyyMMdd-HHmmss') AS PTS,
+            --      to_timestamp(substring(value, 1, 15), 'yyyyMMdd-HHmmss') AS cmp.pts, -- noqa: LT05
             TO_TIMESTAMP(
                 SUBSTRING(value, 1, 8)
                 || ' '
@@ -136,7 +139,7 @@ FROM (
             TRIM(SUBSTRING(value, 89, 4)) AS status,
             TRIM(SUBSTRING(value, 93, 2)) AS industryid,
             TRIM(SUBSTRING(value, 95, 4)) AS sprating,
-            --      to_date(iff(trim(substring(value, 99, 8))='',NULL,substring(value, 99, 8)), 'yyyyMMdd') AS FoundingDate,
+            --      to_date(iff(trim(substring(value, 99, 8))='',NULL,substring(value, 99, 8)), 'yyyyMMdd') AS FoundingDate, -- noqa: LT05
             TO_DATE(
                 NULLIF(TRIM(SUBSTRING(value, 99, 8)), ''), 'YYYYMMDD'
             ) AS foundingdate,
@@ -152,9 +155,11 @@ FROM (
         FROM {{ ref('finwire') }}
         --FROM stg.FinWire
         WHERE rectype = 'CMP'
-    ) cmp
-        JOIN {{ source('tpcdi', 'StatusType') }} st ON cmp.status = st.st_id
+    ) AS cmp
+        INNER JOIN {{ source('tpcdi', 'StatusType') }} AS st
+            ON cmp.status = st.st_id
         --JOIN prd.StatusType st ON cmp.status = st.st_id
-        JOIN {{ source('tpcdi', 'Industry') }} ind ON cmp.industryid = ind.in_id
+        INNER JOIN {{ source('tpcdi', 'Industry') }} AS ind
+            ON cmp.industryid = ind.in_id
 --JOIN prd.Industry ind ON cmp.industryid = ind.in_id
-) t
+) AS t
