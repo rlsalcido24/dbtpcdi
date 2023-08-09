@@ -179,7 +179,7 @@ FROM (
         NULLIF(c.lastname, '') AS lastname,
         NULLIF(c.firstname, '') AS firstname,
         NULLIF(c.middleinitial, '') AS middleinitial,
-        gender,
+        c.gender,
         c.tier,
         c.dob,
         NULLIF(c.addressline1, '') AS addressline1,
@@ -190,34 +190,58 @@ FROM (
         NULLIF(c.country, '') AS country,
         CONCAT(
             IF(
-                c_local_1 IS NULL, c_local_1,
+                c.c_local_1 IS NULL, c.c_local_1,
                 CONCAT(
-                    IF(c_ctry_1 IS NOT NULL, CONCAT('+', c_ctry_1, ' '), ''),
-                    IF(c_area_1 IS NOT NULL, CONCAT('(', c_area_1, ') '), ''),
-                    c_local_1,
-                    IF(c_ext_1 IS NOT NULL, c_ext_1, '')
+                    IF(
+                        c.c_ctry_1 IS NOT NULL,
+                        CONCAT('+', c.c_ctry_1, ' '),
+                        ''
+                    ),
+                    IF(
+                        c.c_area_1 IS NOT NULL,
+                        CONCAT('(', c.c_area_1, ') '),
+                        ''
+                    ),
+                    c.c_local_1,
+                    IF(c.c_ext_1 IS NOT NULL, c.c_ext_1, '')
                 )
             )
         ) AS phone1,
         CONCAT(
             IF(
-                c_local_2 IS NULL, c_local_2,
+                c.c_local_2 IS NULL, c.c_local_2,
                 CONCAT(
-                    IF(c_ctry_2 IS NOT NULL, CONCAT('+', c_ctry_2, ' '), ''),
-                    IF(c_area_2 IS NOT NULL, CONCAT('(', c_area_2, ') '), ''),
-                    c_local_2,
-                    IF(c_ext_2 IS NOT NULL, c_ext_2, '')
+                    IF(
+                        c.c_ctry_2 IS NOT NULL,
+                        CONCAT('+', c.c_ctry_2, ' '),
+                        ''
+                    ),
+                    IF(
+                        c.c_area_2 IS NOT NULL,
+                        CONCAT('(', c.c_area_2, ') '),
+                        ''
+                    ),
+                    c.c_local_2,
+                    IF(c.c_ext_2 IS NOT NULL, c.c_ext_2, '')
                 )
             )
         ) AS phone2,
         CONCAT(
             IF(
-                c_local_3 IS NULL, c_local_3,
+                c.c_local_3 IS NULL, c.c_local_3,
                 CONCAT(
-                    IF(c_ctry_3 IS NOT NULL, CONCAT('+', c_ctry_3, ' '), ''),
-                    IF(c_area_3 IS NOT NULL, CONCAT('(', c_area_3, ') '), ''),
-                    c_local_3,
-                    IF(c_ext_3 IS NOT NULL, c_ext_3, '')
+                    IF(
+                        c.c_ctry_3 IS NOT NULL,
+                        CONCAT('+', c.c_ctry_3, ' '),
+                        ''
+                    ),
+                    IF(
+                        c.c_area_3 IS NOT NULL,
+                        CONCAT('(', c.c_area_3, ') '),
+                        ''
+                    ),
+                    c.c_local_3,
+                    IF(c.c_ext_3 IS NOT NULL, c.c_ext_3, '')
                 )
             )
         ) AS phone3,
