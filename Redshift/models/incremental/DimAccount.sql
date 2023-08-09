@@ -5,9 +5,6 @@
 }}
 --,index='CLUSTERED COLUMNSTORE INDEX'
 --,dist='REPLICATE'
-
-
-
 SELECT
     a.accountid,
     b.sk_brokerid,
@@ -29,57 +26,57 @@ FROM (
         a.status,
         a.batchid,
         c.sk_customerid,
-        --if(a.effectivedate < c.effectivedate, c.effectivedate, a.effectivedate) effectivedate,
+        --if(a.effectivedate < c.effectivedate, c.effectivedate, a.effectivedate) effectivedate,  -- noqa: LT05
         CASE
             WHEN a.effectivedate < c.effectivedate THEN c.effectivedate ELSE
                 a.effectivedate
-        END effectivedate,
+        END AS effectivedate,
         --if(a.enddate > c.enddate, c.enddate, a.enddate) enddate
         CASE
             WHEN a.enddate > c.enddate THEN c.enddate ELSE a.enddate
-        END enddate
+        END AS enddate
     FROM (
         SELECT *
         FROM (
             SELECT
                 accountid,
                 customerid,
-                --coalesce(accountdesc, last_value(accountdesc) IGNORE NULLS OVER (
+                --coalesce(accountdesc, last_value(accountdesc) IGNORE NULLS OVER (  -- noqa: LT05
                 COALESCE(accountdesc, LAST_VALUE(accountdesc) OVER (
                     PARTITION BY accountid
                     ORDER BY
                         update_ts
                     ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-                )) accountdesc,
+                )) AS accountdesc,
                 --coalesce(taxstatus, last_value(taxstatus) IGNORE NULLS OVER (
                 COALESCE(taxstatus, LAST_VALUE(taxstatus) OVER (
                     PARTITION BY accountid
                     ORDER BY
                         update_ts
                     ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-                )) taxstatus,
+                )) AS taxstatus,
                 --coalesce(brokerid, last_value(brokerid) IGNORE NULLS OVER (
                 COALESCE(brokerid, LAST_VALUE(brokerid) OVER (
                     PARTITION BY accountid
                     ORDER BY
                         update_ts
                     ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-                )) brokerid,
+                )) AS brokerid,
                 --coalesce(status, last_value(status) IGNORE NULLS OVER (
                 COALESCE(status, LAST_VALUE(status) OVER (
                     PARTITION BY accountid
                     ORDER BY
                         update_ts
                     ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-                )) status,
+                )) AS status,
                 --date(update_ts) effectivedate,
-                TO_DATE(update_ts, 'YYYYMMDD') effectivedate,
-                --nvl(lead(date(update_ts)) OVER (PARTITION BY accountid ORDER BY update_ts), date('9999-12-31')) enddate,
+                TO_DATE(update_ts, 'YYYYMMDD') AS effectivedate,
+                --nvl(lead(date(update_ts)) OVER (PARTITION BY accountid ORDER BY update_ts), date('9999-12-31')) enddate,  -- noqa: LT05
                 ISNULL(
                     LEAD(TO_DATE(update_ts, 'YYYYMMDD'))
                         OVER (PARTITION BY accountid ORDER BY update_ts),
                     TO_DATE('9999-12-31', 'YYYY-MM-DD')
-                ) enddate,
+                ) AS enddate,
                 batchid
             FROM (
                 SELECT
@@ -89,9 +86,11 @@ FROM (
                     CAST(taxstatus AS INT) AS taxstatus,
                     CAST(brokerid AS INT) AS brokerid,
                     status,
-                    TO_TIMESTAMP(update_ts, 'YYYY-MM-DD HH24:MI:SS') update_ts,
-                    1 batchid
-                FROM {{ ref('customermgmtview') }} c
+                    TO_TIMESTAMP(
+                        update_ts, 'YYYY-MM-DD HH24:MI:SS'
+                    ) AS update_ts,
+                    1 AS batchid
+                FROM {{ ref('customermgmtview') }} AS c
                 --FROM stg.CustomerMgmt c
                 WHERE
                     actiontype NOT IN ('UPDCUST', 'INACT')
@@ -102,35 +101,36 @@ FROM (
                 UNION ALL
                 SELECT
                     accountid,
-                    a.ca_c_id customerid,
+                    a.ca_c_id AS customerid,
                     accountdesc,
                     taxstatus,
-                    a.ca_b_id brokerid,
-                    st_name AS status,
+                    a.ca_b_id AS brokerid,
+                    st.st_name AS status,
                     --IMESTAMP(bd.batchdate) update_ts,
-                    TO_TIMESTAMP(bd.batchdate, 'YYYY-MM-DD HH24:MI:SS'),
-
+                    TO_TIMESTAMP(
+                        bd.batchdate, 'YYYY-MM-DD HH24:MI:SS'
+                    ) AS batchdate,
                     --convert(datetime2, bd.batchdate) update_ts,
                     a.batchid
-                FROM {{ ref('accountincremental') }} a
+                FROM {{ ref('accountincremental') }} AS a
                     --FROM stg.AccountIncremental a
-                    JOIN {{ ref('batchdate') }} bd
+                    INNER JOIN {{ ref('batchdate') }} AS bd
                         --JOIN dbo.BatchDate bd
                         ON a.batchid = bd.batchid
-                    JOIN {{ source('tpcdi', 'StatusType') }} st
-                        --JOIN sf10.StatusType st 
+                    INNER JOIN {{ source('tpcdi', 'StatusType') }} AS st
+                        --JOIN sf10.StatusType st
                         ON a.ca_st_id = st.st_id
-            ) a
-        ) a
+            ) AS a
+        ) AS a
         WHERE a.effectivedate < a.enddate
-    ) a
-        FULL OUTER JOIN {{ ref('dimcustomerstg') }} c
-            --FULL OUTER JOIN dbo.DimCustomerStg c 
+    ) AS a
+        FULL OUTER JOIN {{ ref('dimcustomerstg') }} AS c
+            --FULL OUTER JOIN dbo.DimCustomerStg c
             ON
                 a.customerid = c.customerid
                 AND c.enddate > a.effectivedate
                 AND c.effectivedate < a.enddate
-) a
-    LEFT JOIN {{ ref('dimbroker') }} b
-        --LEFT JOIN dbo.DimBroker b 
+) AS a
+    LEFT JOIN {{ ref('dimbroker') }} AS b
+        --LEFT JOIN dbo.DimBroker b
         ON a.brokerid = b.brokerid
