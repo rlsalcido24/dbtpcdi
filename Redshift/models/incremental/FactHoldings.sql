@@ -7,21 +7,21 @@
 --,dist='HASH(sk_companyid)'
 
 SELECT
-    hh_h_t_id tradeid,
-    hh_t_id currenttradeid,
+    hh.hh_h_t_id AS tradeid,
+    hh.hh_t_id AS currenttradeid,
     sk_customerid,
     sk_accountid,
     sk_securityid,
     sk_companyid,
-    sk_closedateid sk_dateid,
-    sk_closetimeid sk_timeid,
-    tradeprice currentprice,
-    hh_after_qty currentholding,
+    sk_closedateid AS sk_dateid,
+    sk_closetimeid AS sk_timeid,
+    dt.tradeprice AS currentprice,
+    hh.hh_after_qty AS currentholding,
     hh.batchid
 FROM (
     SELECT
         *,
-        1 batchid
+        1 AS batchid
     FROM {{ source('tpcdi', 'HoldingHistory') }}
     --FROM prd.holdinghistory
     UNION ALL
@@ -33,10 +33,12 @@ FROM (
         [hh_after_qty],
         [batchid]
     FROM {{ ref('holdingincremental') }}
-) hh
+) AS hh
 --FROM stg.HoldingIncremental) hh
--- Converts to LEFT JOIN if this is run as DQ EDITION. It is possible, because of the issues upstream with DimSecurity/DimAccount on "some" scale factors, that dimtrade may be missing some rows.
+-- Converts to LEFT JOIN if this is run as DQ EDITION. It is possible, because
+-- of the issues upstream with DimSecurity/DimAccount on "some" scale factors,
+-- that dimtrade may be missing some rows.
 --${dq_left_flg}
-    LEFT JOIN {{ ref('dimtrade') }} dt
+    LEFT JOIN {{ ref('dimtrade') }} AS dt
         --LEFT JOIN dbo.dimtrade dt
-        ON tradeid = hh_t_id
+        ON dt.tradeid = hh.hh_t_id
