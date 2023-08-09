@@ -7,16 +7,16 @@ SELECT -- noqa: ST06
     s.sk_securityid,
     s.sk_companyid,
     sk_dateid,
-    fmh.dm_close / NULLIF(sum_fi_basic_eps, 0) AS peratio,
+    fmh.dm_close / NULLIF(f.sum_fi_basic_eps, 0) AS peratio,
     (s.dividend / fmh.dm_close) / 100 AS yield,
-    fiftytwoweekhigh,
-    sk_fiftytwoweekhighdate,
-    fiftytwoweeklow,
-    sk_fiftytwoweeklowdate,
-    dm_close AS closeprice,
-    dm_high AS dayhigh,
-    dm_low AS daylow,
-    dm_vol AS volume
+    dmh.fiftytwoweekhigh,
+    dmh.sk_fiftytwoweekhighdate,
+    dmh.fiftytwoweeklow,
+    dmh.sk_fiftytwoweeklowdate,
+    dmh.dm_close AS closeprice,
+    dmh.dm_high AS dayhigh,
+    dmh.dm_low AS daylow,
+    dmh.dm_vol AS volume
 FROM (
     SELECT *
     FROM (
@@ -48,9 +48,9 @@ FROM (
             )
         = 1
 ) AS fmh
--- Converts to LEFT JOIN if this is run as DQ EDITION. On some higher Scale Factors,
--- a small number of Security Security symbols are missing from DimSecurity,
--- causing audit check failures.
+-- Converts to LEFT JOIN if this is run as DQ EDITION. On some higher Scale
+-- Factors, a small number of Security Security symbols are missing from
+-- DimSecurity, causing audit check failures.
 --${dq_left_flg}
     LEFT JOIN
         {{ ref('DimSecurity') }} AS s
@@ -63,6 +63,6 @@ FROM (
         ON
             f.sk_companyid = s.sk_companyid
             AND EXTRACT(QUARTER FROM fmh.dm_date)
-            = EXTRACT(QUARTER FROM fi_qtr_start_date)
+            = EXTRACT(QUARTER FROM f.fi_qtr_start_date)
             AND EXTRACT(YEAR FROM fmh.dm_date)
-            = EXTRACT(YEAR FROM fi_qtr_start_date)
+            = EXTRACT(YEAR FROM f.fi_qtr_start_date)
