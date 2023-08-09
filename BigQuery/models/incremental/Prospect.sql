@@ -8,7 +8,7 @@ SELECT
     recdate.sk_dateid AS sk_recorddateid,
     origdate.sk_dateid AS sk_updatedateid,
     p.batchid,
-    IF(c.customerid IS NOT NULL, TRUE, FALSE) AS iscustomer,
+    IF(c.customerid IS NOT NULL, true, false) AS iscustomer,
     p.lastname,
     p.firstname,
     p.middleinitial,
@@ -80,7 +80,7 @@ SELECT
                 )
             ) - 1
         ),
-        NULL
+        null
     ) AS marketingnameplate
 FROM (
     SELECT
@@ -144,15 +144,15 @@ FROM (
                 {{ source(var('benchmark'),'DimDate') }} AS d
                 ON
                     b.batchdate = d.datevalue
-        ) AS recdate
-            ON
-                p.recordbatchid = recdate.batchid
-        INNER JOIN (
-            SELECT
-                sk_dateid,
-                batchid
-            FROM
-                {{ ref('BatchDate') }} b
+    ) AS recdate
+        ON
+            p.recordbatchid = recdate.batchid
+    INNER JOIN (
+        SELECT
+            sk_dateid,
+            b.batchid
+        FROM
+            {{ ref('BatchDate') }} AS b
             INNER JOIN
                 {{ source(var('benchmark'),'DimDate') }} AS d
                 ON
