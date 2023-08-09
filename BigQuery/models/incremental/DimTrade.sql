@@ -11,7 +11,7 @@ SELECT
     trade.sk_closedateid,
     trade.sk_closetimeid,
     st_name AS status,
-    tt_name AS type,
+    tt_name AS type, --noqa: RF04
     trade.cashflag,
     sk_securityid,
     sk_companyid,
@@ -87,25 +87,25 @@ FROM (
             batchid
         FROM (
             SELECT
-                tradeid,
+                t.tradeid,
                 t.t_dts,
                 IF(
-                    create_flg,
+                    t.create_flg,
                     sk_dateid,
                     CAST(null AS BIGINT)
                 ) AS sk_createdateid,
                 IF(
-                    create_flg,
+                    t.create_flg,
                     sk_timeid,
                     CAST(null AS BIGINT)
                 ) AS sk_createtimeid,
                 IF(
-                    create_flg,
+                    t.create_flg,
                     sk_dateid,
                     CAST(null AS BIGINT)
                 ) AS sk_closedateid,
                 IF(
-                    create_flg,
+                    t.create_flg,
                     sk_timeid,
                     CAST(null AS BIGINT)
                 ) AS sk_closetimeid,
@@ -119,14 +119,14 @@ FROM (
                 t.t_st_id,
                 t.t_tt_id,
                 t.t_s_symb,
-                quantity,
-                bidprice,
+                t.quantity,
+                t.bidprice,
                 t.t_ca_id,
-                executedby,
-                tradeprice,
-                fee,
-                commission,
-                tax,
+                t.executedby,
+                t.tradeprice,
+                t.fee,
+                t.commission,
+                t.tax,
                 t.batchid
             FROM (
                 SELECT
@@ -216,9 +216,9 @@ FROM (
         {{ source(var('benchmark'),'TradeType') }} AS tt
         ON
             tt.tt_id = trade.t_tt_id
-    -- Converts to LEFT JOIN if this is run as DQ EDITION.
-    -- On some higher Scale Factors, a small number of Security symbols or Account IDs are
-    -- missing from DimSecurity/DimAccount, causing audit check failures.
+    -- Converts to LEFT JOIN if this is run as DQ EDITION. On some higher Scale
+    -- Factors, a small number of Security symbols or Account IDs are missing
+    -- from DimSecurity/DimAccount, causing audit check failures.
     --${dq_left_flg}
     LEFT JOIN
         {{ ref('DimSecurity') }} AS ds
