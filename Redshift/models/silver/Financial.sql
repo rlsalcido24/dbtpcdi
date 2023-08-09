@@ -7,20 +7,20 @@
 --,dist='HASH(sk_companyid)'
 
 SELECT
-    sk_companyid,
-    fi_year,
-    fi_qtr,
-    fi_qtr_start_date,
-    fi_revenue,
-    fi_net_earn,
-    fi_basic_eps,
-    fi_dilut_eps,
-    fi_margin,
-    fi_inventory,
-    fi_assets,
-    fi_liability,
-    fi_out_basic,
-    fi_out_dilut
+    dc.sk_companyid,
+    f.fi_year,
+    f.fi_qtr,
+    f.fi_qtr_start_date,
+    f.fi_revenue,
+    f.fi_net_earn,
+    f.fi_basic_eps,
+    f.fi_dilut_eps,
+    f.fi_margin,
+    f.fi_inventory,
+    f.fi_assets,
+    f.fi_liability,
+    f.fi_out_basic,
+    f.fi_out_dilut
 FROM (
     SELECT
         pts,
@@ -39,8 +39,7 @@ FROM (
         fi_out_dilut,
         ISNULL(CAST(CASE
             WHEN TRIM(conameorcik) ~ '^[0-9]+$' THEN TRIM(conameorcik)
-            ELSE null
-        END::BIGINT AS VARCHAR), conameorcik) conameorcik
+        END::BIGINT AS VARCHAR), conameorcik) AS conameorcik
     FROM (
         SELECT
             TO_TIMESTAMP(SUBSTRING(value, 1, 15), 'YYYYMMDDHH24MISS') AS pts,
@@ -63,12 +62,12 @@ FROM (
         FROM {{ ref('finwire') }}
         --FROM stg.FinWire
         WHERE rectype = 'FIN'
-    ) f
-) f
-    JOIN (
+    ) AS f
+) AS f
+    INNER JOIN (
         SELECT
             sk_companyid,
-            name conameorcik,
+            name AS conameorcik,
             effectivedate,
             enddate
         FROM {{ ref('dimcompany') }}
@@ -76,13 +75,13 @@ FROM (
         UNION ALL
         SELECT
             sk_companyid,
-            CAST(companyid AS VARCHAR) conameorcik,
+            CAST(companyid AS VARCHAR) AS conameorcik,
             effectivedate,
             enddate
         FROM {{ ref('dimcompany') }}
     --FROM dbo.DimCompany
-    ) dc
+    ) AS dc
         ON
             f.conameorcik = dc.conameorcik
-            AND CAST(pts AS DATE) >= dc.effectivedate
-            AND CAST(pts AS DATE) < dc.enddate
+            AND CAST(f.pts AS DATE) >= dc.effectivedate
+            AND CAST(f.pts AS DATE) < dc.enddate
