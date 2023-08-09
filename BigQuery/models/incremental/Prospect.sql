@@ -151,7 +151,7 @@ FROM (
             SELECT
                 sk_dateid,
                 batchid
-            INNER FROM
+            FROM
                 {{ ref('BatchDate') }} b
             INNER JOIN
                 {{ source(var('benchmark'),'DimDate') }} AS d
