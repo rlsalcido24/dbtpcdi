@@ -15,7 +15,7 @@ SELECT
     c.firstname,
     c.middleinitial,
     --if(c.gender IN ('M', 'F'), c.gender, 'U') gender,
-    CASE WHEN c.gender IN ('M', 'F') THEN c.gender ELSE 'U' END gender,
+    CASE WHEN c.gender IN ('M', 'F') THEN c.gender ELSE 'U' END AS gender,
     c.tier,
     c.dob,
     c.addressline1,
@@ -41,16 +41,16 @@ SELECT
     c.batchid,
     c.effectivedate,
     c.enddate
-FROM {{ ref('dimcustomerstg') }} c
+FROM {{ ref('dimcustomerstg') }} AS c
 --FROM dbo.DimCustomerStg c
-    LEFT JOIN {{ source('tpcdi', 'TaxRate') }} r_lcl
-        --LEFT JOIN prd.TaxRate r_lcl 
+    LEFT JOIN {{ source('tpcdi', 'TaxRate') }} AS r_lcl
+        --LEFT JOIN prd.TaxRate r_lcl
         ON c.lcl_tx_id = r_lcl.tx_id
-    LEFT JOIN {{ source('tpcdi', 'TaxRate') }} r_nat
-        --LEFT JOIN prd.TaxRate r_nat 
+    LEFT JOIN {{ source('tpcdi', 'TaxRate') }} AS r_nat
+        --LEFT JOIN prd.TaxRate r_nat
         ON c.nat_tx_id = r_nat.tx_id
-    LEFT JOIN {{ ref('prospect') }} p
-        --LEFT JOIN dbo.Prospect p 
+    LEFT JOIN {{ ref('prospect') }} AS p
+        --LEFT JOIN dbo.Prospect p
         ON
             UPPER(p.lastname) = UPPER(c.lastname)
             AND UPPER(p.firstname) = UPPER(c.firstname)
