@@ -15,8 +15,8 @@ SELECT
     trade.sk_createtimeid,
     trade.sk_closedateid,
     trade.sk_closetimeid,
-    st_name status,
-    tt_name type,
+    st_name AS status,
+    tt_name AS type, -- noqa: RF04
     trade.cashflag,
     sk_securityid,
     sk_companyid,
@@ -62,32 +62,32 @@ FROM (
                         tradeid,
                         MIN(CONVERT(DATE, t_dts))
                             OVER (PARTITION BY tradeid)
-                            createdate,
+                            AS createdate,
                         t_dts,
-                        --coalesce(sk_createdateid, last_value(sk_createdateid) IGNORE NULLS OVER (
+                        --coalesce(sk_createdateid, last_value(sk_createdateid) IGNORE NULLS OVER ( -- noqa: LT05
                         COALESCE(
                             sk_createdateid, LAST_VALUE(sk_createdateid) OVER (
                                 PARTITION BY tradeid ORDER BY t_dts
                             )
-                        ) sk_createdateid,
-                        --coalesce(sk_createtimeid, last_value(sk_createtimeid) IGNORE NULLS OVER (
+                        ) AS sk_createdateid,
+                        --coalesce(sk_createtimeid, last_value(sk_createtimeid) IGNORE NULLS OVER ( -- noqa: LT05
                         COALESCE(
                             sk_createtimeid, LAST_VALUE(sk_createtimeid) OVER (
                                 PARTITION BY tradeid ORDER BY t_dts
                             )
-                        ) sk_createtimeid,
-                        --coalesce(sk_closedateid, last_value(sk_closedateid) IGNORE NULLS OVER (
+                        ) AS sk_createtimeid,
+                        --coalesce(sk_closedateid, last_value(sk_closedateid) IGNORE NULLS OVER ( -- noqa: LT05
                         COALESCE(
                             sk_closedateid, LAST_VALUE(sk_closedateid) OVER (
                                 PARTITION BY tradeid ORDER BY t_dts
                             )
-                        ) sk_closedateid,
-                        --coalesce(sk_closetimeid, last_value(sk_closetimeid) IGNORE NULLS OVER (
+                        ) AS sk_closedateid,
+                        --coalesce(sk_closetimeid, last_value(sk_closetimeid) IGNORE NULLS OVER ( -- noqa: LT05
                         COALESCE(
                             sk_closetimeid, LAST_VALUE(sk_closetimeid) OVER (
                                 PARTITION BY tradeid ORDER BY t_dts
                             )
-                        ) sk_closetimeid,
+                        ) AS sk_closetimeid,
                         cashflag,
                         t_st_id,
                         t_tt_id,
@@ -104,77 +104,78 @@ FROM (
                     FROM
                         (
                             SELECT
-                                tradeid,
-                                t_dts,
+                                t.tradeid,
+                                t.t_dts,
                                 CASE
-                                    WHEN create_flg > 0 THEN sk_dateid ELSE
+                                    WHEN t.create_flg > 0 THEN sk_dateid ELSE
                                         CAST(null AS BIGINT)
-                                END sk_createdateid,
+                                END AS sk_createdateid,
                                 CASE
-                                    WHEN create_flg > 0 THEN sk_timeid ELSE
+                                    WHEN t.create_flg > 0 THEN sk_timeid ELSE
                                         CAST(null AS BIGINT)
-                                END sk_createtimeid,
+                                END AS sk_createtimeid,
                                 CASE
-                                    WHEN create_flg = 0 THEN sk_dateid ELSE
+                                    WHEN t.create_flg = 0 THEN sk_dateid ELSE
                                         CAST(null AS BIGINT)
-                                END sk_closedateid,
+                                END AS sk_closedateid,
                                 CASE
-                                    WHEN create_flg = 0 THEN sk_timeid ELSE
+                                    WHEN t.create_flg = 0 THEN sk_timeid ELSE
                                         CAST(null AS BIGINT)
-                                END sk_closetimeid,
+                                END AS sk_closetimeid,
                                 CASE
-                                    WHEN t_is_cash = 1 THEN CAST(1 AS BIT)
-                                    WHEN t_is_cash = 0 THEN CAST(0 AS BIT)
+                                    WHEN t.t_is_cash = 1 THEN CAST(1 AS BIT)
+                                    WHEN t.t_is_cash = 0 THEN CAST(0 AS BIT)
                                     ELSE CAST(null AS BIT)
                                 END AS cashflag,
-                                t_st_id,
-                                t_tt_id,
-                                t_s_symb,
-                                quantity,
-                                bidprice,
-                                t_ca_id,
-                                executedby,
-                                tradeprice,
-                                fee,
-                                commission,
-                                tax,
+                                t.t_st_id,
+                                t.t_tt_id,
+                                t.t_s_symb,
+                                t.quantity,
+                                t.bidprice,
+                                t.t_ca_id,
+                                t.executedby,
+                                t.tradeprice,
+                                t.fee,
+                                t.commission,
+                                t.tax,
                                 t.batchid
                             FROM (
                                 SELECT
-                                    t_id tradeid,
-                                    th_dts t_dts,
-                                    t_st_id,
-                                    t_tt_id,
-                                    t_is_cash,
-                                    t_s_symb,
-                                    t_qty AS quantity,
-                                    t_bid_price AS bidprice,
-                                    t_ca_id,
-                                    t_exec_name AS executedby,
-                                    t_trade_price AS tradeprice,
-                                    t_chrg AS fee,
-                                    t_comm AS commission,
-                                    t_tax AS tax,
-                                    1 batchid,
+                                    t.t_id AS tradeid,
+                                    th.th_dts AS t_dts,
+                                    t.t_st_id,
+                                    t.t_tt_id,
+                                    t.t_is_cash,
+                                    t.t_s_symb,
+                                    t.t_qty AS quantity,
+                                    t.t_bid_price AS bidprice,
+                                    t.t_ca_id,
+                                    t.t_exec_name AS executedby,
+                                    t.t_trade_price AS tradeprice,
+                                    t.t_chrg AS fee,
+                                    t.t_comm AS commission,
+                                    t.t_tax AS tax,
+                                    1 AS batchid,
                                     CASE
                                         WHEN
                                             (
-                                                th_st_id = 'SBMT'
-                                                AND t_tt_id IN ('TMB', 'TMS')
+                                                th.th_st_id = 'SBMT'
+                                                AND t.t_tt_id IN ('TMB', 'TMS')
                                             )
-                                            OR th_st_id = 'PNDG'
+                                            OR th.th_st_id = 'PNDG'
                                             THEN CAST(1 AS BIT)
                                         WHEN
-                                            th_st_id IN ('CMPT', 'CNCL')
+                                            th.th_st_id IN ('CMPT', 'CNCL')
                                             THEN CAST(0 AS BIT)
                                         ELSE CAST(null AS BIT)
                                     END AS create_flg
-                                FROM {{ ref('TradeHistory') }} t
-                                    JOIN {{ ref('TradeHistoryRaw') }} th
-                                        ON th_t_id = t_id
+                                FROM {{ ref('TradeHistory') }} AS t
+                                    INNER JOIN
+                                        {{ ref('TradeHistoryRaw') }} AS th
+                                        ON th.th_t_id = t.t_id
                                 UNION ALL
                                 SELECT
-                                    t_id tradeid,
+                                    t_id AS tradeid,
                                     t_dts,
                                     t_st_id,
                                     t_tt_id,
@@ -196,31 +197,33 @@ FROM (
                                             THEN CAST(0 AS BIT)
                                         ELSE CAST(null AS BIT)
                                     END AS create_flg
-                                FROM {{ ref('TradeIncremental') }} t
-                            ) t
-                                JOIN {{ ref('DimDate') }} dd
+                                FROM {{ ref('TradeIncremental') }} AS t
+                            ) AS t
+                                INNER JOIN {{ ref('DimDate') }} AS dd
                                     ON CONVERT(DATE, t.t_dts) = dd.datevalue
-                                JOIN {{ ref('DimTime') }} dt
+                                INNER JOIN {{ ref('DimTime') }} AS dt
                                     ON CONVERT(TIME, t.t_dts) = dt.timevalue
-                        ) t0
-                ) t1
-        ) t2
+                        ) AS t0
+                ) AS t1
+        ) AS t2
     WHERE t2.rownum = 1
 --  QUALIFY ROW_NUMBER() OVER (PARTITION BY tradeid ORDER BY t_dts desc) = 1
-) trade
-    JOIN {{ ref('StatusType') }} status
+) AS trade
+    INNER JOIN {{ ref('StatusType') }} AS status
         ON status.st_id = trade.t_st_id
-    JOIN {{ ref('TradeType') }} tt
+    INNER JOIN {{ ref('TradeType') }} AS tt
         ON tt.tt_id = trade.t_tt_id
-    -- Converts to LEFT JOIN if this is run as DQ EDITION. On some higher Scale Factors, a small number of Security symbols or Account IDs are missing from DimSecurity/DimAccount, causing audit check failures. 
-    --${dq_left_flg} 
-    LEFT JOIN {{ ref('DimSecurity') }} ds
+    -- Converts to LEFT JOIN if this is run as DQ EDITION. On some higher Scale
+    -- Factors, a small number of Security symbols or Account IDs are missing
+    -- from DimSecurity/DimAccount, causing audit check failures.
+    --${dq_left_flg}
+    LEFT JOIN {{ ref('DimSecurity') }} AS ds
         ON
             ds.symbol = trade.t_s_symb
             AND createdate >= ds.effectivedate
             AND createdate < ds.enddate
-    --${dq_left_flg} 
-    LEFT JOIN {{ ref('DimAccount') }} da
+    --${dq_left_flg}
+    LEFT JOIN {{ ref('DimAccount') }} AS da
         ON
             trade.t_ca_id = da.accountid
             AND createdate >= da.effectivedate
