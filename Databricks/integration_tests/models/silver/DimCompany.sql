@@ -37,7 +37,7 @@ FROM (
                 'D'
             ),
             sprating,
-            CAST(null AS STRING)
+            CAST(NULL AS STRING)
         ) sprating,
         CASE
             WHEN
@@ -53,7 +53,7 @@ FROM (
                     'BBB+',
                     'BBB-'
                 )
-                THEN false
+                THEN FALSE
             WHEN
                 sprating IN (
                     'BB',
@@ -69,8 +69,8 @@ FROM (
                     'B-',
                     'CCC-'
                 )
-                THEN true
-            ELSE CAST(null AS BOOLEAN)
+                THEN TRUE
+            ELSE CAST(NULL AS BOOLEAN)
         END AS islowgrade,
         ceoname ceo,
         addrline1 addressline1,
@@ -82,7 +82,7 @@ FROM (
         description,
         foundingdate,
         NVL2(
-            LEAD(pts) OVER (PARTITION BY cik ORDER BY pts), true, false
+            LEAD(pts) OVER (PARTITION BY cik ORDER BY pts), TRUE, FALSE
         ) iscurrent,
         1 batchid,
         DATE(pts) effectivedate,
@@ -107,7 +107,7 @@ FROM (
             TO_DATE(
                 IFF(
                     TRIM(SUBSTRING(value, 99, 8)) = '',
-                    null,
+                    NULL,
                     SUBSTRING(value, 99, 8)
                 ),
                 'yyyyMMdd'

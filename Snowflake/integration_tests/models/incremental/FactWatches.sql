@@ -38,9 +38,9 @@ FROM (
             SELECT
                 wh.w_c_id customerid,
                 wh.w_s_symb symbol,
-                IFF(w_action = 'ACTV', d.sk_dateid, null) sk_dateid_dateplaced,
-                IFF(w_action = 'CNCL', d.sk_dateid, null) sk_dateid_dateremoved,
-                IFF(w_action = 'ACTV', d.datevalue, null) dateplaced,
+                IFF(w_action = 'ACTV', d.sk_dateid, NULL) sk_dateid_dateplaced,
+                IFF(w_action = 'CNCL', d.sk_dateid, NULL) sk_dateid_dateremoved,
+                IFF(w_action = 'ACTV', d.datevalue, NULL) dateplaced,
                 wh.w_dts,
                 batchid
             FROM (

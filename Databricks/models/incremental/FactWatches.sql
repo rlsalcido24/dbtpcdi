@@ -39,13 +39,13 @@ FROM (
                 wh.w_c_id AS customerid,
                 wh.w_s_symb AS symbol,
                 IF(
-                    w_action = 'ACTV', d.sk_dateid, null
+                    w_action = 'ACTV', d.sk_dateid, NULL
                 ) AS sk_dateid_dateplaced,
                 IF(
-                    w_action = 'CNCL', d.sk_dateid, null
+                    w_action = 'CNCL', d.sk_dateid, NULL
                 ) AS sk_dateid_dateremoved,
                 IF(
-                    w_action = 'ACTV', d.datevalue, null
+                    w_action = 'ACTV', d.datevalue, NULL
                 ) AS dateplaced,
                 wh.w_dts,
                 batchid

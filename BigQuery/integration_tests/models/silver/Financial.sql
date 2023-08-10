@@ -14,7 +14,7 @@ FROM (
                     CHAR_LENGTH(CAST(conameorcik AS STRING)) <= 10
                     THEN SAFE_CAST(conameorcik AS INT64)
                 ELSE
-                    null
+                    NULL
             END AS STRING)
             ,
             SAFE_CAST(CASE
@@ -23,7 +23,7 @@ FROM (
                     OR SAFE_CAST(conameorcik AS INT64) IS NULL
                     THEN conameorcik
                 ELSE
-                    null
+                    NULL
             END
             AS STRING)
         ) AS cik

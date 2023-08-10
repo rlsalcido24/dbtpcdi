@@ -108,24 +108,24 @@ FROM (
                                 t.t_dts,
                                 CASE
                                     WHEN t.create_flg > 0 THEN sk_dateid ELSE
-                                        CAST(null AS BIGINT)
+                                        CAST(NULL AS BIGINT)
                                 END AS sk_createdateid,
                                 CASE
                                     WHEN t.create_flg > 0 THEN sk_timeid ELSE
-                                        CAST(null AS BIGINT)
+                                        CAST(NULL AS BIGINT)
                                 END AS sk_createtimeid,
                                 CASE
                                     WHEN t.create_flg = 0 THEN sk_dateid ELSE
-                                        CAST(null AS BIGINT)
+                                        CAST(NULL AS BIGINT)
                                 END AS sk_closedateid,
                                 CASE
                                     WHEN t.create_flg = 0 THEN sk_timeid ELSE
-                                        CAST(null AS BIGINT)
+                                        CAST(NULL AS BIGINT)
                                 END AS sk_closetimeid,
                                 CASE
                                     WHEN t.t_is_cash = 1 THEN CAST(1 AS BIT)
                                     WHEN t.t_is_cash = 0 THEN CAST(0 AS BIT)
-                                    ELSE CAST(null AS BIT)
+                                    ELSE CAST(NULL AS BIT)
                                 END AS cashflag,
                                 t.t_st_id,
                                 t.t_tt_id,
@@ -167,7 +167,7 @@ FROM (
                                         WHEN
                                             th.th_st_id IN ('CMPT', 'CNCL')
                                             THEN CAST(0 AS BIT)
-                                        ELSE CAST(null AS BIT)
+                                        ELSE CAST(NULL AS BIT)
                                     END AS create_flg
                                 FROM {{ ref('TradeHistory') }} AS t
                                     INNER JOIN
@@ -195,7 +195,7 @@ FROM (
                                         WHEN
                                             t_st_id IN ('CMPT', 'CNCL')
                                             THEN CAST(0 AS BIT)
-                                        ELSE CAST(null AS BIT)
+                                        ELSE CAST(NULL AS BIT)
                                     END AS create_flg
                                 FROM {{ ref('TradeIncremental') }} AS t
                             ) AS t

@@ -39,7 +39,7 @@ FROM (
         fi_out_dilut,
         ISNULL(CAST(CASE
             WHEN TRIM(conameorcik) ~ '^[0-9]+$' THEN TRIM(conameorcik)
-            ELSE null
+            ELSE NULL
         END::BIGINT AS VARCHAR), conameorcik) conameorcik
     FROM (
         SELECT

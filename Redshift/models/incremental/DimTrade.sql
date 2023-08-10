@@ -125,34 +125,34 @@ FROM (
                                     WHEN
                                         t.create_flg > 0
                                         THEN CAST(sk_dateid AS BIGINT)
-                                    ELSE CAST(null AS BIGINT)
+                                    ELSE CAST(NULL AS BIGINT)
                                 END AS sk_createdateid,
                                 --if(create_flg, sk_timeid, cast(NULL AS BIGINT)) sk_createtimeid, -- noqa: LT05
                                 CASE
                                     WHEN
                                         t.create_flg > 0
                                         THEN CAST(sk_dateid AS BIGINT)
-                                    ELSE CAST(null AS BIGINT)
+                                    ELSE CAST(NULL AS BIGINT)
                                 END AS sk_createtimeid,
                                 --if(!create_flg, sk_dateid, cast(NULL AS BIGINT)) sk_closedateid, -- noqa: LT05
                                 CASE
                                     WHEN
                                         t.create_flg = 0
                                         THEN CAST(sk_dateid AS BIGINT)
-                                    ELSE CAST(null AS BIGINT)
+                                    ELSE CAST(NULL AS BIGINT)
                                 END AS sk_closedateid,
                                 --if(!create_flg, sk_timeid, cast(NULL AS BIGINT)) sk_closetimeid, -- noqa: LT05
                                 CASE
                                     WHEN
                                         t.create_flg = 0
                                         THEN CAST(sk_dateid AS BIGINT)
-                                    ELSE CAST(null AS BIGINT)
+                                    ELSE CAST(NULL AS BIGINT)
                                 END AS sk_closetimeid,
                                 CASE
                                     WHEN t.t_is_cash = 1 THEN CAST(1 AS BOOLEAN)
                                     WHEN t.t_is_cash = 0 THEN CAST(0 AS BOOLEAN)
                                     --ELSE cast(null as BOOLEAN) END AS cashflag, -- noqa: LT05
-                                    ELSE CAST(null AS BOOLEAN)
+                                    ELSE CAST(NULL AS BOOLEAN)
                                 END AS cashflag,
                                 t.t_st_id,
                                 t.t_tt_id,

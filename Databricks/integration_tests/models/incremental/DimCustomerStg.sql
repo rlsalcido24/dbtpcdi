@@ -91,8 +91,8 @@ SELECT * FROM (
         batchid,
         NVL2(
             LEAD(update_ts) OVER (PARTITION BY customerid ORDER BY update_ts),
-            false,
-            true
+            FALSE,
+            TRUE
         ) iscurrent,
         DATE(update_ts) effectivedate,
         COALESCE(

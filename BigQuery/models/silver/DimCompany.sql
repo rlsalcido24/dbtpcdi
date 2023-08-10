@@ -31,7 +31,7 @@ SELECT -- noqa: ST06
         'CC',
         'C',
         'D'
-    ), sprating, CAST(null AS STRING
+    ), sprating, CAST(NULL AS STRING
     )) AS sprating,
     CASE
         WHEN
@@ -47,7 +47,7 @@ SELECT -- noqa: ST06
                 'BBB+',
                 'BBB-'
             )
-            THEN false
+            THEN FALSE
         WHEN sprating IN (
             'BB',
             'B',
@@ -61,9 +61,9 @@ SELECT -- noqa: ST06
             'BB-',
             'B-',
             'CCC-'
-        ) THEN true
+        ) THEN TRUE
         ELSE
-            CAST(null AS BOOLEAN)
+            CAST(NULL AS BOOLEAN)
     END
         AS islowgrade,
     ceoname AS ceo,
@@ -76,7 +76,7 @@ SELECT -- noqa: ST06
     description,
     foundingdate,
     COALESCE(
-        LEAD(pts) OVER (PARTITION BY cik ORDER BY pts) IS NOT NULL, false
+        LEAD(pts) OVER (PARTITION BY cik ORDER BY pts) IS NOT NULL, FALSE
     ) AS iscurrent,
     1 AS batchid,
     DATE(pts) AS effectivedate,
@@ -97,7 +97,7 @@ FROM (
             '%E4Y%m%d',
             IF(
                 CAST(TRIM(SUBSTRING(value, 99, 8)) AS STRING) = '',
-                null,
+                NULL,
                 CAST(TRIM(SUBSTRING(value, 99, 8)) AS STRING)
             )
         ) AS foundingdate,

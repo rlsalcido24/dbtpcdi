@@ -41,7 +41,7 @@ FROM (
                     'D'
                 )
                 THEN cmp.sprating
-            ELSE CAST(null AS VARCHAR(4))
+            ELSE CAST(NULL AS VARCHAR(4))
         END AS sprating,
         CASE
             WHEN
@@ -74,7 +74,7 @@ FROM (
                     'CCC-'
                 )
                 THEN 1
-            ELSE CAST(null AS BIT)
+            ELSE CAST(NULL AS BIT)
         END AS islowgrade,
         cmp.ceoname AS ceo,
         cmp.addrline1 AS addressline1,
@@ -123,7 +123,7 @@ FROM (
             CONVERT(
                 DATE,
                 CASE
-                    WHEN TRIM(SUBSTRING(value, 99, 8)) = '' THEN null ELSE
+                    WHEN TRIM(SUBSTRING(value, 99, 8)) = '' THEN NULL ELSE
                         SUBSTRING(value, 99, 8)
                 END,
                 112

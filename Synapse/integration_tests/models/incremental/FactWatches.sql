@@ -68,19 +68,19 @@ FROM
                                         WHEN
                                             w_action = 'ACTV'
                                             THEN d.sk_dateid
-                                        ELSE null
+                                        ELSE NULL
                                     END sk_dateid_dateplaced,
                                     CASE
                                         WHEN
                                             w_action = 'CNCL'
                                             THEN d.sk_dateid
-                                        ELSE null
+                                        ELSE NULL
                                     END sk_dateid_dateremoved,
                                     CASE
                                         WHEN
                                             w_action = 'ACTV'
                                             THEN d.datevalue
-                                        ELSE null
+                                        ELSE NULL
                                     END dateplaced,
                                     wh.w_dts,
                                     batchid

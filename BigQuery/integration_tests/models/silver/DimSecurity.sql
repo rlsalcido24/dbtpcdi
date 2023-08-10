@@ -15,7 +15,7 @@ SELECT
     firsttrade,
     firsttradeonexchange,
     dividend,
-    IF(enddate = DATE('9999-12-31'), true, false) iscurrent,
+    IF(enddate = DATE('9999-12-31'), TRUE, FALSE) iscurrent,
     1 batchid,
     effectivedate,
     CONCAT(exchangeid, '-', effectivedate) AS sk_securityid,
@@ -48,7 +48,7 @@ FROM (
                         CHAR_LENGTH(CAST(conameorcik AS STRING)) <= 10
                         THEN SAFE_CAST(conameorcik AS INT64)
                     ELSE
-                        null
+                        NULL
                 END AS STRING)
                 ,
                 SAFE_CAST(CASE
@@ -57,7 +57,7 @@ FROM (
                         OR SAFE_CAST(conameorcik AS INT64) IS NULL
                         THEN conameorcik
                     ELSE
-                        null
+                        NULL
                 END
                 AS STRING)
             ) AS cik,

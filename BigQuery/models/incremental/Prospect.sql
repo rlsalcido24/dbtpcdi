@@ -8,7 +8,7 @@ SELECT
     recdate.sk_dateid AS sk_recorddateid,
     origdate.sk_dateid AS sk_updatedateid,
     p.batchid,
-    IF(c.customerid IS NOT NULL, true, false) AS iscustomer,
+    IF(c.customerid IS NOT NULL, TRUE, FALSE) AS iscustomer,
     p.lastname,
     p.firstname,
     p.middleinitial,
@@ -80,7 +80,7 @@ SELECT
                 )
             ) - 1
         ),
-        null
+        NULL
     ) AS marketingnameplate
 FROM (
     SELECT

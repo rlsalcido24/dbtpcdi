@@ -82,21 +82,21 @@ FROM
                                         WHEN
                                             w_action = 'ACTV'
                                             THEN d.sk_dateid
-                                        ELSE null
+                                        ELSE NULL
                                     END sk_dateid_dateplaced,
                                     --if(w_action = 'CNCL', d.sk_dateid, null) sk_dateid_dateremoved,
                                     CASE
                                         WHEN
                                             w_action = 'CNCL'
                                             THEN d.sk_dateid
-                                        ELSE null
+                                        ELSE NULL
                                     END sk_dateid_dateremoved,
                                     --if(w_action = 'ACTV', d.datevalue, null) dateplaced,
                                     CASE
                                         WHEN
                                             w_action = 'ACTV'
                                             THEN d.datevalue
-                                        ELSE null
+                                        ELSE NULL
                                     END dateplaced,
                                     wh.w_dts,
                                     batchid

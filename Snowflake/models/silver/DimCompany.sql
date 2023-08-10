@@ -36,7 +36,7 @@ FROM (
                 'D'
             ),
             cmp.sprating,
-            CAST(null AS STRING)
+            CAST(NULL AS STRING)
         ) AS sprating,
         CASE
             WHEN
@@ -52,7 +52,7 @@ FROM (
                     'BBB+',
                     'BBB-'
                 )
-                THEN false
+                THEN FALSE
             WHEN
                 sprating IN (
                     'BB',
@@ -68,8 +68,8 @@ FROM (
                     'B-',
                     'CCC-'
                 )
-                THEN true
-            ELSE CAST(null AS BOOLEAN)
+                THEN TRUE
+            ELSE CAST(NULL AS BOOLEAN)
         END AS islowgrade,
         cmp.ceoname AS ceo,
         cmp.addrline1 AS addressline1,
@@ -82,8 +82,8 @@ FROM (
         cmp.foundingdate,
         NVL2(
             LEAD(cmp.pts) OVER (PARTITION BY cmp.cik ORDER BY cmp.pts),
-            true,
-            false
+            TRUE,
+            FALSE
         )
             AS iscurrent,
         1 AS batchid,
@@ -104,7 +104,7 @@ FROM (
             TO_DATE(
                 IFF(
                     TRIM(SUBSTRING(value, 99, 8)) = '',
-                    null,
+                    NULL,
                     SUBSTRING(value, 99, 8)
                 ),
                 'yyyyMMdd'

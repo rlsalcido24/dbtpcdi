@@ -45,7 +45,7 @@ FROM (
                     'D'
                 )
                 THEN sprating
-            ELSE CAST(null AS VARCHAR(4))
+            ELSE CAST(NULL AS VARCHAR(4))
         END sprating,
         --    CASE
         --      WHEN SPrating IN ('AAA','AA','A','AA+','A+','AA-','A-','BBB','BBB+','BBB-') THEN false

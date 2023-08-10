@@ -15,7 +15,7 @@ SELECT
     firsttrade,
     firsttradeonexchange,
     dividend,
-    IFF(enddate = DATE('9999-12-31'), true, false) iscurrent,
+    IFF(enddate = DATE('9999-12-31'), TRUE, FALSE) iscurrent,
     1 batchid,
     effectivedate,
     CONCAT(exchangeid, '-', effectivedate) AS sk_securityid,

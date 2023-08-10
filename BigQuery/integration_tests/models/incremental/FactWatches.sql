@@ -63,17 +63,17 @@ FROM (
                 IF(
                     w_action = 'ACTV',
                     d.sk_dateid,
-                    null
+                    NULL
                 ) sk_dateid_dateplaced,
                 IF(
                     w_action = 'CNCL',
                     d.sk_dateid,
-                    null
+                    NULL
                 ) sk_dateid_dateremoved,
                 IF(
                     w_action = 'ACTV',
                     d.datevalue,
-                    null
+                    NULL
                 ) dateplaced,
                 wh.w_dts,
                 batchid

@@ -15,7 +15,7 @@ SELECT
     firsttrade,
     firsttradeonexchange,
     dividend,
-    IF(enddate = DATE('9999-12-31'), true, false) iscurrent,
+    IF(enddate = DATE('9999-12-31'), TRUE, FALSE) iscurrent,
     1 batchid,
     effectivedate,
     BIGINT(

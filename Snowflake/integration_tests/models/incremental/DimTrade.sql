@@ -69,16 +69,16 @@ FROM (
             SELECT
                 tradeid,
                 t_dts,
-                IFF(create_flg, sk_dateid, CAST(null AS BIGINT))
+                IFF(create_flg, sk_dateid, CAST(NULL AS BIGINT))
                     sk_createdateid,
-                IFF(create_flg, sk_timeid, CAST(null AS BIGINT))
+                IFF(create_flg, sk_timeid, CAST(NULL AS BIGINT))
                     sk_createtimeid,
-                IFF(create_flg, sk_dateid, CAST(null AS BIGINT)) sk_closedateid,
-                IFF(create_flg, sk_timeid, CAST(null AS BIGINT)) sk_closetimeid,
+                IFF(create_flg, sk_dateid, CAST(NULL AS BIGINT)) sk_closedateid,
+                IFF(create_flg, sk_timeid, CAST(NULL AS BIGINT)) sk_closetimeid,
                 CASE
-                    WHEN t_is_cash = 1 THEN true
-                    WHEN t_is_cash = 0 THEN false
-                    ELSE CAST(null AS BOOLEAN)
+                    WHEN t_is_cash = 1 THEN TRUE
+                    WHEN t_is_cash = 0 THEN FALSE
+                    ELSE CAST(NULL AS BOOLEAN)
                 END AS cashflag,
                 t_st_id,
                 t_tt_id,
@@ -113,9 +113,9 @@ FROM (
                         WHEN
                             (th_st_id = 'SBMT' AND t_tt_id IN ('TMB', 'TMS'))
                             OR th_st_id = 'PNDG'
-                            THEN true
-                        WHEN th_st_id IN ('CMPT', 'CNCL') THEN false
-                        ELSE CAST(null AS BOOLEAN)
+                            THEN TRUE
+                        WHEN th_st_id IN ('CMPT', 'CNCL') THEN FALSE
+                        ELSE CAST(NULL AS BOOLEAN)
                     END AS create_flg
                 FROM {{ source('tpcdi', 'TradeHistory') }} t
                     JOIN {{ source('tpcdi', 'TradeHistoryRaw') }} th
@@ -138,9 +138,9 @@ FROM (
                     t_tax AS tax,
                     t.batchid,
                     CASE
-                        WHEN cdc_flag = 'I' THEN true
-                        WHEN t_st_id IN ('CMPT', 'CNCL') THEN false
-                        ELSE CAST(null AS BOOLEAN)
+                        WHEN cdc_flag = 'I' THEN TRUE
+                        WHEN t_st_id IN ('CMPT', 'CNCL') THEN FALSE
+                        ELSE CAST(NULL AS BOOLEAN)
                     END AS create_flg
                 FROM {{ ref('TradeIncremental') }} t
             ) t

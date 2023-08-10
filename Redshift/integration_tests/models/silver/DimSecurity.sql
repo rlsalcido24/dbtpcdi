@@ -64,7 +64,7 @@ FROM (
                     WHEN
                         conameorcik SIMILAR TO '[0-9]+(.[0-9][0-9])?'
                         THEN conameorcik::INTEGER
-                    ELSE null
+                    ELSE NULL
                 END AS VARCHAR
             ),
             conameorcik) conameorcik,

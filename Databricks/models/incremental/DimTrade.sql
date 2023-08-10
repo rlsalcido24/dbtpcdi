@@ -70,10 +70,10 @@ FROM (
                 t.tradeid,
                 t.t_dts,
                 IF(
-                    t.create_flg, sk_dateid, CAST(null AS BIGINT)
+                    t.create_flg, sk_dateid, CAST(NULL AS BIGINT)
                 ) AS sk_createdateid,
                 IF(
-                    t.create_flg, sk_timeid, CAST(null AS BIGINT)
+                    t.create_flg, sk_timeid, CAST(NULL AS BIGINT)
                 ) AS sk_createtimeid,
                 -- TODO: ! THROWS PARSING ERROR FOR SQLFLUFF
                 -- IF(
@@ -83,9 +83,9 @@ FROM (
                 --     !t.create_flg, sk_timeid, cast(NULL AS BIGINT)
                 -- ) AS sk_closetimeid,
                 CASE
-                    WHEN t.t_is_cash = 1 THEN true
-                    WHEN t.t_is_cash = 0 THEN false
-                    ELSE CAST(null AS BOOLEAN)
+                    WHEN t.t_is_cash = 1 THEN TRUE
+                    WHEN t.t_is_cash = 0 THEN FALSE
+                    ELSE CAST(NULL AS BOOLEAN)
                 END AS cashflag,
                 t.t_st_id,
                 t.t_tt_id,
@@ -122,9 +122,9 @@ FROM (
                             AND t.t_tt_id IN ('TMB', 'TMS')
                         )
                         OR th.th_st_id = 'PNDG'
-                            THEN true
-                        WHEN th.th_st_id IN ('CMPT', 'CNCL') THEN false
-                        ELSE CAST(null AS BOOLEAN)
+                            THEN TRUE
+                        WHEN th.th_st_id IN ('CMPT', 'CNCL') THEN FALSE
+                        ELSE CAST(NULL AS BOOLEAN)
                     END AS create_flg
                 FROM {{ source('tpcdi', 'TradeHistory') }} AS t
                     INNER JOIN {{ source('tpcdi', 'TradeHistoryRaw') }} AS th
@@ -147,9 +147,9 @@ FROM (
                     t_tax AS tax,
                     t.batchid,
                     CASE
-                        WHEN cdc_flag = 'I' THEN true
-                        WHEN t_st_id IN ('CMPT', 'CNCL') THEN false
-                        ELSE CAST(null AS BOOLEAN)
+                        WHEN cdc_flag = 'I' THEN TRUE
+                        WHEN t_st_id IN ('CMPT', 'CNCL') THEN FALSE
+                        ELSE CAST(NULL AS BOOLEAN)
                     END AS create_flg
                 FROM {{ ref('TradeIncremental') }} AS t
             ) AS t

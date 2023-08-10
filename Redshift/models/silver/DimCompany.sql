@@ -45,7 +45,7 @@ FROM (
                     'D'
                 )
                 THEN cmp.sprating
-            ELSE CAST(null AS VARCHAR(4))
+            ELSE CAST(NULL AS VARCHAR(4))
         END AS sprating,
         --    CASE
         --      WHEN cmp.sprating IN ('AAA','AA','A','AA+','A+','AA-','A-','BBB','BBB+','BBB-') THEN false -- noqa: LT05

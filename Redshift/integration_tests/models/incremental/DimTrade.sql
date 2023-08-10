@@ -125,34 +125,34 @@ FROM (
                                     WHEN
                                         create_flg > 0
                                         THEN CAST(sk_dateid AS BIGINT)
-                                    ELSE CAST(null AS BIGINT)
+                                    ELSE CAST(NULL AS BIGINT)
                                 END sk_createdateid,
                                 --if(create_flg, sk_timeid, cast(NULL AS BIGINT)) sk_createtimeid,
                                 CASE
                                     WHEN
                                         create_flg > 0
                                         THEN CAST(sk_dateid AS BIGINT)
-                                    ELSE CAST(null AS BIGINT)
+                                    ELSE CAST(NULL AS BIGINT)
                                 END sk_createtimeid,
                                 --if(!create_flg, sk_dateid, cast(NULL AS BIGINT)) sk_closedateid,
                                 CASE
                                     WHEN
                                         create_flg = 0
                                         THEN CAST(sk_dateid AS BIGINT)
-                                    ELSE CAST(null AS BIGINT)
+                                    ELSE CAST(NULL AS BIGINT)
                                 END sk_closedateid,
                                 --if(!create_flg, sk_timeid, cast(NULL AS BIGINT)) sk_closetimeid,
                                 CASE
                                     WHEN
                                         create_flg = 0
                                         THEN CAST(sk_dateid AS BIGINT)
-                                    ELSE CAST(null AS BIGINT)
+                                    ELSE CAST(NULL AS BIGINT)
                                 END sk_closetimeid,
                                 CASE
                                     WHEN t_is_cash = 1 THEN CAST(1 AS BOOLEAN)
                                     WHEN t_is_cash = 0 THEN CAST(0 AS BOOLEAN)
                                     --ELSE cast(null as BOOLEAN) END AS cashflag,
-                                    ELSE CAST(null AS BOOLEAN)
+                                    ELSE CAST(NULL AS BOOLEAN)
                                 END AS cashflag,
                                 t_st_id,
                                 t_tt_id,

@@ -8,7 +8,7 @@ SELECT
     recdate.sk_dateid AS sk_recorddateid,
     origdate.sk_dateid AS sk_updatedateid,
     p.batchid,
-    NVL2(c.customerid, true, false) AS iscustomer,
+    NVL2(c.customerid, TRUE, FALSE) AS iscustomer,
     p.lastname,
     p.firstname,
     p.middleinitial,
@@ -70,7 +70,7 @@ SELECT
             )
             - 1
         ),
-        null
+        NULL
     ) AS marketingnameplate
 FROM (
     SELECT *

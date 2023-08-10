@@ -94,10 +94,10 @@ FROM (
                 --FROM stg.CustomerMgmt c
                 WHERE
                     actiontype NOT IN ('UPDCUST', 'INACT')
-                    AND (TRIM(accountid) = '') IS NOT false
-                    AND (TRIM(customerid) = '') IS NOT false
-                    AND (TRIM(taxstatus) = '') IS NOT false
-                    AND (TRIM(brokerid) = '') IS NOT false
+                    AND (TRIM(accountid) = '') IS NOT FALSE
+                    AND (TRIM(customerid) = '') IS NOT FALSE
+                    AND (TRIM(taxstatus) = '') IS NOT FALSE
+                    AND (TRIM(brokerid) = '') IS NOT FALSE
                 UNION ALL
                 SELECT
                     accountid,

@@ -199,7 +199,7 @@ SELECT
                 ''
             )
         ),
-        CAST(null AS STRING)
+        CAST(NULL AS STRING)
     ) AS phone1,
     NVL2(
         NULLIF(
@@ -292,7 +292,7 @@ SELECT
                 ''
             )
         ),
-        CAST(null AS STRING)
+        CAST(NULL AS STRING)
     ) AS phone2,
     NVL2(
         NULLIF(
@@ -385,7 +385,7 @@ SELECT
                 ''
             )
         ),
-        CAST(null AS STRING)
+        CAST(NULL AS STRING)
     ) AS phone3,
     NULLIF(
         GET(

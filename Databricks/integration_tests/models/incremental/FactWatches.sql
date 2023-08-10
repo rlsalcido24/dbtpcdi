@@ -38,9 +38,9 @@ FROM (
             SELECT
                 wh.w_c_id customerid,
                 wh.w_s_symb symbol,
-                IF(w_action = 'ACTV', d.sk_dateid, null) sk_dateid_dateplaced,
-                IF(w_action = 'CNCL', d.sk_dateid, null) sk_dateid_dateremoved,
-                IF(w_action = 'ACTV', d.datevalue, null) dateplaced,
+                IF(w_action = 'ACTV', d.sk_dateid, NULL) sk_dateid_dateplaced,
+                IF(w_action = 'CNCL', d.sk_dateid, NULL) sk_dateid_dateremoved,
+                IF(w_action = 'ACTV', d.datevalue, NULL) dateplaced,
                 wh.w_dts,
                 batchid
             FROM (

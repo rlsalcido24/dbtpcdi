@@ -13,7 +13,7 @@ SELECT
     employeebranch branch,
     employeeoffice office,
     employeephone phone,
-    true iscurrent,
+    TRUE iscurrent,
     1 batchid,
     (
         SELECT MIN(DATE(datevalue)) AS effectivedate

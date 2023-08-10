@@ -38,11 +38,11 @@ FROM (
             SELECT
                 wh.w_c_id AS customerid,
                 wh.w_s_symb AS symbol,
-                IFF(wh.w_action = 'ACTV', d.sk_dateid, null)
+                IFF(wh.w_action = 'ACTV', d.sk_dateid, NULL)
                     AS sk_dateid_dateplaced,
-                IFF(wh.w_action = 'CNCL', d.sk_dateid, null)
+                IFF(wh.w_action = 'CNCL', d.sk_dateid, NULL)
                     AS sk_dateid_dateremoved,
-                IFF(wh.w_action = 'ACTV', d.datevalue, null) AS dateplaced,
+                IFF(wh.w_action = 'ACTV', d.datevalue, NULL) AS dateplaced,
                 wh.w_dts,
                 wh.batchid
             FROM (
