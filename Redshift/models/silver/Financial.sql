@@ -37,9 +37,9 @@ FROM (
         fi_liability,
         fi_out_basic,
         fi_out_dilut,
-        ISNULL(CAST(CASE
+        ISNULL(CAST(CAST(CASE
             WHEN TRIM(conameorcik) ~ '^[0-9]+$' THEN TRIM(conameorcik)
-        END::BIGINT AS VARCHAR), conameorcik) AS conameorcik
+        END AS BIGINT) AS VARCHAR), conameorcik) AS conameorcik
     FROM (
         SELECT
             TO_TIMESTAMP(SUBSTRING(value, 1, 15), 'YYYYMMDDHH24MISS') AS pts,

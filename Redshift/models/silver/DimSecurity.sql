@@ -18,7 +18,9 @@ SELECT
     firsttradeonexchange,
     dividend,
     --if(enddate = date('9999-12-31'), True, False) iscurrent,
-    CASE WHEN enddate = '9999-12-31'::DATE THEN 1 ELSE 0 END AS iscurrent,
+    CASE
+        WHEN enddate = CAST('9999-12-31' AS DATE) THEN 1 ELSE 0
+    END AS iscurrent,
     1 AS batchid,
     effectivedate,
     CONCAT(CONCAT(exchangeid, '-'), effectivedate) AS sk_securityid,
@@ -59,11 +61,13 @@ FROM (
             fws.firsttradeonexchange,
             fws.dividend,
             COALESCE(CAST(
-                CASE
-                    WHEN
-                        fws.conameorcik SIMILAR TO '[0-9]+(.[0-9][0-9])?'
-                        THEN fws.conameorcik::INTEGER
-                END AS VARCHAR
+                CAST(
+                    CASE
+                        WHEN
+                            fws.conameorcik SIMILAR TO '[0-9]+(.[0-9][0-9])?'
+                            THEN fws.conameorcik
+                    END AS INTEGER
+                ) AS VARCHAR
             ),
             fws.conameorcik) AS conameorcik,
             --nvl(string(cast(conameorcik as bigint)), conameorcik) conameorcik, -- noqa: LT05

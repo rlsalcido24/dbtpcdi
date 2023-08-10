@@ -60,7 +60,7 @@ FROM (
                 (
                     SELECT
                         tradeid,
-                        MIN(CONVERT(DATE, t_dts))
+                        MIN(CAST(t_dts AS DATE))
                             OVER (PARTITION BY tradeid)
                             AS createdate,
                         t_dts,
@@ -200,9 +200,9 @@ FROM (
                                 FROM {{ ref('TradeIncremental') }} AS t
                             ) AS t
                                 INNER JOIN {{ ref('DimDate') }} AS dd
-                                    ON CONVERT(DATE, t.t_dts) = dd.datevalue
+                                    ON CAST(t.t_dts AS DATE) = dd.datevalue
                                 INNER JOIN {{ ref('DimTime') }} AS dt
-                                    ON CONVERT(TIME, t.t_dts) = dt.timevalue
+                                    ON CAST(t.t_dts AS TIME) = dt.timevalue
                         ) AS t0
                 ) AS t1
         ) AS t2

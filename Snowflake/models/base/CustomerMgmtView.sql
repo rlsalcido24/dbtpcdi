@@ -5,17 +5,17 @@
 }}
 
 SELECT
-    GET(XMLGET($1, 'Customer'), '@C_ID')::BIGINT AS customerid,
-    GET(
+    CAST(GET(XMLGET($1, 'Customer'), '@C_ID') AS BIGINT) AS customerid,
+    CAST(GET(
         XMLGET(XMLGET($1, 'Customer'), 'Account'), '@CA_ID'
-    )::BIGINT AS accountid,
-    GET(
+    ) AS BIGINT) AS accountid,
+    CAST(GET(
         XMLGET(XMLGET(XMLGET($1, 'Customer'), 'Account'), 'CA_B_ID'), '$'
-    )::BIGINT AS brokerid,
-    NULLIF(
+    ) AS BIGINT) AS brokerid,
+    CAST(NULLIF(
         GET(XMLGET($1, 'Customer'), '@C_TAX_ID'), ''
-    )::STRING AS taxid,
-    NULLIF(
+    ) AS STRING) AS taxid,
+    CAST(NULLIF(
         GET(
             XMLGET(
                 XMLGET(XMLGET($1, 'Customer'), 'Account'),
@@ -24,10 +24,10 @@ SELECT
             '$'
         ),
         ''
-    )::STRING AS accountdesc,
-    GET(
+    ) AS STRING) AS accountdesc,
+    CAST(GET(
         XMLGET(XMLGET($1, 'Customer'), 'Account'), '@CA_TAX_ST'
-    )::TINYINT AS taxstatus,
+    ) AS TINYINT) AS taxstatus,
     DECODE(
         GET($1, '@ActionType'),
         'NEW',
@@ -43,71 +43,71 @@ SELECT
         'INACT',
         'Inactive'
     ) AS status,
-    NULLIF(
+    CAST(NULLIF(
         GET(
             XMLGET(XMLGET(XMLGET($1, 'Customer'), 'Name'), 'C_L_NAME'),
             '$'
         ),
         ''
-    )::STRING AS lastname,
-    NULLIF(
+    ) AS STRING) AS lastname,
+    CAST(NULLIF(
         GET(
             XMLGET(XMLGET(XMLGET($1, 'Customer'), 'Name'), 'C_F_NAME'),
             '$'
         ),
         ''
-    )::STRING AS firstname,
-    NULLIF(
+    ) AS STRING) AS firstname,
+    CAST(NULLIF(
         GET(
             XMLGET(XMLGET(XMLGET($1, 'Customer'), 'Name'), 'C_M_NAME'),
             '$'
         ),
         ''
-    )::STRING AS middleinitial,
+    ) AS STRING) AS middleinitial,
     NULLIF(UPPER(GET(XMLGET($1, 'Customer'), '@C_GNDR')), '') AS gender,
-    NULLIF(GET(XMLGET($1, 'Customer'), '@C_TIER'), '')::STRING AS tier,
-    GET(XMLGET($1, 'Customer'), '@C_DOB')::DATE AS dob,
-    NULLIF(
+    CAST(NULLIF(GET(XMLGET($1, 'Customer'), '@C_TIER'), '') AS STRING) AS tier,
+    CAST(GET(XMLGET($1, 'Customer'), '@C_DOB') AS DATE) AS dob,
+    CAST(NULLIF(
         GET(
             XMLGET(XMLGET(XMLGET($1, 'Customer'), 'Address'), 'C_ADLINE1'), '$'
         ),
         ''
-    )::STRING AS addressline1,
-    NULLIF(
+    ) AS STRING) AS addressline1,
+    CAST(NULLIF(
         GET(
             XMLGET(XMLGET(XMLGET($1, 'Customer'), 'Address'), 'C_ADLINE2'),
             '$'
         ),
         ''
-    )::STRING AS addressline2,
-    NULLIF(
+    ) AS STRING) AS addressline2,
+    CAST(NULLIF(
         GET(
             XMLGET(XMLGET(XMLGET($1, 'Customer'), 'Address'), 'C_ZIPCODE'),
             '$'
         ),
         ''
-    )::STRING AS postalcode,
-    NULLIF(
+    ) AS STRING) AS postalcode,
+    CAST(NULLIF(
         GET(
             XMLGET(XMLGET(XMLGET($1, 'Customer'), 'Address'), 'C_CITY'),
             '$'
         ),
         ''
-    )::STRING AS city,
-    NULLIF(
+    ) AS STRING) AS city,
+    CAST(NULLIF(
         GET(
             XMLGET(XMLGET(XMLGET($1, 'Customer'), 'Address'), 'C_STATE_PROV'),
             '$'
         ),
         ''
-    )::STRING AS stateprov,
-    NULLIF(
+    ) AS STRING) AS stateprov,
+    CAST(NULLIF(
         GET(
             XMLGET(XMLGET(XMLGET($1, 'Customer'), 'Address'), 'C_CTRY'),
             '$'
         ),
         ''
-    )::STRING AS country,
+    ) AS STRING) AS country,
     NVL2(
         NULLIF(
             GET(
@@ -387,7 +387,7 @@ SELECT
         ),
         CAST(NULL AS STRING)
     ) AS phone3,
-    NULLIF(
+    CAST(NULLIF(
         GET(
             XMLGET(
                 XMLGET(XMLGET($1, 'Customer'), 'ContactInfo'),
@@ -396,8 +396,8 @@ SELECT
             '$'
         ),
         ''
-    )::STRING AS email1,
-    NULLIF(
+    ) AS STRING) AS email1,
+    CAST(NULLIF(
         GET(
             XMLGET(
                 XMLGET(XMLGET($1, 'Customer'), 'ContactInfo'),
@@ -406,15 +406,15 @@ SELECT
             '$'
         ),
         ''
-    )::STRING AS email2,
-    NULLIF(
+    ) AS STRING) AS email2,
+    CAST(NULLIF(
         GET(
             XMLGET(XMLGET(XMLGET($1, 'Customer'), 'TaxInfo'), 'C_LCL_TX_ID'),
             '$'
         ),
         ''
-    )::STRING AS lcl_tx_id,
-    NULLIF(
+    ) AS STRING) AS lcl_tx_id,
+    CAST(NULLIF(
         GET(
             XMLGET(
                 XMLGET(XMLGET($1, 'Customer'), 'TaxInfo'),
@@ -423,9 +423,9 @@ SELECT
             '$'
         ),
         ''
-    )::STRING AS nat_tx_id,
+    ) AS STRING) AS nat_tx_id,
     TO_TIMESTAMP(GET($1, '@ActionTS')) AS update_ts,
-    GET($1, '@ActionType')::STRING AS actiontype
+    CAST(GET($1, '@ActionType') AS STRING) AS actiontype
 FROM
     @{{ var('stage') }}/Batch1 (
         FILE_FORMAT => 'XML', PATTERN => '.*CustomerMgmt[.]xml.*'

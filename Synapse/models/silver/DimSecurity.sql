@@ -16,7 +16,7 @@ SELECT
     firsttrade,
     firsttradeonexchange,
     dividend,
-    CASE WHEN enddate = CONVERT(DATE, '9999-12-31') THEN 1 ELSE 0 END
+    CASE WHEN enddate = CAST('9999-12-31' AS DATE) THEN 1 ELSE 0 END
         AS iscurrent,
     1 AS batchid,
     effectivedate,
@@ -55,7 +55,7 @@ FROM (
             fws.firsttradeonexchange,
             fws.dividend,
             ISNULL(
-                CONVERT(VARCHAR, TRY_CAST(fws.conameorcik AS BIGINT)),
+                CAST(TRY_CAST(fws.conameorcik AS BIGINT) AS VARCHAR),
                 conameorcik
             ) AS conameorcik,
             s.st_name AS status,
@@ -64,12 +64,11 @@ FROM (
                     PARTITION BY fws.symbol
                     ORDER BY fws.effectivedate
                 ),
-                CONVERT(DATE, '9999-12-31')
+                CAST('9999-12-31' AS DATE)
             ) AS enddate
         FROM (
             SELECT
-                CONVERT(
-                    DATE,
+                CAST(
                     CONVERT(
                         DATETIME2,
                         SUBSTRING([value], 1, 8)
@@ -81,6 +80,7 @@ FROM (
                         + SUBSTRING([value], 14, 2),
                         112
                     )
+                    AS DATE
                 ) AS effectivedate,
                 TRIM(SUBSTRING(value, 19, 15)) AS symbol,
                 TRIM(SUBSTRING(value, 34, 6)) AS issue,
