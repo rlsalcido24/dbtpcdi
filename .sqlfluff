@@ -1,5 +1,5 @@
 [sqlfluff]
-exclude_rules = ST06
+exclude_rules = ST06, ST05
 
 [sqlfluff:indentation]
 indented_joins = True
@@ -25,8 +25,7 @@ ignore_words = None
 ignore_words_regex = None
 
 [sqlfluff:rules:capitalisation.literals]
-# TODO: Should be upper
-capitalisation_policy = lower
+capitalisation_policy = upper
 # Comma separated list of words to ignore for this rule
 ignore_words = None
 ignore_words_regex = None
