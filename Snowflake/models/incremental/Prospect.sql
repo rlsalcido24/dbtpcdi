@@ -4,11 +4,11 @@
     )
 }}
 SELECT
-    agencyid,
-    recdate.sk_dateid sk_recorddateid,
-    origdate.sk_dateid sk_updatedateid,
+    p.agencyid,
+    recdate.sk_dateid AS sk_recorddateid,
+    origdate.sk_dateid AS sk_updatedateid,
     p.batchid,
-    NVL2(c.customerid, true, false) iscustomer,
+    NVL2(c.customerid, true, false) AS iscustomer,
     p.lastname,
     p.firstname,
     p.middleinitial,
@@ -16,66 +16,76 @@ SELECT
     p.addressline1,
     p.addressline2,
     p.postalcode,
-    city,
-    state,
-    country,
-    phone,
-    income,
-    numbercars,
-    numberchildren,
-    maritalstatus,
-    age,
-    creditrating,
-    ownorrentflag,
-    employer,
-    numbercreditcards,
-    networth,
+    p.city,
+    p.state,
+    p.country,
+    p.phone,
+    p.income,
+    p.numbercars,
+    p.numberchildren,
+    p.maritalstatus,
+    p.age,
+    p.creditrating,
+    p.ownorrentflag,
+    p.employer,
+    p.numbercreditcards,
+    p.networth,
     IFF(
-        IFF(networth > 1000000 OR income > 200000, 'HighValue+', '')
-        || IFF(numberchildren > 3 OR numbercreditcards > 5, 'Expenses+', '')
-        || IFF(age > 45, 'Boomer+', '')
+        IFF(p.networth > 1000000 OR p.income > 200000, 'HighValue+', '')
+        || IFF(p.numberchildren > 3 OR p.numbercreditcards > 5, 'Expenses+', '')
+        || IFF(p.age > 45, 'Boomer+', '')
         || IFF(
-            income < 50000 OR creditrating < 600 OR networth < 100000,
+            p.income < 50000 OR p.creditrating < 600 OR p.networth < 100000,
             'MoneyAlert+',
             ''
         )
-        || IFF(numbercars > 3 OR numbercreditcards > 7, 'Spender+', '')
-        || IFF(age < 25 AND networth > 1000000, 'Inherited+', '') IS NOT NULL,
+        || IFF(p.numbercars > 3 OR p.numbercreditcards > 7, 'Spender+', '')
+        || IFF(
+            p.age < 25 AND p.networth > 1000000, 'Inherited+', ''
+        ) IS NOT NULL,
         LEFT(
-            IFF(networth > 1000000 OR income > 200000, 'HighValue+', '')
-            || IFF(numberchildren > 3 OR numbercreditcards > 5, 'Expenses+', '')
-            || IFF(age > 45, 'Boomer+', '')
+            IFF(p.networth > 1000000 OR p.income > 200000, 'HighValue+', '')
             || IFF(
-                income < 50000 OR creditrating < 600 OR networth < 100000,
+                p.numberchildren > 3 OR p.numbercreditcards > 5, 'Expenses+', ''
+            )
+            || IFF(p.age > 45, 'Boomer+', '')
+            || IFF(
+                p.income < 50000 OR p.creditrating < 600 OR p.networth < 100000,
                 'MoneyAlert+',
                 ''
             )
-            || IFF(numbercars > 3 OR numbercreditcards > 7, 'Spender+', '')
-            || IFF(age < 25 AND networth > 1000000, 'Inherited+', ''),
+            || IFF(p.numbercars > 3 OR p.numbercreditcards > 7, 'Spender+', '')
+            || IFF(p.age < 25 AND p.networth > 1000000, 'Inherited+', ''),
             LENGTH(
-                IFF(networth > 1000000 OR income > 200000, 'HighValue+', '')
+                IFF(p.networth > 1000000 OR p.income > 200000, 'HighValue+', '')
                 || IFF(
-                    numberchildren > 3 OR numbercreditcards > 5, 'Expenses+', ''
+                    p.numberchildren > 3 OR p.numbercreditcards > 5,
+                    'Expenses+',
+                    ''
                 )
-                || IFF(age > 45, 'Boomer+', '')
+                || IFF(p.age > 45, 'Boomer+', '')
                 || IFF(
-                    income < 50000 OR creditrating < 600 OR networth < 100000,
+                    p.income < 50000
+                    OR p.creditrating < 600
+                    OR p.networth < 100000,
                     'MoneyAlert+',
                     ''
                 )
-                || IFF(numbercars > 3 OR numbercreditcards > 7, 'Spender+', '')
-                || IFF(age < 25 AND networth > 1000000, 'Inherited+', '')
+                || IFF(
+                    p.numbercars > 3 OR p.numbercreditcards > 7, 'Spender+', ''
+                )
+                || IFF(p.age < 25 AND p.networth > 1000000, 'Inherited+', '')
             )
             - 1
         ),
         null
-    ) marketingnameplate
+    ) AS marketingnameplate
 FROM (
     SELECT *
     FROM (
         SELECT
             agencyid,
-            MAX(batchid) recordbatchid,
+            MAX(batchid) AS recordbatchid,
             lastname,
             firstname,
             middleinitial,
@@ -97,8 +107,8 @@ FROM (
             employer,
             numbercreditcards,
             networth,
-            MIN(batchid) batchid
-        FROM {{ ref('ProspectRaw') }} p
+            MIN(batchid) AS batchid
+        FROM {{ ref('ProspectRaw') }} AS p
         GROUP BY
             agencyid,
             lastname,
@@ -124,24 +134,24 @@ FROM (
             networth
     )
     QUALIFY ROW_NUMBER() OVER (PARTITION BY agencyid ORDER BY batchid DESC) = 1
-) p
-    JOIN (
+) AS p
+    INNER JOIN (
         SELECT
             sk_dateid,
             batchid
-        FROM {{ ref('BatchDate') }} b
-            JOIN {{ source('tpcdi', 'DimDate') }} d
+        FROM {{ ref('BatchDate') }} AS b
+            INNER JOIN {{ source('tpcdi', 'DimDate') }} AS d
                 ON b.batchdate = d.datevalue
-    ) recdate
+    ) AS recdate
         ON p.recordbatchid = recdate.batchid
-    JOIN (
+    INNER JOIN (
         SELECT
             sk_dateid,
             batchid
-        FROM {{ ref('BatchDate') }} b
-            JOIN {{ source('tpcdi', 'DimDate') }} d
+        FROM {{ ref('BatchDate') }} AS b
+            INNER JOIN {{ source('tpcdi', 'DimDate') }} AS d
                 ON b.batchdate = d.datevalue
-    ) origdate
+    ) AS origdate
         ON p.batchid = origdate.batchid
     LEFT JOIN (
         SELECT
@@ -153,7 +163,7 @@ FROM (
             postalcode
         FROM {{ ref('DimCustomerStg') }}
         WHERE iscurrent
-    ) c
+    ) AS c
         ON
             UPPER(p.lastname) = UPPER(c.lastname)
             AND UPPER(p.firstname) = UPPER(c.firstname)
