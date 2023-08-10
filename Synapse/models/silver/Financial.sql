@@ -44,18 +44,18 @@ FROM (
         SELECT
             CONVERT(
                 DATETIME2,
-                SUBSTRING([value], 1, 8)
+                SUBSTRING(value, 1, 8)
                 + ' '
-                + SUBSTRING([value], 10, 2)
+                + SUBSTRING(value, 10, 2)
                 + ':'
-                + SUBSTRING([value], 12, 2)
+                + SUBSTRING(value, 12, 2)
                 + ':'
-                + SUBSTRING([value], 14, 2),
+                + SUBSTRING(value, 14, 2),
                 112
             ) AS pts,
             CAST(SUBSTRING(value, 19, 4) AS INT) AS fi_year,
             CAST(SUBSTRING(value, 23, 1) AS INT) AS fi_qtr,
-            CONVERT(DATE, SUBSTRING([value], 24, 8), 112) AS fi_qtr_start_date,
+            CONVERT(DATE, SUBSTRING(value, 24, 8), 112) AS fi_qtr_start_date,
             --float
             CAST(SUBSTRING(value, 40, 17) AS DECIMAL(15, 2)) AS fi_revenue,
             --float

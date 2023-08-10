@@ -24,11 +24,11 @@ FROM (
     FROM {{ ref('HoldingHistory') }}
     UNION ALL
     SELECT
-        [hh_h_t_id],
-        [hh_t_id],
-        [hh_before_qty],
-        [hh_after_qty],
-        [BATCHID]
+        hh_h_t_id,
+        hh_t_id,
+        hh_before_qty,
+        hh_after_qty,
+        batchid
     FROM {{ ref('HoldingIncremental') }}
 ) AS hh
 -- Converts to LEFT JOIN if this is run as DQ EDITION. It is possible, because

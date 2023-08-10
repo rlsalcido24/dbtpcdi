@@ -5,8 +5,6 @@
         ,dist='REPLICATE'
     )
 }}
-
-
 SELECT *
 FROM (
     SELECT
@@ -106,13 +104,13 @@ FROM (
         SELECT
             CONVERT(
                 DATETIME2,
-                SUBSTRING([value], 1, 8)
+                SUBSTRING(value, 1, 8)
                 + ' '
-                + SUBSTRING([value], 10, 2)
+                + SUBSTRING(value, 10, 2)
                 + ':'
-                + SUBSTRING([value], 12, 2)
+                + SUBSTRING(value, 12, 2)
                 + ':'
-                + SUBSTRING([value], 14, 2),
+                + SUBSTRING(value, 14, 2),
                 112
             ) AS pts,
             TRIM(SUBSTRING(value, 19, 60)) AS companyname,
