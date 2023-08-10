@@ -2,7 +2,7 @@
     config(
         materialized = 'table'
         ,index='CLUSTERED COLUMNSTORE INDEX'
-        ,dist='REPLICATE'    
+        ,dist='REPLICATE'
     )
 }}
 
@@ -10,13 +10,13 @@
 SELECT *
 FROM (
     SELECT
-        CAST(cik AS BIGINT) companyid,
-        st.st_name status,
-        companyname name,
-        ind.in_name industry,
+        CAST(cmp.cik AS BIGINT) AS companyid,
+        st.st_name AS status,
+        t.companyname AS name,
+        ind.in_name AS industry,
         CASE
             WHEN
-                sprating IN (
+                cmp.sprating IN (
                     'AAA',
                     'AA',
                     'AA+',
@@ -40,12 +40,12 @@ FROM (
                     'C',
                     'D'
                 )
-                THEN sprating
+                THEN cmp.sprating
             ELSE CAST(null AS VARCHAR(4))
-        END sprating,
+        END AS sprating,
         CASE
             WHEN
-                sprating IN (
+                cmp.sprating IN (
                     'AAA',
                     'AA',
                     'A',
@@ -59,7 +59,7 @@ FROM (
                 )
                 THEN 0
             WHEN
-                sprating IN (
+                cmp.sprating IN (
                     'BB',
                     'B',
                     'CCC',
@@ -76,28 +76,32 @@ FROM (
                 THEN 1
             ELSE CAST(null AS BIT)
         END AS islowgrade,
-        ceoname ceo,
-        addrline1 addressline1,
-        addrline2 addressline2,
-        postalcode,
-        city,
-        stateprovince stateprov,
-        country,
-        description,
-        foundingdate,
+        cmp.ceoname AS ceo,
+        cmp.addrline1 AS addressline1,
+        cmp.addrline2 AS addressline2,
+        cmp.postalcode,
+        cmp.city,
+        cmp.stateprovince AS stateprov,
+        cmp.country,
+        cmp.description,
+        cmp.foundingdate,
         CASE
             WHEN
-                LEAD(pts) OVER (PARTITION BY cik ORDER BY pts) IS NOT NULL
+                LEAD(cmp.pts)
+                    OVER (PARTITION BY cmp.cik ORDER BY cmp.pts)
+                IS NOT NULL
                 THEN 1
             ELSE 0
-        END iscurrent,
-        1 batchid,
-        CAST(pts AS DATE) effectivedate,
-        CONCAT(CAST(cik AS BIGINT), '-', CAST(pts AS DATE)) sk_companyid,
+        END AS iscurrent,
+        1 AS batchid,
+        CAST(cmp.pts AS DATE) AS effectivedate,
+        CONCAT(CAST(cmp.cik AS BIGINT), '-', CAST(cmp.pts AS DATE))
+            AS sk_companyid,
         COALESCE(
-            LEAD(CAST(pts AS DATE)) OVER (PARTITION BY cik ORDER BY pts),
+            LEAD(CAST(cmp.pts AS DATE))
+                OVER (PARTITION BY cmp.cik ORDER BY cmp.pts),
             CAST('9999-12-31' AS DATE)
-        ) enddate
+        ) AS enddate
     FROM (
         SELECT
             CONVERT(
@@ -133,7 +137,9 @@ FROM (
             TRIM(SUBSTRING(value, 348, 46)) AS ceoname,
             TRIM(SUBSTRING(value, 394, 150)) AS description
         FROM {{ ref('FinWire_CMP') }}
-    ) cmp
-        JOIN {{ ref('StatusType') }} st ON cmp.status = st.st_id
-        JOIN {{ ref('Industry') }} ind ON cmp.industryid = ind.in_id
-) t
+    ) AS cmp
+        INNER JOIN {{ ref('StatusType') }} AS st
+            ON cmp.status = st.st_id
+        INNER JOIN {{ ref('Industry') }} AS ind
+            ON cmp.industryid = ind.in_id
+) AS t
