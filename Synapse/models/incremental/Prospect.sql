@@ -5,14 +5,12 @@
         ,dist='HASH(agencyid)'
     )
 }}
-
-
 SELECT
-    agencyid,
-    recdate.sk_dateid sk_recorddateid,
-    origdate.sk_dateid sk_updatedateid,
+    p.agencyid,
+    recdate.sk_dateid AS sk_recorddateid,
+    origdate.sk_dateid AS sk_updatedateid,
     p.batchid,
-    CASE WHEN c.customerid IS NOT NULL THEN 1 ELSE 0 END iscustomer,
+    CASE WHEN c.customerid IS NOT NULL THEN 1 ELSE 0 END AS iscustomer,
     p.lastname,
     p.firstname,
     p.middleinitial,
@@ -20,45 +18,51 @@ SELECT
     p.addressline1,
     p.addressline2,
     p.postalcode,
-    city,
-    state,
-    country,
-    phone,
-    income,
-    numbercars,
-    numberchildren,
-    maritalstatus,
-    age,
-    creditrating,
-    ownorrentflag,
-    employer,
-    numbercreditcards,
-    networth,
+    p.city,
+    p.state,
+    p.country,
+    p.phone,
+    p.income,
+    p.numbercars,
+    p.numberchildren,
+    p.maritalstatus,
+    p.age,
+    p.creditrating,
+    p.ownorrentflag,
+    p.employer,
+    p.numbercreditcards,
+    p.networth,
     RTRIM(
         CASE
-            WHEN networth > 1000000 OR income > 200000 THEN 'HighValue+' ELSE ''
+            WHEN
+                p.networth > 1000000 OR p.income > 200000
+                THEN 'HighValue+'
+            ELSE ''
         END
         + CASE
             WHEN
-                numberchildren > 3 OR numbercreditcards > 5
+                p.numberchildren > 3 OR p.numbercreditcards > 5
                 THEN 'Expenses+'
             ELSE ''
         END
-        + CASE WHEN age > 45 THEN 'Boomer+' ELSE '' END
+        + CASE WHEN p.age > 45 THEN 'Boomer+' ELSE '' END
         + CASE
             WHEN
-                income < 50000 OR creditrating < 600 OR networth < 100000
+                p.income < 50000 OR p.creditrating < 600 OR p.networth < 100000
                 THEN 'MoneyAlert+'
             ELSE ''
         END
         + CASE
-            WHEN numbercars > 3 OR numbercreditcards > 7 THEN 'Spender+' ELSE ''
+            WHEN
+                p.numbercars > 3 OR p.numbercreditcards > 7
+                THEN 'Spender+'
+            ELSE ''
         END
         + CASE
-            WHEN age < 25 AND networth > 1000000 THEN 'Inherited+' ELSE ''
+            WHEN p.age < 25 AND p.networth > 1000000 THEN 'Inherited+' ELSE ''
         END,
         '+'
-    ) marketingnameplate
+    ) AS marketingnameplate
 FROM
     (
         SELECT *
@@ -73,7 +77,7 @@ FROM
                     (
                         SELECT
                             agencyid,
-                            MAX(batchid) recordbatchid,
+                            MAX(batchid) AS recordbatchid,
                             lastname,
                             firstname,
                             middleinitial,
@@ -95,8 +99,8 @@ FROM
                             employer,
                             numbercreditcards,
                             networth,
-                            MIN(batchid) batchid
-                        FROM {{ ref('ProspectRaw') }} p
+                            MIN(batchid) AS batchid
+                        FROM {{ ref('ProspectRaw') }} AS p
                         GROUP BY
                             agencyid,
                             lastname,
@@ -120,28 +124,28 @@ FROM
                             employer,
                             numbercreditcards,
                             networth
-                    ) t0
-            --QUALIFY ROW_NUMBER() OVER (PARTITION BY agencyid ORDER BY batchid DESC) = 1
-            ) t1
+                    ) AS t0
+            --QUALIFY ROW_NUMBER() OVER (PARTITION BY agencyid ORDER BY batchid DESC) = 1 -- noqa: LT05
+            ) AS t1
         WHERE t1.rownum = 1
-    ) p
-    JOIN (
+    ) AS p
+    INNER JOIN (
         SELECT
             sk_dateid,
             batchid
-        FROM {{ ref('BatchDate') }} b
-            JOIN {{ ref('DimDate') }} d
+        FROM {{ ref('BatchDate') }} AS b
+            INNER JOIN {{ ref('DimDate') }} AS d
                 ON b.batchdate = d.datevalue
-    ) recdate
+    ) AS recdate
         ON p.recordbatchid = recdate.batchid
-    JOIN (
+    INNER JOIN (
         SELECT
             sk_dateid,
-            batchid
-        FROM {{ ref('BatchDate') }} b
-            JOIN {{ ref('DimDate') }} d
+            b.batchid
+        FROM {{ ref('BatchDate') }} AS b
+            INNER JOIN {{ ref('DimDate') }} AS d
                 ON b.batchdate = d.datevalue
-    ) origdate
+    ) AS origdate
         ON p.batchid = origdate.batchid
     LEFT JOIN (
         SELECT
@@ -154,7 +158,7 @@ FROM
         FROM {{ ref('DimCustomerStg') }}
         --WHERE iscurrent) c
         WHERE iscurrent = 1
-    ) c
+    ) AS c
         ON
             UPPER(p.lastname) = UPPER(c.lastname)
             AND UPPER(p.firstname) = UPPER(c.firstname)
