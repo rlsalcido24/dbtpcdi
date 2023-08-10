@@ -31,37 +31,37 @@ FROM (
         CASE
             WHEN a.effectivedate < c.effectivedate THEN c.effectivedate ELSE
                 a.effectivedate
-        END effectivedate,
+        END AS effectivedate,
         CASE WHEN a.enddate > c.enddate THEN c.enddate ELSE a.enddate END
-            enddate
+            AS enddate
     FROM (
         SELECT *
         FROM (
             SELECT
                 accountid,
                 customerid,
-                --coalesce(accountdesc, last_value(accountdesc) IGNORE NULLS OVER (
+                --coalesce(accountdesc, last_value(accountdesc) IGNORE NULLS OVER ( -- noqa: LT05
                 COALESCE(accountdesc, LAST_VALUE(accountdesc) OVER (
                     PARTITION BY accountid ORDER BY update_ts
-                )) accountdesc,
+                )) AS accountdesc,
                 --coalesce(taxstatus, last_value(taxstatus) IGNORE NULLS OVER (
                 COALESCE(taxstatus, LAST_VALUE(taxstatus) OVER (
                     PARTITION BY accountid ORDER BY update_ts
-                )) taxstatus,
+                )) AS taxstatus,
                 --coalesce(brokerid, last_value(brokerid) IGNORE NULLS OVER (
                 COALESCE(brokerid, LAST_VALUE(brokerid) OVER (
                     PARTITION BY accountid ORDER BY update_ts
-                )) brokerid,
+                )) AS brokerid,
                 --coalesce(status, last_value(status) IGNORE NULLS OVER (
                 COALESCE(status, LAST_VALUE(status) OVER (
                     PARTITION BY accountid ORDER BY update_ts
-                )) status,
-                CONVERT(DATE, update_ts) effectivedate,
+                )) AS status,
+                CONVERT(DATE, update_ts) AS effectivedate,
                 ISNULL(
                     LEAD(CONVERT(DATE, update_ts))
                         OVER (PARTITION BY accountid ORDER BY update_ts),
                     CONVERT(DATE, '9999-12-31')
-                ) enddate,
+                ) AS enddate,
                 batchid
             FROM (
                 SELECT
@@ -72,33 +72,33 @@ FROM (
                     brokerid,
                     status,
                     update_ts,
-                    1 batchid
-                FROM {{ ref('CustomerMgmt') }} c
+                    1 AS batchid
+                FROM {{ ref('CustomerMgmt') }} AS c
                 WHERE actiontype NOT IN ('UPDCUST', 'INACT')
                 UNION ALL
                 SELECT
                     accountid,
-                    a.ca_c_id customerid,
+                    a.ca_c_id AS customerid,
                     accountdesc,
                     taxstatus,
-                    a.ca_b_id brokerid,
+                    a.ca_b_id AS brokerid,
                     st_name AS status,
-                    CONVERT(DATETIME2, bd.batchdate) update_ts,
+                    CONVERT(DATETIME2, bd.batchdate) AS update_ts,
                     a.batchid
-                FROM {{ ref('AccountIncremental') }} a
-                    JOIN {{ ref('BatchDate') }} bd
+                FROM {{ ref('AccountIncremental') }} AS a
+                    INNER JOIN {{ ref('BatchDate') }} AS bd
                         ON a.batchid = bd.batchid
-                    JOIN {{ ref('StatusType') }} st
+                    INNER JOIN {{ ref('StatusType') }} AS st
                         ON a.ca_st_id = st.st_id
-            ) a
-        ) a
+            ) AS a
+        ) AS a
         WHERE a.effectivedate < a.enddate
-    ) a
-        FULL OUTER JOIN {{ ref('DimCustomerStg') }} c
+    ) AS a
+        FULL OUTER JOIN {{ ref('DimCustomerStg') }} AS c
             ON
                 a.customerid = c.customerid
                 AND c.enddate > a.effectivedate
                 AND c.effectivedate < a.enddate
-) a
-    LEFT JOIN {{ ref('DimBroker') }} b
+) AS a
+    LEFT JOIN {{ ref('DimBroker') }} AS b
         ON a.brokerid = b.brokerid;
