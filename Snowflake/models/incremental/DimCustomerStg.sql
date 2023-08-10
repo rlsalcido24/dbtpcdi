@@ -128,7 +128,7 @@ SELECT * FROM (
             1 AS batchid,
             update_ts,
             CONCAT(customerid, '-', update_ts) AS sk_customerid
-        FROM {{ ref('CustomerMgmtView') }} AS c
+        FROM {{ ref('CustomerMgmtView') }}
         WHERE actiontype IN ('NEW', 'INACT', 'UPDCUST')
         UNION ALL
         SELECT

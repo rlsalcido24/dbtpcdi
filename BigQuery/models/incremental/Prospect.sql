@@ -109,7 +109,7 @@ FROM (
         CAST(networth AS INT64) AS networth,
         MIN(batchid) AS batchid
     FROM
-        {{ ref('ProspectRaw') }} AS p
+        {{ ref('ProspectRaw') }}
     GROUP BY
         agencyid,
         lastname,

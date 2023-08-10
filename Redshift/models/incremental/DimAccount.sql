@@ -90,7 +90,7 @@ FROM (
                         update_ts, 'YYYY-MM-DD HH24:MI:SS'
                     ) AS update_ts,
                     1 AS batchid
-                FROM {{ ref('customermgmtview') }} AS c
+                FROM {{ ref('customermgmtview') }}
                 --FROM stg.CustomerMgmt c
                 WHERE
                     actiontype NOT IN ('UPDCUST', 'INACT')

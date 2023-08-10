@@ -157,7 +157,7 @@ FROM (
             1 AS batchid,
             TO_TIMESTAMP(update_ts, 'YYYY-MM-DD HH24:MI:SS') AS update_ts,
             CONCAT(CONCAT(customerid, '-'), update_ts) AS sk_customerid
-        FROM {{ ref('customermgmtview') }} AS c
+        FROM {{ ref('customermgmtview') }}
         --    FROM stg.CustomerMgmt c
         WHERE actiontype IN ('NEW', 'INACT', 'UPDCUST')
         UNION ALL

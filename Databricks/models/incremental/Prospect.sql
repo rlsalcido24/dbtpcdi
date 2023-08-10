@@ -100,7 +100,7 @@ FROM (
             numbercreditcards,
             networth,
             MIN(batchid) AS batchid
-        FROM {{ ref('ProspectRaw') }} AS p
+        FROM {{ ref('ProspectRaw') }}
         GROUP BY
             agencyid,
             lastname,

@@ -133,7 +133,7 @@ SELECT * FROM (
                     CAST(customerid AS STRING)
                 )
             ) AS sk_customerid
-        FROM {{ ref('CustomerMgmtView') }} AS c
+        FROM {{ ref('CustomerMgmtView') }}
         WHERE actiontype IN ('NEW', 'INACT', 'UPDCUST')
         UNION ALL
         SELECT

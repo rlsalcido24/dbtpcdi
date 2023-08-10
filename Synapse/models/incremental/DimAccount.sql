@@ -73,7 +73,7 @@ FROM (
                     status,
                     update_ts,
                     1 AS batchid
-                FROM {{ ref('CustomerMgmt') }} AS c
+                FROM {{ ref('CustomerMgmt') }}
                 WHERE actiontype NOT IN ('UPDCUST', 'INACT')
                 UNION ALL
                 SELECT

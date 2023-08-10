@@ -153,7 +153,7 @@ FROM
                             numbercreditcards,
                             networth,
                             MIN(batchid) AS batchid
-                        FROM {{ ref('prospectraw') }} AS p
+                        FROM {{ ref('prospectraw') }}
                         --FROM stg.ProspectRaw p
                         GROUP BY
                             agencyid,
