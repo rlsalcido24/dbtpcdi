@@ -5,8 +5,6 @@
         ,dist='HASH(symbol)'
     )
 }}
-
-
 SELECT
     symbol,
     issue,
@@ -18,8 +16,9 @@ SELECT
     firsttrade,
     firsttradeonexchange,
     dividend,
-    CASE WHEN enddate = CONVERT(DATE, '9999-12-31') THEN 1 ELSE 0 END iscurrent,
-    1 batchid,
+    CASE WHEN enddate = CONVERT(DATE, '9999-12-31') THEN 1 ELSE 0 END
+        AS iscurrent,
+    1 AS batchid,
     effectivedate,
     CONCAT(exchangeid, '-', effectivedate) AS sk_securityid,
     enddate
@@ -40,10 +39,10 @@ FROM (
                 fws.effectivedate < dc.effectivedate
                 THEN dc.effectivedate
             ELSE fws.effectivedate
-        END effectivedate,
+        END AS effectivedate,
         CASE
             WHEN fws.enddate > dc.enddate THEN dc.enddate ELSE fws.enddate
-        END enddate
+        END AS enddate
     FROM (
         SELECT
             fws.effectivedate,
@@ -56,16 +55,17 @@ FROM (
             fws.firsttradeonexchange,
             fws.dividend,
             ISNULL(
-                CONVERT(VARCHAR, TRY_CAST(conameorcik AS BIGINT)), conameorcik
-            ) conameorcik,
+                CONVERT(VARCHAR, TRY_CAST(fws.conameorcik AS BIGINT)),
+                conameorcik
+            ) AS conameorcik,
             s.st_name AS status,
             COALESCE(
-                LEAD(effectivedate) OVER (
-                    PARTITION BY symbol
-                    ORDER BY effectivedate
+                LEAD(fws.effectivedate) OVER (
+                    PARTITION BY fws.symbol
+                    ORDER BY fws.effectivedate
                 ),
                 CONVERT(DATE, '9999-12-31')
-            ) enddate
+            ) AS enddate
         FROM (
             SELECT
                 CONVERT(
@@ -94,28 +94,28 @@ FROM (
                 CAST(SUBSTRING(value, 149, 12) AS DECIMAL(10, 2)) AS dividend,
                 TRIM(SUBSTRING(value, 161, 60)) AS conameorcik
             FROM {{ ref('FinWire_SEC') }}
-        ) fws
-            JOIN {{ ref('StatusType') }} s
+        ) AS fws
+            INNER JOIN {{ ref('StatusType') }} AS s
                 ON s.st_id = fws.status
-    ) fws
-        JOIN (
+    ) AS fws
+        INNER JOIN (
             SELECT
                 sk_companyid,
-                name conameorcik,
+                name AS conameorcik,
                 effectivedate,
                 enddate
             FROM {{ ref('DimCompany') }}
             UNION ALL
             SELECT
                 sk_companyid,
-                CAST(companyid AS VARCHAR) conameorcik,
+                CAST(companyid AS VARCHAR) AS conameorcik,
                 effectivedate,
                 enddate
             FROM {{ ref('DimCompany') }}
-        ) dc
+        ) AS dc
             ON
                 fws.conameorcik = dc.conameorcik
                 AND fws.effectivedate < dc.enddate
                 AND fws.enddate > dc.effectivedate
-) fws
+) AS fws
 WHERE effectivedate != enddate
