@@ -1,5 +1,5 @@
 [sqlfluff]
-exclude_rules = ST06, ST05
+exclude_rules = ST06, ST05, AM04
 
 [sqlfluff:indentation]
 indented_joins = True
