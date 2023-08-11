@@ -41,7 +41,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.10
+          python-version: 3.11
 
       - name: Install sqlfluff
         run: |
@@ -50,8 +50,4 @@ jobs:
 
       - name: Run sqlfluff
         run: |
-          sqlfluff lint --dialect bigquery BigQuery/.
-          sqlfluff lint --dialect databricks Databricks/.
-          sqlfluff lint --dialect redshift Redshift/.
-          sqlfluff lint --dialect snowflake Snowflake/.          
-          sqlfluff lint --dialect tsql Synapse/.
+          sqlfluff lint .
