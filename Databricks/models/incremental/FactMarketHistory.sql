@@ -6,17 +6,17 @@
 SELECT
     s.sk_securityid,
     s.sk_companyid,
-    sk_dateid,
-    fmh.dm_close / NULLIF(sum_fi_basic_eps, 0) AS peratio,
+    fmh.sk_dateid,
+    fmh.dm_close / NULLIF(f.sum_fi_basic_eps, 0) AS peratio,
     (s.dividend / fmh.dm_close) / 100 AS yield,
-    fiftytwoweekhigh,
-    sk_fiftytwoweekhighdate,
-    fiftytwoweeklow,
-    sk_fiftytwoweeklowdate,
-    dm_close AS closeprice,
-    dm_high AS dayhigh,
-    dm_low AS daylow,
-    dm_vol AS volume
+    fmh.fiftytwoweekhigh,
+    fmh.sk_fiftytwoweekhighdate,
+    fmh.fiftytwoweeklow,
+    fmh.sk_fiftytwoweeklowdate,
+    fmh.dm_close AS closeprice,
+    fmh.dm_high AS dayhigh,
+    fmh.dm_low AS daylow,
+    fmh.dm_vol AS volume
 FROM (
     SELECT * FROM (
         SELECT
@@ -57,5 +57,5 @@ FROM (
     LEFT JOIN {{ ref('tempSumpFiBasicEps') }} AS f
         ON
             f.sk_companyid = s.sk_companyid
-            AND QUARTER(fmh.dm_date) = QUARTER(fi_qtr_start_date)
-            AND YEAR(fmh.dm_date) = YEAR(fi_qtr_start_date);
+            AND QUARTER(fmh.dm_date) = QUARTER(f.fi_qtr_start_date)
+            AND YEAR(fmh.dm_date) = YEAR(f.fi_qtr_start_date);

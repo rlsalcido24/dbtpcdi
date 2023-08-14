@@ -6,8 +6,8 @@
 SELECT
     c.sk_customerid AS sk_customerid,
     s.sk_securityid AS sk_securityid,
-    sk_dateid_dateplaced,
-    sk_dateid_dateremoved,
+    wh.sk_dateid_dateplaced,
+    wh.sk_dateid_dateremoved,
     wh.batchid
 FROM (
     SELECT * EXCEPT (w_dts)
@@ -39,16 +39,16 @@ FROM (
                 wh.w_c_id AS customerid,
                 wh.w_s_symb AS symbol,
                 IF(
-                    w_action = 'ACTV', d.sk_dateid, NULL
+                    wh.w_action = 'ACTV', d.sk_dateid, NULL
                 ) AS sk_dateid_dateplaced,
                 IF(
-                    w_action = 'CNCL', d.sk_dateid, NULL
+                    wh.w_action = 'CNCL', d.sk_dateid, NULL
                 ) AS sk_dateid_dateremoved,
                 IF(
-                    w_action = 'ACTV', d.datevalue, NULL
+                    wh.w_action = 'ACTV', d.datevalue, NULL
                 ) AS dateplaced,
                 wh.w_dts,
-                batchid
+                wh.batchid
             FROM (
                 SELECT
                     *,

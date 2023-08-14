@@ -6,12 +6,12 @@
 SELECT *
 FROM (
     SELECT
-        CAST(cik AS BIGINT) AS companyid,
+        CAST(cmp.cik AS BIGINT) AS companyid,
         st.st_name AS status,
-        companyname AS name, -- noqa:RF04
+        cmp.companyname AS name, -- noqa:RF04
         ind.in_name AS industry,
         IF(
-            sprating IN (
+            cmp.sprating IN (
                 'AAA',
                 'AA',
                 'AA+',
@@ -35,7 +35,7 @@ FROM (
                 'C',
                 'D'
             ),
-            sprating,
+            cmp.sprating,
             CAST(NULL AS STRING)
         ) AS sprating,
         CASE
@@ -71,15 +71,15 @@ FROM (
                 THEN TRUE
             ELSE CAST(NULL AS BOOLEAN)
         END AS islowgrade,
-        ceoname AS ceo,
-        addrline1 AS addressline1,
-        addrline2 AS addressline2,
-        postalcode,
-        city,
-        stateprovince AS stateprov,
-        country,
-        description,
-        foundingdate,
+        cmp.ceoname AS ceo,
+        cmp.addrline1 AS addressline1,
+        cmp.addrline2 AS addressline2,
+        cmp.postalcode,
+        cmp.city,
+        cmp.stateprovince AS stateprov,
+        cmp.country,
+        cmp.description,
+        dmp.foundingdate,
         NVL2(
             LEAD(cmp.pts) OVER (PARTITION BY cmp.cik ORDER BY cmp.pts),
             TRUE,
