@@ -4,7 +4,6 @@
         partition_by = 'rectype'
     )
 }}
-
 SELECT
     *,
     SUBSTRING(value, 16, 3) AS rectype
