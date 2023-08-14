@@ -102,7 +102,7 @@ FROM
                             ) AS t0
                     ) AS t1
             ) AS t
-        WHERE t.rownum = 1
+        WHERE rownum = 1
     ) AS wh
     --  QUALIFY ROW_NUMBER() OVER (PARTITION BY customerid, symbol ORDER BY w_dts desc) = 1) wh -- noqa: LT05
     -- Converts to LEFT JOINs if this is run as DQ EDITION. On some higher

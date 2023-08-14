@@ -8,7 +8,7 @@
 SELECT
     s.sk_securityid,
     s.sk_companyid,
-    sk_dateid,
+    fmh.sk_dateid,
     fmh.dm_close / NULLIF(f.sum_fi_basic_eps, 0) AS peratio,
     (s.dividend / fmh.dm_close) / 100 AS yield,
     fmh.fiftytwoweekhigh,
@@ -57,7 +57,7 @@ FROM
                                     ) AND a.dm_date
                     ) AS dmh
             ) AS t
-        WHERE t.rownum = 1
+        WHERE rownum = 1
     --QUALIFY ROW_NUMBER() OVER (
     --  PARTITION BY dm_s_symb, dm_date
     --  ORDER BY sk_fiftytwoweeklowdate, sk_fiftytwoweekhighdate) = 1

@@ -8,7 +8,7 @@
 
 
 SELECT
-    sk_companyid,
+    dc.sk_companyid,
     f.fi_year,
     f.fi_qtr,
     f.fi_qtr_start_date,

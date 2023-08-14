@@ -5,25 +5,23 @@
         ,dist='HASH(tradeid)'
     )
 }}
-
 -- !!!!! IGNORE NULLS is not supported in Synapse !!!!!
-
 SELECT
     trade.tradeid,
-    sk_brokerid,
+    ds.sk_brokerid,
     trade.sk_createdateid,
     trade.sk_createtimeid,
     trade.sk_closedateid,
     trade.sk_closetimeid,
-    st_name AS status,
-    tt_name AS type, -- noqa: RF04
+    status.st_name AS status,
+    tt.tt_name AS type, -- noqa: RF04
     trade.cashflag,
-    sk_securityid,
-    sk_companyid,
+    da.sk_securityid,
+    da.sk_companyid,
     trade.quantity,
     trade.bidprice,
-    sk_customerid,
-    sk_accountid,
+    da.sk_customerid,
+    da.sk_accountid,
     trade.executedby,
     trade.tradeprice,
     trade.fee,
@@ -107,19 +105,19 @@ FROM (
                                 t.tradeid,
                                 t.t_dts,
                                 CASE
-                                    WHEN t.create_flg > 0 THEN sk_dateid ELSE
+                                    WHEN t.create_flg > 0 THEN dd.sk_dateid ELSE
                                         CAST(NULL AS BIGINT)
                                 END AS sk_createdateid,
                                 CASE
-                                    WHEN t.create_flg > 0 THEN sk_timeid ELSE
+                                    WHEN t.create_flg > 0 THEN dt.sk_timeid ELSE
                                         CAST(NULL AS BIGINT)
                                 END AS sk_createtimeid,
                                 CASE
-                                    WHEN t.create_flg = 0 THEN sk_dateid ELSE
+                                    WHEN t.create_flg = 0 THEN dd.sk_dateid ELSE
                                         CAST(NULL AS BIGINT)
                                 END AS sk_closedateid,
                                 CASE
-                                    WHEN t.create_flg = 0 THEN sk_timeid ELSE
+                                    WHEN t.create_flg = 0 THEN dt.sk_timeid ELSE
                                         CAST(NULL AS BIGINT)
                                 END AS sk_closetimeid,
                                 CASE
@@ -206,7 +204,7 @@ FROM (
                         ) AS t0
                 ) AS t1
         ) AS t2
-    WHERE t2.rownum = 1
+    WHERE rownum = 1
 --  QUALIFY ROW_NUMBER() OVER (PARTITION BY tradeid ORDER BY t_dts desc) = 1
 ) AS trade
     INNER JOIN {{ ref('StatusType') }} AS status
@@ -220,11 +218,11 @@ FROM (
     LEFT JOIN {{ ref('DimSecurity') }} AS ds
         ON
             ds.symbol = trade.t_s_symb
-            AND createdate >= ds.effectivedate
-            AND createdate < ds.enddate
+            AND trade.createdate >= ds.effectivedate
+            AND trade.createdate < ds.enddate
     --${dq_left_flg}
     LEFT JOIN {{ ref('DimAccount') }} AS da
         ON
             trade.t_ca_id = da.accountid
-            AND createdate >= da.effectivedate
-            AND createdate < da.enddate
+            AND trade.createdate >= da.effectivedate
+            AND trade.createdate < da.enddate

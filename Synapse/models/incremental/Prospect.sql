@@ -127,12 +127,12 @@ FROM
                     ) AS t0
             --QUALIFY ROW_NUMBER() OVER (PARTITION BY agencyid ORDER BY batchid DESC) = 1 -- noqa: LT05
             ) AS t1
-        WHERE t1.rownum = 1
+        WHERE rownum = 1
     ) AS p
     INNER JOIN (
         SELECT
-            sk_dateid,
-            batchid
+            d.sk_dateid,
+            b.batchid
         FROM {{ ref('BatchDate') }} AS b
             INNER JOIN {{ ref('DimDate') }} AS d
                 ON b.batchdate = d.datevalue
@@ -140,7 +140,7 @@ FROM
         ON p.recordbatchid = recdate.batchid
     INNER JOIN (
         SELECT
-            sk_dateid,
+            d.sk_dateid,
             b.batchid
         FROM {{ ref('BatchDate') }} AS b
             INNER JOIN {{ ref('DimDate') }} AS d

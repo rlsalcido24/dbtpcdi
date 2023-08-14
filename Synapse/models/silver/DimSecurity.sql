@@ -56,7 +56,7 @@ FROM (
             fws.dividend,
             ISNULL(
                 CAST(TRY_CAST(fws.conameorcik AS BIGINT) AS VARCHAR),
-                conameorcik
+                fws.conameorcik
             ) AS conameorcik,
             s.st_name AS status,
             COALESCE(
