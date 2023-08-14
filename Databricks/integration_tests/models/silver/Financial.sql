@@ -3,28 +3,27 @@
         materialized = 'table'
     )
 }}
-
 SELECT
-    sk_companyid,
-    fi_year,
-    fi_qtr,
-    fi_qtr_start_date,
-    fi_revenue,
-    fi_net_earn,
-    fi_basic_eps,
-    fi_dilut_eps,
-    fi_margin,
-    fi_inventory,
-    fi_assets,
-    fi_liability,
-    fi_out_basic,
-    fi_out_dilut
+    dc.sk_companyid,
+    f.fi_year,
+    f.fi_qtr,
+    f.fi_qtr_start_date,
+    f.fi_revenue,
+    f.fi_net_earn,
+    f.fi_basic_eps,
+    f.fi_dilut_eps,
+    f.fi_margin,
+    f.fi_inventory,
+    f.fi_assets,
+    f.fi_liability,
+    f.fi_out_basic,
+    f.fi_out_dilut
 FROM (
     SELECT
         * EXCEPT (conameorcik),
         COALESCE(
             STRING(TRY_CAST(conameorcik AS BIGINT)), conameorcik
-        ) conameorcik
+        ) AS conameorcik
     FROM (
         SELECT
             TO_TIMESTAMP(SUBSTRING(value, 1, 15), 'yyyyMMdd-HHmmss') AS pts,
@@ -45,24 +44,24 @@ FROM (
             TRIM(SUBSTRING(value, 187, 60)) AS conameorcik
         FROM {{ ref('FinWire') }}
         WHERE rectype = 'FIN'
-    ) f
-) f
-    JOIN (
+    ) AS f
+) AS f
+    INNER JOIN (
         SELECT
             sk_companyid,
-            name conameorcik,
+            name AS conameorcik,
             effectivedate,
             enddate
         FROM {{ ref('DimCompany') }}
         UNION ALL
         SELECT
             sk_companyid,
-            CAST(companyid AS STRING) conameorcik,
+            CAST(companyid AS STRING) AS conameorcik,
             effectivedate,
             enddate
         FROM {{ ref('DimCompany') }}
-    ) dc
+    ) AS dc
         ON
             f.conameorcik = dc.conameorcik
-            AND DATE(pts) >= dc.effectivedate
-            AND DATE(pts) < dc.enddate
+            AND DATE(f.pts) >= dc.effectivedate
+            AND DATE(f.pts) < dc.enddate

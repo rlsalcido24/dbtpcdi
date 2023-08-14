@@ -12,7 +12,7 @@ SELECT
     c.lastname,
     c.firstname,
     c.middleinitial,
-    IF(c.gender IN ('M', 'F'), c.gender, 'U') gender,
+    IF(c.gender IN ('M', 'F'), c.gender, 'U') AS gender,
     c.tier,
     c.dob,
     c.addressline1,
@@ -38,12 +38,12 @@ SELECT
     c.batchid,
     c.effectivedate,
     c.enddate
-FROM {{ ref('DimCustomerStg') }} c
-    LEFT JOIN {{ source('tpcdi', 'TaxRate') }} r_lcl
+FROM {{ ref('DimCustomerStg') }} AS c
+    LEFT JOIN {{ source('tpcdi', 'TaxRate') }} AS r_lcl
         ON c.lcl_tx_id = r_lcl.tx_id
-    LEFT JOIN {{ source('tpcdi', 'TaxRate') }} r_nat
+    LEFT JOIN {{ source('tpcdi', 'TaxRate') }} AS r_nat
         ON c.nat_tx_id = r_nat.tx_id
-    LEFT JOIN {{ ref('Prospect') }} p
+    LEFT JOIN {{ ref('Prospect') }} AS p
         ON
             UPPER(p.lastname) = UPPER(c.lastname)
             AND UPPER(p.firstname) = UPPER(c.firstname)

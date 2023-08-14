@@ -10,99 +10,98 @@ SELECT * FROM (
         COALESCE(taxid, LAST_VALUE(taxid) IGNORE NULLS OVER (
             PARTITION BY customerid
             ORDER BY update_ts
-        )) taxid,
+        )) AS taxid,
         status,
         COALESCE(lastname, LAST_VALUE(lastname) IGNORE NULLS OVER (
             PARTITION BY customerid
             ORDER BY update_ts
-        )) lastname,
+        )) AS lastname,
         COALESCE(firstname, LAST_VALUE(firstname) IGNORE NULLS OVER (
             PARTITION BY customerid
             ORDER BY update_ts
-        )) firstname,
+        )) AS firstname,
         COALESCE(middleinitial, LAST_VALUE(middleinitial) IGNORE NULLS OVER (
             PARTITION BY customerid
             ORDER BY update_ts
-        )) middleinitial,
+        )) AS middleinitial,
         COALESCE(gender, LAST_VALUE(gender) IGNORE NULLS OVER (
             PARTITION BY customerid
             ORDER BY update_ts
-        )) gender,
+        )) AS gender,
         COALESCE(tier, LAST_VALUE(tier) IGNORE NULLS OVER (
             PARTITION BY customerid
             ORDER BY update_ts
-        )) tier,
+        )) AS tier,
         COALESCE(dob, LAST_VALUE(dob) IGNORE NULLS OVER (
             PARTITION BY customerid
             ORDER BY update_ts
-        )) dob,
+        )) AS dob,
         COALESCE(addressline1, LAST_VALUE(addressline1) IGNORE NULLS OVER (
             PARTITION BY customerid
             ORDER BY update_ts
-        )) addressline1,
+        )) AS addressline1,
         COALESCE(addressline2, LAST_VALUE(addressline2) IGNORE NULLS OVER (
             PARTITION BY customerid
             ORDER BY update_ts
-        )) addressline2,
+        )) AS addressline2,
         COALESCE(postalcode, LAST_VALUE(postalcode) IGNORE NULLS OVER (
             PARTITION BY customerid
             ORDER BY update_ts
-        )) postalcode,
+        )) AS postalcode,
         COALESCE(city, LAST_VALUE(city) IGNORE NULLS OVER (
             PARTITION BY customerid
             ORDER BY update_ts
-        )) city,
+        )) AS city,
         COALESCE(stateprov, LAST_VALUE(stateprov) IGNORE NULLS OVER (
             PARTITION BY customerid
             ORDER BY update_ts
-        )) stateprov,
+        )) AS stateprov,
         COALESCE(country, LAST_VALUE(country) IGNORE NULLS OVER (
             PARTITION BY customerid
             ORDER BY update_ts
-        )) country,
+        )) AS country,
         COALESCE(phone1, LAST_VALUE(phone1) IGNORE NULLS OVER (
             PARTITION BY customerid
             ORDER BY update_ts
-        )) phone1,
+        )) AS phone1,
         COALESCE(phone2, LAST_VALUE(phone2) IGNORE NULLS OVER (
             PARTITION BY customerid
             ORDER BY update_ts
-        )) phone2,
+        )) AS phone2,
         COALESCE(phone3, LAST_VALUE(phone3) IGNORE NULLS OVER (
             PARTITION BY customerid
             ORDER BY update_ts
-        )) phone3,
+        )) AS phone3,
         COALESCE(email1, LAST_VALUE(email1) IGNORE NULLS OVER (
             PARTITION BY customerid
             ORDER BY update_ts
-        )) email1,
+        )) AS email1,
         COALESCE(email2, LAST_VALUE(email2) IGNORE NULLS OVER (
             PARTITION BY customerid
             ORDER BY update_ts
-        )) email2,
+        )) AS email2,
         COALESCE(lcl_tx_id, LAST_VALUE(lcl_tx_id) IGNORE NULLS OVER (
             PARTITION BY customerid
             ORDER BY update_ts
-        )) lcl_tx_id,
+        )) AS lcl_tx_id,
         COALESCE(nat_tx_id, LAST_VALUE(nat_tx_id) IGNORE NULLS OVER (
             PARTITION BY customerid
             ORDER BY update_ts
-        )) nat_tx_id,
+        )) AS nat_tx_id,
         batchid,
         NVL2(
             LEAD(update_ts) OVER (PARTITION BY customerid ORDER BY update_ts),
             FALSE,
             TRUE
-        ) iscurrent,
-        DATE(update_ts) effectivedate,
+        ) AS iscurrent,
+        DATE(update_ts) AS effectivedate,
         COALESCE(
             LEAD(DATE(update_ts))
                 OVER (PARTITION BY customerid ORDER BY update_ts),
             DATE('9999-12-31')
-        ) enddate
+        ) AS enddate
     FROM (
         SELECT
-
             customerid,
             taxid,
             status,
@@ -125,7 +124,7 @@ SELECT * FROM (
             email2,
             lcl_tx_id,
             nat_tx_id,
-            1 batchid,
+            1 AS batchid,
             update_ts,
             BIGINT(
                 CONCAT(
@@ -133,69 +132,68 @@ SELECT * FROM (
                     CAST(customerid AS STRING)
                 )
             ) AS sk_customerid
-        FROM {{ ref('CustomerMgmtView') }} c
+        FROM {{ ref('CustomerMgmtView') }}
         WHERE actiontype IN ('NEW', 'INACT', 'UPDCUST')
         UNION ALL
         SELECT
-
             c.customerid,
-            NULLIF(c.taxid, '') taxid,
+            NULLIF(c.taxid, '') AS taxid,
             NULLIF(s.st_name, '') AS status,
-            NULLIF(c.lastname, '') lastname,
-            NULLIF(c.firstname, '') firstname,
-            NULLIF(c.middleinitial, '') middleinitial,
-            gender,
+            NULLIF(c.lastname, '') AS lastname,
+            NULLIF(c.firstname, '') AS firstname,
+            NULLIF(c.middleinitial, '') AS middleinitial,
+            c.gender,
             c.tier,
             c.dob,
-            NULLIF(c.addressline1, '') addressline1,
-            NULLIF(c.addressline2, '') addressline2,
-            NULLIF(c.postalcode, '') postalcode,
-            NULLIF(c.city, '') city,
-            NULLIF(c.stateprov, '') stateprov,
-            NULLIF(c.country, '') country,
+            NULLIF(c.addressline1, '') AS addressline1,
+            NULLIF(c.addressline2, '') AS addressline2,
+            NULLIF(c.postalcode, '') AS postalcode,
+            NULLIF(c.city, '') AS city,
+            NULLIF(c.stateprov, '') AS stateprov,
+            NULLIF(c.country, '') AS country,
             CASE
-                WHEN ISNULL(c_local_1) THEN c_local_1
+                WHEN ISNULL(c.c_local_1) THEN c.c_local_1
                 ELSE CONCAT(
-                    NVL2(c_ctry_1, '+' || c_ctry_1 || ' ', ''),
-                    NVL2(c_area_1, '(' || c_area_1 || ') ', ''),
-                    c_local_1,
-                    COALESCE(c_ext_1, '')
+                    NVL2(c.c_ctry_1, '+' || c.c_ctry_1 || ' ', ''),
+                    NVL2(c.c_area_1, '(' || c.c_area_1 || ') ', ''),
+                    c.c_local_1,
+                    COALESCE(c.c_ext_1, '')
                 )
             END AS phone1,
             CASE
-                WHEN ISNULL(c_local_2) THEN c_local_2
+                WHEN ISNULL(c.c_local_2) THEN c.c_local_2
                 ELSE CONCAT(
-                    NVL2(c_ctry_2, '+' || c_ctry_2 || ' ', ''),
-                    NVL2(c_area_2, '(' || c_area_2 || ') ', ''),
-                    c_local_2,
-                    COALESCE(c_ext_2, '')
+                    NVL2(c.c_ctry_2, '+' || c.c_ctry_2 || ' ', ''),
+                    NVL2(c.c_area_2, '(' || c.c_area_2 || ') ', ''),
+                    c.c_local_2,
+                    COALESCE(c.c_ext_2, '')
                 )
             END AS phone2,
             CASE
-                WHEN ISNULL(c_local_3) THEN c_local_3
+                WHEN ISNULL(c.c_local_3) THEN c.c_local_3
                 ELSE CONCAT(
-                    NVL2(c_ctry_3, '+' || c_ctry_3 || ' ', ''),
-                    NVL2(c_area_3, '(' || c_area_3 || ') ', ''),
-                    c_local_3,
-                    COALESCE(c_ext_3, '')
+                    NVL2(c.c_ctry_3, '+' || c.c_ctry_3 || ' ', ''),
+                    NVL2(c.c_area_3, '(' || c.c_area_3 || ') ', ''),
+                    c.c_local_3,
+                    COALESCE(c.c_ext_3, '')
                 )
             END AS phone3,
-            NULLIF(c.email1, '') email1,
-            NULLIF(c.email2, '') email2,
+            NULLIF(c.email1, '') AS email1,
+            NULLIF(c.email2, '') AS email2,
             c.lcl_tx_id,
             c.nat_tx_id,
             c.batchid,
-            TIMESTAMP(bd.batchdate) update_ts,
+            TIMESTAMP(bd.batchdate) AS update_ts,
             BIGINT(
                 CONCAT(
                     DATE_FORMAT(update_ts, 'yyyyMMdd'),
-                    CAST(customerid AS STRING)
+                    CAST(c.customerid AS STRING)
                 )
             ) AS sk_customerid
-        FROM {{ ref('CustomerIncremental') }} c
-            JOIN {{ ref('BatchDate') }} bd
+        FROM {{ ref('CustomerIncremental') }} AS c
+            INNER JOIN {{ ref('BatchDate') }} AS bd
                 ON c.batchid = bd.batchid
-            JOIN {{ source('tpcdi', 'StatusType') }} s
+            INNER JOIN {{ source('tpcdi', 'StatusType') }} AS s
                 ON c.status = s.st_id
-    ) c
+    ) AS c
 )
