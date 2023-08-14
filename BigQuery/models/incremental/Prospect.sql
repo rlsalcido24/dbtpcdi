@@ -151,7 +151,7 @@ FROM (
     INNER JOIN (
         SELECT
             d.sk_dateid,
-            recdate.batchid
+            b.batchid
         FROM
             {{ ref('BatchDate') }} AS b
             INNER JOIN
