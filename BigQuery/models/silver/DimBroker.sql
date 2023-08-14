@@ -17,9 +17,10 @@ SELECT
     1 AS batchid,
     (
         SELECT MIN(DATE(datevalue)) AS effectivedate
-        FROM
-            {{ source(var('benchmark'), 'DimDate') }} AS effectivedate,
-            (SELECT DATE('9999-12-31'))
+        FROM {{ source(var('benchmark'), 'DimDate') }}
+    ) AS effectivedate,
+    (
+        SELECT DATE('9999-12-31')
     ) AS enddate,
     (SELECT CONCAT(CAST(employeeid AS BIGINT), '-', DATE('9999-12-31')))
         AS sk_brokerid

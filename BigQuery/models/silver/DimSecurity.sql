@@ -41,27 +41,26 @@ FROM (
     FROM (
         SELECT -- noqa: ST06
             fws.* EXCEPT (status, conameorcik),
-
             COALESCE(
                 SAFE_CAST(CASE
                     WHEN
-                        CHAR_LENGTH(CAST(conameorcik AS STRING)) <= 10
-                        THEN SAFE_CAST(conameorcik AS INT64)
+                        CHAR_LENGTH(CAST(fws.conameorcik AS STRING)) <= 10
+                        THEN SAFE_CAST(fws.conameorcik AS INT64)
                 END AS STRING)
                 ,
                 SAFE_CAST(CASE
                     WHEN
-                        CHAR_LENGTH(CAST(conameorcik AS STRING)) > 10
-                        OR SAFE_CAST(conameorcik AS INT64) IS NULL
-                        THEN conameorcik
+                        CHAR_LENGTH(CAST(fws.conameorcik AS STRING)) > 10
+                        OR SAFE_CAST(fws.conameorcik AS INT64) IS NULL
+                        THEN fws.conameorcik
                 END
                 AS STRING)
             ) AS cik,
             s.st_name AS status,
             COALESCE(
-                LEAD(effectivedate) OVER (
-                    PARTITION BY symbol
-                    ORDER BY effectivedate
+                LEAD(fws.effectivedate) OVER (
+                    PARTITION BY fws.symbol
+                    ORDER BY fws.effectivedate
                 ),
                 DATE('9999-12-31')
             ) AS enddate
@@ -84,10 +83,7 @@ FROM (
                 ) AS firsttradeonexchange,
                 CAST(SUBSTRING(value, 149, 12) AS FLOAT64) AS dividend,
                 TRIM(SUBSTRING(value, 161, 60)) AS conameorcik
-
-
             FROM {{ ref('FinWire') }} WHERE rectype = 'SEC'
-
         ) AS fws
             INNER JOIN {{ source(var('benchmark'), 'StatusType') }} AS s
                 ON s.st_id = fws.status
