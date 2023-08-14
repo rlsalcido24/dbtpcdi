@@ -3,27 +3,23 @@
         materialized = 'table'
     )
 }}
-SELECT *
+SELECT
+    f.*,
+    dc.*
 FROM (
     SELECT
         * EXCEPT (conameorcik),
-
         COALESCE(
             SAFE_CAST(CASE
                 WHEN
                     CHAR_LENGTH(CAST(conameorcik AS STRING)) <= 10
                     THEN SAFE_CAST(conameorcik AS INT64)
-                ELSE
-                    NULL
-            END AS STRING)
-            ,
+            END AS STRING),
             SAFE_CAST(CASE
                 WHEN
                     CHAR_LENGTH(CAST(conameorcik AS STRING)) > 10
                     OR SAFE_CAST(conameorcik AS INT64) IS NULL
                     THEN conameorcik
-                ELSE
-                    NULL
             END
             AS STRING)
         ) AS cik
@@ -45,16 +41,14 @@ FROM (
             CAST(SUBSTRING(value, 161, 13) AS BIGINT) AS fi_out_basic,
             CAST(SUBSTRING(value, 174, 13) AS BIGINT) AS fi_out_dilut,
             TRIM(SUBSTRING(value, 187, 60)) AS conameorcik
-        FROM
-            {{ ref('FinWire') }}
-        WHERE rectype = "FIN"
-    ) f
-) f
-
-    JOIN (
+        FROM {{ ref('FinWire') }}
+        WHERE rectype = 'FIN'
+    ) AS f
+) AS f
+    INNER JOIN (
         SELECT
             sk_companyid,
-            name conameorcik,
+            name AS conameorcik,
             effectivedate,
             enddate
         FROM
@@ -62,13 +56,13 @@ FROM (
         UNION ALL
         SELECT
             sk_companyid,
-            CAST(companyid AS STRING) conameorcik,
+            CAST(companyid AS STRING) AS conameorcik,
             effectivedate,
             enddate
         FROM
             {{ ref('DimCompany') }}
-    ) dc
+    ) AS dc
         ON
             f.cik = dc.conameorcik
-            AND DATE(pts) >= dc.effectivedate
-            AND DATE(pts) < dc.enddate
+            AND DATE(f.pts) >= dc.effectivedate
+            AND DATE(f.pts) < dc.enddate

@@ -71,32 +71,34 @@ FROM (
                     status,
                     update_ts,
                     1 AS batchid
-                FROM {{ ref('CustomerMgmtView') }} c
+                FROM {{ ref('CustomerMgmtView') }}
                 WHERE actiontype NOT IN ('UPDCUST', 'INACT')
                 UNION ALL
                 SELECT
-                    accountid,
+                    a.accountid,
                     a.ca_c_id AS customerid,
-                    accountdesc,
-                    taxstatus,
+                    a.accountdesc,
+                    a.taxstatus,
                     a.ca_b_id AS brokerid,
-                    st_name AS status,
+                    st.st_name AS status,
                     TIMESTAMP(bd.batchdate) AS update_ts,
                     a.batchid
-                FROM {{ ref('AccountIncremental') }} a
-                    JOIN {{ ref('BatchDate') }} bd ON a.batchid = bd.batchid
-                    JOIN
-                        {{ source(var('benchmark'),'StatusType') }} st
+                FROM {{ ref('AccountIncremental') }} AS a
+                    INNER JOIN
+                        {{ ref('BatchDate') }} AS bd
+                        ON a.batchid = bd.batchid
+                    INNER JOIN
+                        {{ source(var('benchmark'),'StatusType') }} AS st
                         ON a.ca_st_id = st.st_id
-            ) a
-        ) a
-        WHERE a.effectivedate < a.enddate
-    ) a
-        FULL OUTER JOIN {{ ref('DimCustomerStg') }} c
+            ) AS a
+        ) AS a
+        WHERE effectivedate < enddate
+    ) AS a
+        FULL OUTER JOIN {{ ref('DimCustomerStg') }} AS c
             ON
                 a.customerid = c.customerid
                 AND c.enddate > a.effectivedate
                 AND c.effectivedate < a.enddate
-) a
-    LEFT JOIN {{ ref('DimBroker') }} b
+) AS a
+    LEFT JOIN {{ ref('DimBroker') }} AS b
         ON a.brokerid = b.brokerid

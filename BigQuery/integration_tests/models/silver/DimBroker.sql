@@ -6,26 +6,22 @@
 
 SELECT
     CAST(employeeid AS BIGINT) AS brokerid,
-    CAST(managerid AS BIGINT) managerid,
-    employeefirstname firstname,
-    employeelastname lastname,
-    employeemi middleinitial,
-    employeebranch branch,
-    employeeoffice office,
-    employeephone phone,
-    TRUE iscurrent,
-    1 batchid,
+    CAST(managerid AS BIGINT) AS managerid,
+    employeefirstname AS firstname,
+    employeelastname AS lastname,
+    employeemi AS middleinitial,
+    employeebranch AS branch,
+    employeeoffice AS office,
+    employeephone AS phone,
+    TRUE AS iscurrent,
+    1 AS batchid,
     (
-        SELECT MIN(DATE(datevalue)) AS effectivedate
+        SELECT MIN(DATE(dd.datevalue)) AS effectivedate
         FROM
-            {{ source(var('benchmark'), 'DimDate') }} effectivedate,
+            {{ source(var('benchmark'), 'DimDate') }} AS dd,
             (SELECT DATE('9999-12-31'))
-    ) enddate,
+    ) AS enddate,
     (SELECT CONCAT(CAST(employeeid AS BIGINT), '-', DATE('9999-12-31')))
         AS sk_brokerid
-FROM
-
-    {{ source(var('benchmark'), 'HR') }}
-
-WHERE
-    employeejobcode = "314"
+FROM {{ source(var('benchmark'), 'HR') }}
+WHERE employeejobcode = '314'

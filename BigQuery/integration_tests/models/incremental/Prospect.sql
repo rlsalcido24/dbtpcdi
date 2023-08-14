@@ -4,7 +4,7 @@
     )
 }}
 SELECT
-    agencyid,
+    p.agencyid,
     recdate.sk_dateid AS sk_recorddateid,
     origdate.sk_dateid AS sk_updatedateid,
     p.batchid,
@@ -16,67 +16,81 @@ SELECT
     p.addressline1,
     p.addressline2,
     p.postalcode,
-    city,
-    state,
-    country,
-    phone,
-    income,
-    numbercars,
-    numberchildren,
-    maritalstatus,
-    age,
-    creditrating,
-    ownorrentflag,
-    employer,
-    numbercreditcards,
-    networth,
+    p.city,
+    p.state,
+    p.country,
+    p.phone,
+    p.income,
+    p.numbercars,
+    p.numberchildren,
+    p.maritalstatus,
+    p.age,
+    p.creditrating,
+    p.ownorrentflag,
+    p.employer,
+    p.numbercreditcards,
+    p.networth,
     IF(
         CONCAT(
-            IF(networth > 1000000 OR income > 200000, 'HighValue+', ''),
-            IF(numberchildren > 3 OR numbercreditcards > 5, 'Expenses+', ''),
-            IF(age > 45, 'Boomer+', ''),
+            IF(p.networth > 1000000 OR p.income > 200000, 'HighValue+', ''),
             IF(
-                income < 50000 OR creditrating < 600 OR networth < 100000,
+                p.numberchildren > 3 OR p.numbercreditcards > 5, 'Expenses+', ''
+            ),
+            IF(p.age > 45, 'Boomer+', ''),
+            IF(
+                p.income < 50000 OR p.creditrating < 600 OR p.networth < 100000,
                 'MoneyAlert+',
                 ''
             ),
-            IF(numbercars > 3 OR numbercreditcards > 7, 'Spender+', ''),
-            IF(age < 25 AND networth > 1000000, 'Inherited+', '')
+            IF(p.numbercars > 3 OR p.numbercreditcards > 7, 'Spender+', ''),
+            IF(p.age < 25 AND p.networth > 1000000, 'Inherited+', '')
         ) != '', -- IS NOT NULL
         SUBSTR(
             CONCAT(
-                IF(networth > 1000000 OR income > 200000, 'HighValue+', ''),
+                IF(p.networth > 1000000 OR p.income > 200000, 'HighValue+', ''),
                 IF(
-                    numberchildren > 3 OR numbercreditcards > 5, 'Expenses+', ''
+                    p.numberchildren > 3 OR p.numbercreditcards > 5,
+                    'Expenses+',
+                    ''
                 ),
-                IF(age > 45, 'Boomer+', ''),
+                IF(p.age > 45, 'Boomer+', ''),
                 IF(
-                    income < 50000 OR creditrating < 600 OR networth < 100000,
+                    p.income < 50000
+                    OR p.creditrating < 600
+                    OR p.networth < 100000,
                     'MoneyAlert+',
                     ''
                 ),
-                IF(numbercars > 3 OR numbercreditcards > 7, 'Spender+', ''),
-                IF(age < 25 AND networth > 1000000, 'Inherited+', '')
+                IF(p.numbercars > 3 OR p.numbercreditcards > 7, 'Spender+', ''),
+                IF(p.age < 25 AND p.networth > 1000000, 'Inherited+', '')
             ),
             1,
             LENGTH(
                 CONCAT(
-                    IF(networth > 1000000 OR income > 200000, 'HighValue+', ''),
                     IF(
-                        numberchildren > 3 OR numbercreditcards > 5,
+                        p.networth > 1000000 OR p.income > 200000,
+                        'HighValue+',
+                        ''
+                    ),
+                    IF(
+                        p.numberchildren > 3 OR p.numbercreditcards > 5,
                         'Expenses+',
                         ''
                     ),
-                    IF(age > 45, 'Boomer+', ''),
+                    IF(p.age > 45, 'Boomer+', ''),
                     IF(
-                        income < 50000
-                        OR creditrating < 600
-                        OR networth < 100000,
+                        p.income < 50000
+                        OR p.creditrating < 600
+                        OR p.networth < 100000,
                         'MoneyAlert+',
                         ''
                     ),
-                    IF(numbercars > 3 OR numbercreditcards > 7, 'Spender+', ''),
-                    IF(age < 25 AND networth > 1000000, 'Inherited+', '')
+                    IF(
+                        p.numbercars > 3 OR p.numbercreditcards > 7,
+                        'Spender+',
+                        ''
+                    ),
+                    IF(p.age < 25 AND p.networth > 1000000, 'Inherited+', '')
                 )
             ) - 1
         ),
@@ -109,7 +123,7 @@ FROM (
         CAST(networth AS INT64) AS networth,
         MIN(batchid) AS batchid
     FROM
-        {{ ref('ProspectRaw') }} p
+        {{ ref('ProspectRaw') }}
     GROUP BY
         agencyid,
         lastname,
@@ -133,31 +147,31 @@ FROM (
         employer,
         numbercreditcards,
         networth
-) p
-    JOIN (
+) AS p
+    INNER JOIN (
         SELECT
-            sk_dateid,
-            batchid
+            d.sk_dateid,
+            b.batchid
         FROM
-            {{ ref('BatchDate') }} b
-            JOIN
-                {{ source(var('benchmark'),'DimDate') }} d
+            {{ ref('BatchDate') }} AS b
+            INNER JOIN
+                {{ source(var('benchmark'),'DimDate') }} AS d
                 ON
                     b.batchdate = d.datevalue
-    ) recdate
+    ) AS recdate
         ON
             p.recordbatchid = recdate.batchid
-    JOIN (
+    INNER JOIN (
         SELECT
-            sk_dateid,
-            batchid
+            d.sk_dateid,
+            b.batchid
         FROM
-            {{ ref('BatchDate') }} b
-            JOIN
-                {{ source(var('benchmark'),'DimDate') }} d
+            {{ ref('BatchDate') }} AS b
+            INNER JOIN
+                {{ source(var('benchmark'),'DimDate') }} AS d
                 ON
                     b.batchdate = d.datevalue
-    ) origdate
+    ) AS origdate
         ON
             p.batchid = origdate.batchid
     LEFT JOIN (
@@ -172,7 +186,7 @@ FROM (
             {{ ref('DimCustomerStg') }}
         WHERE
             iscurrent
-    ) c
+    ) AS c
         ON
             UPPER(p.lastname) = UPPER(c.lastname)
             AND UPPER(p.firstname) = UPPER(c.firstname)

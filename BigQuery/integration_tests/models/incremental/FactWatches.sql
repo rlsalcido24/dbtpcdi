@@ -4,10 +4,10 @@
     )
 }}
 SELECT
-    c.sk_customerid sk_customerid,
-    s.sk_securityid sk_securityid,
-    sk_dateid_dateplaced,
-    sk_dateid_dateremoved,
+    c.sk_customerid AS sk_customerid,
+    s.sk_securityid AS sk_securityid,
+    wh.sk_dateid_dateplaced,
+    wh.sk_dateid_dateremoved,
     wh.batchid
 FROM (
     SELECT * EXCEPT (w_dts)
@@ -58,29 +58,29 @@ FROM (
             ) AS batchid
         FROM (
             SELECT
-                wh.w_c_id customerid,
-                wh.w_s_symb symbol,
+                wh.w_c_id AS customerid,
+                wh.w_s_symb AS symbol,
                 IF(
-                    w_action = 'ACTV',
+                    wh.w_action = 'ACTV',
                     d.sk_dateid,
                     NULL
-                ) sk_dateid_dateplaced,
+                ) AS sk_dateid_dateplaced,
                 IF(
-                    w_action = 'CNCL',
+                    wh.w_action = 'CNCL',
                     d.sk_dateid,
                     NULL
-                ) sk_dateid_dateremoved,
+                ) AS sk_dateid_dateremoved,
                 IF(
-                    w_action = 'ACTV',
+                    wh.w_action = 'ACTV',
                     d.datevalue,
                     NULL
-                ) dateplaced,
+                ) AS dateplaced,
                 wh.w_dts,
-                batchid
+                wh.batchid
             FROM (
                 SELECT
                     *,
-                    1 batchid
+                    1 AS batchid
                 FROM
                     {{ source(var('benchmark'),'WatchHistory') }}
                 UNION ALL
@@ -91,27 +91,29 @@ FROM (
                     )
                 FROM
                     {{ ref('WatchIncremental') }}
-            ) wh
-                JOIN
-                    {{ source(var('benchmark'),'DimDate') }} d
+            ) AS wh
+                INNER JOIN
+                    {{ source(var('benchmark'),'DimDate') }} AS d
                     ON
                         d.datevalue = DATE(wh.w_dts)
         )
     ) QUALIFY
         ROW_NUMBER() OVER (PARTITION BY customerid, symbol ORDER BY w_dts DESC)
         = 1
-) wh
--- Converts to LEFT JOINs if this is run as DQ EDITION. On some higher Scale Factors, a small number of Security symbols or Customer IDs "may" be missing from DimSecurity/DimCustomer, causing audit check failures.
+) AS wh
+-- Converts to LEFT JOINs if this is run as DQ EDITION. On some higher Scale
+-- Factors, a small number of Security symbols or Customer IDs "may" be missing
+-- from DimSecurity/DimCustomer, causing audit check failures.
 --${dq_left_flg}
     LEFT JOIN
-        {{ ref('DimSecurity') }} s
+        {{ ref('DimSecurity') }} AS s
         ON
             s.symbol = wh.symbol
             AND wh.dateplaced >= s.effectivedate
             AND wh.dateplaced < s.enddate
     --${dq_left_flg}
     LEFT JOIN
-        {{ ref('DimCustomer') }} c
+        {{ ref('DimCustomer') }} AS c
         ON
             wh.customerid = c.customerid
             AND wh.dateplaced >= c.effectivedate
