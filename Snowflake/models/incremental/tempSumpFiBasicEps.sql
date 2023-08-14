@@ -9,7 +9,9 @@ SELECT
     SUM(fi.fi_basic_eps)
         OVER (
             PARTITION BY dc.companyid
-            ORDER BY fi.fi_qtr_start_date ROWS BETWEEN 4 PRECEDING AND CURRENT ROW
+            ORDER BY
+                fi.fi_qtr_start_date
+            ROWS BETWEEN 4 PRECEDING AND CURRENT ROW
         )
     - fi.fi_basic_eps AS sum_fi_basic_eps
 FROM {{ ref('Financial') }} AS fi

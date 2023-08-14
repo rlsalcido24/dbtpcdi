@@ -76,7 +76,8 @@ SELECT -- noqa: ST06
     cmp.description,
     cmp.foundingdate,
     COALESCE(
-        LEAD(cmp.pts) OVER (PARTITION BY cmp.cik ORDER BY cmp.pts) IS NOT NULL, FALSE
+        LEAD(cmp.pts) OVER (PARTITION BY cmp.cik ORDER BY cmp.pts) IS NOT NULL,
+        FALSE
     ) AS iscurrent,
     1 AS batchid,
     DATE(cmp.pts) AS effectivedate,

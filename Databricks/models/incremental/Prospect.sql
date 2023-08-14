@@ -33,7 +33,9 @@ SELECT
     IF(
         ISNOTNULL(
             IF(p.networth > 1000000 OR p.income > 200000, 'HighValue+', '')
-            || IF(p.numberchildren > 3 OR p.numbercreditcards > 5, 'Expenses+', '')
+            || IF(
+                p.numberchildren > 3 OR p.numbercreditcards > 5, 'Expenses+', ''
+            )
             || IF(p.age > 45, 'Boomer+', '')
             || IF(
                 p.income < 50000 OR p.creditrating < 600 OR p.networth < 100000,
@@ -45,7 +47,9 @@ SELECT
         ),
         LEFT(
             IF(p.networth > 1000000 OR p.income > 200000, 'HighValue+', '')
-            || IF(p.numberchildren > 3 OR p.numbercreditcards > 5, 'Expenses+', '')
+            || IF(
+                p.numberchildren > 3 OR p.numbercreditcards > 5, 'Expenses+', ''
+            )
             || IF(p.age > 45, 'Boomer+', '')
             || IF(
                 p.income < 50000 OR p.creditrating < 600 OR p.networth < 100000,
@@ -57,15 +61,21 @@ SELECT
             LENGTH(
                 IF(p.networth > 1000000 OR p.income > 200000, 'HighValue+', '')
                 || IF(
-                    p.numberchildren > 3 OR p.numbercreditcards > 5, 'Expenses+', ''
+                    p.numberchildren > 3 OR p.numbercreditcards > 5,
+                    'Expenses+',
+                    ''
                 )
                 || IF(p.age > 45, 'Boomer+', '')
                 || IF(
-                    p.income < 50000 OR p.creditrating < 600 OR p.networth < 100000,
+                    p.income < 50000
+                    OR p.creditrating < 600
+                    OR p.networth < 100000,
                     'MoneyAlert+',
                     ''
                 )
-                || IF(p.numbercars > 3 OR p.numbercreditcards > 7, 'Spender+', '')
+                || IF(
+                    p.numbercars > 3 OR p.numbercreditcards > 7, 'Spender+', ''
+                )
                 || IF(p.age < 25 AND p.networth > 1000000, 'Inherited+', '')
             )
             - 1
