@@ -137,8 +137,8 @@ FROM (
 ) AS p
     INNER JOIN (
         SELECT
-            sk_dateid,
-            batchid
+            d.sk_dateid,
+            b.batchid
         FROM {{ ref('BatchDate') }} AS b
             INNER JOIN {{ source('tpcdi', 'DimDate') }} AS d
                 ON b.batchdate = d.datevalue
@@ -146,8 +146,8 @@ FROM (
         ON p.recordbatchid = recdate.batchid
     INNER JOIN (
         SELECT
-            sk_dateid,
-            batchid
+            d.sk_dateid,
+            b.batchid
         FROM {{ ref('BatchDate') }} AS b
             INNER JOIN {{ source('tpcdi', 'DimDate') }} AS d
                 ON b.batchdate = d.datevalue

@@ -63,10 +63,10 @@ FROM (
                 WHERE actiontype NOT IN ('UPDCUST', 'INACT')
                 UNION ALL
                 SELECT
-                    accountid,
+                    a.accountid,
                     a.ca_c_id AS customerid,
-                    accountdesc,
-                    taxstatus,
+                    a.accountdesc,
+                    a.taxstatus,
                     a.ca_b_id AS brokerid,
                     st.st_name AS status,
                     TO_TIMESTAMP(bd.batchdate) AS update_ts,
@@ -78,7 +78,7 @@ FROM (
                         ON a.ca_st_id = st.st_id
             ) AS a
         ) AS a
-        WHERE a.effectivedate < a.enddate
+        WHERE effectivedate < enddate
     ) AS a
         FULL OUTER JOIN {{ ref('DimCustomerStg') }} AS c
             ON

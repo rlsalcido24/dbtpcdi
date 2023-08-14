@@ -5,20 +5,20 @@
 }}
 SELECT
     trade.tradeid,
-    sk_brokerid,
+    da.sk_brokerid,
     trade.sk_createdateid,
     trade.sk_createtimeid,
     trade.sk_closedateid,
     trade.sk_closetimeid,
-    st_name AS status,
-    tt_name AS type, -- noqa: RF04
+    status.st_name AS status,
+    tt.tt_name AS type, -- noqa: RF04
     trade.cashflag,
-    sk_securityid,
-    sk_companyid,
+    da.sk_securityid,
+    da.sk_companyid,
     trade.quantity,
     trade.bidprice,
-    sk_customerid,
-    sk_accountid,
+    da.sk_customerid,
+    da.sk_accountid,
     trade.executedby,
     trade.tradeprice,
     trade.fee,
@@ -69,13 +69,13 @@ FROM (
             SELECT
                 t.tradeid,
                 t.t_dts,
-                IFF(t.create_flg, sk_dateid, CAST(NULL AS BIGINT))
+                IFF(t.create_flg, dd.sk_dateid, CAST(NULL AS BIGINT))
                     AS sk_createdateid,
-                IFF(t.create_flg, sk_timeid, CAST(NULL AS BIGINT))
+                IFF(t.create_flg, dt.sk_timeid, CAST(NULL AS BIGINT))
                     AS sk_createtimeid,
-                IFF(t.create_flg, sk_dateid, CAST(NULL AS BIGINT))
+                IFF(t.create_flg, dd.sk_dateid, CAST(NULL AS BIGINT))
                     AS sk_closedateid,
-                IFF(t.create_flg, sk_timeid, CAST(NULL AS BIGINT))
+                IFF(t.create_flg, dt.sk_timeid, CAST(NULL AS BIGINT))
                     AS sk_closetimeid,
                 CASE
                     WHEN t.t_is_cash = 1 THEN TRUE
