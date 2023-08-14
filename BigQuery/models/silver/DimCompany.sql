@@ -4,11 +4,11 @@
     )
 }}
 SELECT -- noqa: ST06
-    CAST(cik AS BIGINT) companyid,
+    CAST(cmp.cik AS BIGINT) AS companyid,
     st.st_name AS status,
-    companyname AS name,
+    cmp.companyname AS name, -- noqa:RF04
     ind.in_name AS industry,
-    IF(sprating IN (
+    IF(cmp.sprating IN (
         'AAA',
         'AA',
         'AA+',
@@ -31,7 +31,7 @@ SELECT -- noqa: ST06
         'CC',
         'C',
         'D'
-    ), sprating, CAST(NULL AS STRING
+    ), cmp.sprating, CAST(NULL AS STRING
     )) AS sprating,
     CASE
         WHEN
@@ -66,25 +66,25 @@ SELECT -- noqa: ST06
             CAST(NULL AS BOOLEAN)
     END
         AS islowgrade,
-    ceoname AS ceo,
-    addrline1 AS addressline1,
-    addrline2 AS addressline2,
-    postalcode,
-    city,
-    stateprovince AS stateprov,
-    country,
-    description,
-    foundingdate,
+    cmp.ceoname AS ceo,
+    cmp.addrline1 AS addressline1,
+    cmp.addrline2 AS addressline2,
+    cmp.postalcode,
+    cmp.city,
+    cmp.stateprovince AS stateprov,
+    cmp.country,
+    cmp.description,
+    cmp.foundingdate,
     COALESCE(
-        LEAD(pts) OVER (PARTITION BY cik ORDER BY pts) IS NOT NULL, FALSE
+        LEAD(cmp.pts) OVER (PARTITION BY cmp.cik ORDER BY cmp.pts) IS NOT NULL, FALSE
     ) AS iscurrent,
     1 AS batchid,
-    DATE(pts) AS effectivedate,
-    CONCAT(CAST(cik AS BIGINT), '-', DATE(pts)) sk_companyid,
+    DATE(cmp.pts) AS effectivedate,
+    CONCAT(CAST(cmp.cik AS BIGINT), '-', DATE(cmp.pts)) AS sk_companyid,
     COALESCE(
-        LEAD(DATE(pts)) OVER (PARTITION BY cik ORDER BY pts),
+        LEAD(DATE(cmp.pts)) OVER (PARTITION BY cmp.cik ORDER BY cmp.pts),
         CAST('9999-12-31' AS DATE)
-    ) enddate
+    ) AS enddate
 FROM (
     SELECT
         PARSE_TIMESTAMP('%E4Y%m%d-%H%M%S', SUBSTRING(value, 1, 15)) AS pts,
@@ -111,13 +111,13 @@ FROM (
         TRIM(SUBSTRING(value, 394, 150)) AS description
     FROM
         {{ ref('FinWire') }}
-    WHERE rectype = "CMP"
+    WHERE rectype = 'CMP'
 ) AS cmp
-    JOIN
+    INNER JOIN
         {{ source(var('benchmark'),'StatusType') }} AS st
         ON
             cmp.status = st.st_id
-    JOIN
+    INNER JOIN
         {{ source(var('benchmark'),'Industry') }} AS ind
         ON
             cmp.industryid = ind.in_id
