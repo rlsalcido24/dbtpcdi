@@ -5,20 +5,20 @@
 }}
 SELECT
     trade.tradeid,
-    sk_brokerid,
+    ds.sk_brokerid,
     trade.sk_createdateid,
     trade.sk_createtimeid,
     trade.sk_closedateid,
     trade.sk_closetimeid,
-    st_name AS status,
-    tt_name AS type, --noqa: RF04
+    status.st_name AS status,
+    tt.tt_name AS type, --noqa: RF04
     trade.cashflag,
-    sk_securityid,
-    sk_companyid,
+    ds.sk_securityid,
+    ds.sk_companyid,
     trade.quantity,
     trade.bidprice,
-    sk_customerid,
-    sk_accountid,
+    da.sk_customerid,
+    da.sk_accountid,
     trade.executedby,
     trade.tradeprice,
     trade.fee,
@@ -91,22 +91,22 @@ FROM (
                 t.t_dts,
                 IF(
                     t.create_flg,
-                    sk_dateid,
+                    dd.sk_dateid,
                     CAST(NULL AS BIGINT)
                 ) AS sk_createdateid,
                 IF(
                     t.create_flg,
-                    sk_timeid,
+                    dt.sk_timeid,
                     CAST(NULL AS BIGINT)
                 ) AS sk_createtimeid,
                 IF(
                     t.create_flg,
-                    sk_dateid,
+                    dd.sk_dateid,
                     CAST(NULL AS BIGINT)
                 ) AS sk_closedateid,
                 IF(
                     t.create_flg,
-                    sk_timeid,
+                    dt.sk_timeid,
                     CAST(NULL AS BIGINT)
                 ) AS sk_closetimeid,
                 CASE

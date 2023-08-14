@@ -6,7 +6,7 @@
 SELECT -- noqa: ST06
     s.sk_securityid,
     s.sk_companyid,
-    sk_dateid,
+    fmh.sk_dateid,
     fmh.dm_close / NULLIF(f.sum_fi_basic_eps, 0) AS peratio,
     (s.dividend / fmh.dm_close) / 100 AS yield,
     dmh.fiftytwoweekhigh,

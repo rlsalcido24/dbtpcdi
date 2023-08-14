@@ -75,10 +75,10 @@ FROM (
                 WHERE actiontype NOT IN ('UPDCUST', 'INACT')
                 UNION ALL
                 SELECT
-                    accountid,
+                    a.accountid,
                     a.ca_c_id AS customerid,
-                    accountdesc,
-                    taxstatus,
+                    a.accountdesc,
+                    a.taxstatus,
                     a.ca_b_id AS brokerid,
                     st.st_name AS status,
                     TIMESTAMP(bd.batchdate) AS update_ts,

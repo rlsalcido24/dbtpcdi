@@ -6,8 +6,8 @@
 SELECT
     c.sk_customerid AS sk_customerid,
     s.sk_securityid AS sk_securityid,
-    sk_dateid_dateplaced,
-    sk_dateid_dateremoved,
+    wh.sk_dateid_dateplaced,
+    wh.sk_dateid_dateremoved,
     wh.batchid
 FROM (
     SELECT * EXCEPT (w_dts)
