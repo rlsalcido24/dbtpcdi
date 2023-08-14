@@ -100,10 +100,10 @@ FROM (
                     AND (TRIM(brokerid) = '') IS NOT FALSE
                 UNION ALL
                 SELECT
-                    accountid,
+                    a.accountid,
                     a.ca_c_id AS customerid,
-                    accountdesc,
-                    taxstatus,
+                    a.accountdesc,
+                    a.taxstatus,
                     a.ca_b_id AS brokerid,
                     st.st_name AS status,
                     --IMESTAMP(bd.batchdate) update_ts,

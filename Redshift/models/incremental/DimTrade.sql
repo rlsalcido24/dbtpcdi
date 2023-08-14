@@ -5,25 +5,22 @@
 }}
 --,index='CLUSTERED COLUMNSTORE INDEX'
 --,dist='REPLICATE'
-
-
-
 SELECT
     trade.tradeid,
-    sk_brokerid,
+    da.sk_brokerid,
     trade.sk_createdateid,
     trade.sk_createtimeid,
     trade.sk_closedateid,
     trade.sk_closetimeid,
-    st_name AS status,
-    tt_name AS type, -- noqa: RF04
+    status.st_name AS status,
+    tt.tt_name AS type, -- noqa: RF04
     trade.cashflag,
-    sk_securityid,
-    sk_companyid,
+    da.sk_securityid,
+    da.sk_companyid,
     trade.quantity,
     trade.bidprice,
-    sk_customerid,
-    sk_accountid,
+    da.sk_customerid,
+    da.sk_accountid,
     trade.executedby,
     trade.tradeprice,
     trade.fee,
@@ -124,28 +121,28 @@ FROM (
                                 CASE
                                     WHEN
                                         t.create_flg > 0
-                                        THEN CAST(sk_dateid AS BIGINT)
+                                        THEN CAST(dt.sk_dateid AS BIGINT)
                                     ELSE CAST(NULL AS BIGINT)
                                 END AS sk_createdateid,
                                 --if(create_flg, sk_timeid, cast(NULL AS BIGINT)) sk_createtimeid, -- noqa: LT05
                                 CASE
                                     WHEN
                                         t.create_flg > 0
-                                        THEN CAST(sk_dateid AS BIGINT)
+                                        THEN CAST(dd.sk_dateid AS BIGINT)
                                     ELSE CAST(NULL AS BIGINT)
                                 END AS sk_createtimeid,
                                 --if(!create_flg, sk_dateid, cast(NULL AS BIGINT)) sk_closedateid, -- noqa: LT05
                                 CASE
                                     WHEN
                                         t.create_flg = 0
-                                        THEN CAST(sk_dateid AS BIGINT)
+                                        THEN CAST(dt.sk_dateid AS BIGINT)
                                     ELSE CAST(NULL AS BIGINT)
                                 END AS sk_closedateid,
                                 --if(!create_flg, sk_timeid, cast(NULL AS BIGINT)) sk_closetimeid, -- noqa: LT05
                                 CASE
                                     WHEN
                                         t.create_flg = 0
-                                        THEN CAST(sk_dateid AS BIGINT)
+                                        THEN CAST(dd.sk_dateid AS BIGINT)
                                     ELSE CAST(NULL AS BIGINT)
                                 END AS sk_closetimeid,
                                 CASE
@@ -261,12 +258,12 @@ FROM (
         --LEFT JOIN dbo.DimSecurity ds
         ON
             ds.symbol = trade.t_s_symb
-            AND createdate >= ds.effectivedate
-            AND createdate < ds.enddate
+            AND trade.createdate >= ds.effectivedate
+            AND trade.createdate < ds.enddate
     --${dq_left_flg}
     LEFT JOIN {{ ref('dimaccount') }} AS da
         --LEFT JOIN dbo.DimAccount da
         ON
             trade.t_ca_id = da.accountid
-            AND createdate >= da.effectivedate
-            AND createdate < da.enddate
+            AND trade.createdate >= da.effectivedate
+            AND trade.createdate < da.enddate

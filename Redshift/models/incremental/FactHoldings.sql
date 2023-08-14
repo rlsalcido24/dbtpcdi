@@ -9,12 +9,12 @@
 SELECT
     hh.hh_h_t_id AS tradeid,
     hh.hh_t_id AS currenttradeid,
-    sk_customerid,
-    sk_accountid,
-    sk_securityid,
-    sk_companyid,
-    sk_closedateid AS sk_dateid,
-    sk_closetimeid AS sk_timeid,
+    dt.sk_customerid,
+    dt.sk_accountid,
+    dt.sk_securityid,
+    dt.sk_companyid,
+    dt.sk_closedateid AS sk_dateid,
+    dt.sk_closetimeid AS sk_timeid,
     dt.tradeprice AS currentprice,
     hh.hh_after_qty AS currentholding,
     hh.batchid
@@ -27,11 +27,11 @@ FROM (
     UNION ALL
     --SELECT * except(cdc_flag, cdc_dsn)
     SELECT
-        [hh_h_t_id],
-        [hh_t_id],
-        [hh_before_qty],
-        [hh_after_qty],
-        [batchid]
+        hh_h_t_id,
+        hh_t_id,
+        hh_before_qty,
+        hh_after_qty,
+        batchid
     FROM {{ ref('holdingincremental') }}
 ) AS hh
 --FROM stg.HoldingIncremental) hh
