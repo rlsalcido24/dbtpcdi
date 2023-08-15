@@ -6,7 +6,7 @@
 }}
 
 SELECT
-    [value],
+    value,
     SUBSTRING([value], 16, 3) AS rectype
 FROM
     {{ source('tpcdi', 'FinWireStg') }}

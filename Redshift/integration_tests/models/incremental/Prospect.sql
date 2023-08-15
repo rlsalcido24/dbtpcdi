@@ -5,14 +5,13 @@
 }}
 --,index='CLUSTERED COLUMNSTORE INDEX'
 --,dist='HASH(agencyid)'
-
 SELECT
-    agencyid,
-    recdate.sk_dateid sk_recorddateid,
-    origdate.sk_dateid sk_updatedateid,
+    p.agencyid,
+    recdate.sk_dateid AS sk_recorddateid,
+    origdate.sk_dateid AS sk_updatedateid,
     p.batchid,
-    --nvl2(c.customerid, True, False) iscustomer, 
-    CASE WHEN c.customerid IS NOT NULL THEN 1 ELSE 0 END iscustomer,
+    --nvl2(c.customerid, True, False) iscustomer,
+    CASE WHEN c.customerid IS NOT NULL THEN 1 ELSE 0 END AS iscustomer,
     p.lastname,
     p.firstname,
     p.middleinitial,
@@ -20,20 +19,20 @@ SELECT
     p.addressline1,
     p.addressline2,
     p.postalcode,
-    city,
-    state,
-    country,
-    phone,
-    income,
-    numbercars,
-    numberchildren,
-    maritalstatus,
-    age,
-    creditrating,
-    ownorrentflag,
-    employer,
-    numbercreditcards,
-    networth,
+    p.city,
+    p.state,
+    p.country,
+    p.phone,
+    p.income,
+    p.numbercars,
+    p.numberchildren,
+    p.maritalstatus,
+    p.age,
+    p.creditrating,
+    p.ownorrentflag,
+    p.employer,
+    p.numbercreditcards,
+    p.networth,
     /*iff(
         iff(networth > 1000000 or income > 200000, 'HighValue+','') ||
         iff(numberchildren > 3 or numbercreditcards > 5,'Expenses+','') ||
@@ -88,29 +87,35 @@ SELECT
     END marketingnameplate*/
     RTRIM(
         CASE
-            WHEN networth > 1000000 OR income > 200000 THEN 'HighValue+' ELSE ''
+            WHEN
+                p.networth > 1000000 OR p.income > 200000
+                THEN 'HighValue+'
+            ELSE ''
         END
         + CASE
             WHEN
-                numberchildren > 3 OR numbercreditcards > 5
+                p.numberchildren > 3 OR p.numbercreditcards > 5
                 THEN 'Expenses+'
             ELSE ''
         END
-        + CASE WHEN age > 45 THEN 'Boomer+' ELSE '' END
+        + CASE WHEN p.age > 45 THEN 'Boomer+' ELSE '' END
         + CASE
             WHEN
-                income < 50000 OR creditrating < 600 OR networth < 100000
+                p.income < 50000 OR p.creditrating < 600 OR p.networth < 100000
                 THEN 'MoneyAlert+'
             ELSE ''
         END
         + CASE
-            WHEN numbercars > 3 OR numbercreditcards > 7 THEN 'Spender+' ELSE ''
+            WHEN
+                p.numbercars > 3 OR p.numbercreditcards > 7
+                THEN 'Spender+'
+            ELSE ''
         END
         + CASE
-            WHEN age < 25 AND networth > 1000000 THEN 'Inherited+' ELSE ''
+            WHEN p.age < 25 AND p.networth > 1000000 THEN 'Inherited+' ELSE ''
         END,
         '+'
-    ) marketingnameplate
+    ) AS marketingnameplate
 FROM
     (
         SELECT *
@@ -125,7 +130,7 @@ FROM
                     (
                         SELECT
                             agencyid,
-                            MAX(batchid) recordbatchid,
+                            MAX(batchid) AS recordbatchid,
                             lastname,
                             firstname,
                             middleinitial,
@@ -147,8 +152,8 @@ FROM
                             employer,
                             numbercreditcards,
                             networth,
-                            MIN(batchid) batchid
-                        FROM {{ ref('prospectraw') }} p
+                            MIN(batchid) AS batchid
+                        FROM {{ ref('prospectraw') }}
                         --FROM stg.ProspectRaw p
                         GROUP BY
                             agencyid,
@@ -173,32 +178,32 @@ FROM
                             employer,
                             numbercreditcards,
                             networth
-                    ) t0
-            --QUALIFY ROW_NUMBER() OVER (PARTITION BY agencyid ORDER BY batchid DESC) = 1
-            ) t1
+                    ) AS t0
+            --QUALIFY ROW_NUMBER() OVER (PARTITION BY agencyid ORDER BY batchid DESC) = 1 -- noqa: LT05
+            ) AS t1
         WHERE t1.rownum = 1
-    ) p
-    JOIN (
+    ) AS p
+    INNER JOIN (
         SELECT
-            sk_dateid,
-            batchid
-        FROM {{ ref('batchdate') }} b
-            --FROM prd.BatchDate b 
-            JOIN {{ source('tpcdi', 'DimDate') }} d
-                --JOIN prd.DimDate d 
+            d.sk_dateid,
+            b.batchid
+        FROM {{ ref('batchdate') }} AS b
+            --FROM prd.BatchDate b
+            INNER JOIN {{ source('tpcdi', 'DimDate') }} AS d
+                --JOIN prd.DimDate d
                 ON b.batchdate = d.datevalue
-    ) recdate
+    ) AS recdate
         ON p.recordbatchid = recdate.batchid
-    JOIN (
+    INNER JOIN (
         SELECT
-            sk_dateid,
-            batchid
-        FROM {{ ref('batchdate') }} b
-            --FROM prd.BatchDate b 
-            JOIN {{ source('tpcdi', 'DimDate') }} d
-                --JOIN prd.DimDate d 
+            d.sk_dateid,
+            b.batchid
+        FROM {{ ref('batchdate') }} AS b
+            --FROM prd.BatchDate b
+            INNER JOIN {{ source('tpcdi', 'DimDate') }} AS d
+                --JOIN prd.DimDate d
                 ON b.batchdate = d.datevalue
-    ) origdate
+    ) AS origdate
         ON p.batchid = origdate.batchid
     LEFT JOIN (
         SELECT
@@ -212,12 +217,12 @@ FROM
         --FROM dbo.DimCustomerStg
         --WHERE iscurrent) c
         WHERE iscurrent = 1
-    ) c
+    ) AS c
         ON
             UPPER(p.lastname) = UPPER(c.lastname)
             AND UPPER(p.firstname) = UPPER(c.firstname)
             AND UPPER(p.addressline1) = UPPER(c.addressline1)
-            --and upper(nvl(p.addressline2, '')) = upper(nvl(c.addressline2, ''))
+            --and upper(nvl(p.addressline2, '')) = upper(nvl(c.addressline2, '')) -- noqa: LT05
             AND UPPER(ISNULL(p.addressline2, ''))
             = UPPER(ISNULL(c.addressline2, ''))
             AND UPPER(p.postalcode) = UPPER(c.postalcode)
