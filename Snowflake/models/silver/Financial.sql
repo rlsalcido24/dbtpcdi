@@ -29,7 +29,6 @@ FROM (
             CAST(SUBSTRING(value, 19, 4) AS INT) AS fi_year,
             CAST(SUBSTRING(value, 23, 1) AS INT) AS fi_qtr,
             TO_DATE(SUBSTRING(value, 24, 8), 'yyyymmdd') AS fi_qtr_start_date,
-            --to_date(substring(value, 32, 8), 'yyyymmdd') AS PostingDate,
             CAST(SUBSTRING(value, 40, 17) AS DOUBLE) AS fi_revenue,
             CAST(SUBSTRING(value, 57, 17) AS DOUBLE) AS fi_net_earn,
             CAST(SUBSTRING(value, 74, 12) AS DOUBLE) AS fi_basic_eps,
