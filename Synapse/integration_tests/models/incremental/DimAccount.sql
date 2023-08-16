@@ -38,20 +38,20 @@ FROM (
             SELECT
                 accountid,
                 customerid,
-                --coalesce(accountdesc, last_value(accountdesc) IGNORE NULLS OVER ( -- noqa: LT05
-                COALESCE(accountdesc, LAST_VALUE(accountdesc) OVER (
-                    PARTITION BY accountid ORDER BY update_ts
-                )) AS accountdesc,
-                --coalesce(taxstatus, last_value(taxstatus) IGNORE NULLS OVER (
-                COALESCE(taxstatus, LAST_VALUE(taxstatus) OVER (
-                    PARTITION BY accountid ORDER BY update_ts
-                )) AS taxstatus,
-                --coalesce(brokerid, last_value(brokerid) IGNORE NULLS OVER (
-                COALESCE(brokerid, LAST_VALUE(brokerid) OVER (
+                COALESCE(
+                    accountdesc, LAST_VALUE(accountdesc) /*IGNORE NULLS*/ OVER (
+                        PARTITION BY accountid ORDER BY update_ts
+                    )
+                ) AS accountdesc,
+                COALESCE(
+                    taxstatus, LAST_VALUE(taxstatus) /*IGNORE NULLS*/ OVER (
+                        PARTITION BY accountid ORDER BY update_ts
+                    )
+                ) AS taxstatus,
+                COALESCE(brokerid, LAST_VALUE(brokerid) /*IGNORE NULLS*/ OVER (
                     PARTITION BY accountid ORDER BY update_ts
                 )) AS brokerid,
-                --coalesce(status, last_value(status) IGNORE NULLS OVER (
-                COALESCE(status, LAST_VALUE(status) OVER (
+                COALESCE(status, LAST_VALUE(status) /*IGNORE NULLS*/ OVER (
                     PARTITION BY accountid ORDER BY update_ts
                 )) AS status,
                 CAST(update_ts AS DATE) AS effectivedate,

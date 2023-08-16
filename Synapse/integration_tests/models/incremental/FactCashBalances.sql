@@ -32,9 +32,7 @@ FROM (
         FROM {{ ref('CashTransactionIncremental') }}
     ) AS t
     GROUP BY
-    --accountid,
         ct_ca_id,
-        --datevalue,
         CAST(ct_dts AS DATE),
         batchid
 ) AS c

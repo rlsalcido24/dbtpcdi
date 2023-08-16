@@ -58,21 +58,13 @@ FROM (
             CONVERT( --noqa: CV11
                 DATE, SUBSTRING(value, 24, 8), 112
             ) AS fi_qtr_start_date,
-            --float
             CAST(SUBSTRING(value, 40, 17) AS DECIMAL(15, 2)) AS fi_revenue,
-            --float
             CAST(SUBSTRING(value, 57, 17) AS DECIMAL(15, 2)) AS fi_net_earn,
-            --float
             CAST(SUBSTRING(value, 74, 12) AS DECIMAL(10, 2)) AS fi_basic_eps,
-            --float
             CAST(SUBSTRING(value, 86, 12) AS DECIMAL(10, 2)) AS fi_dilut_eps,
-            --float
             CAST(SUBSTRING(value, 98, 12) AS DECIMAL(10, 2)) AS fi_margin,
-            --float
             CAST(SUBSTRING(value, 110, 17) AS DECIMAL(15, 2)) AS fi_inventory,
-            --float
             CAST(SUBSTRING(value, 127, 17) AS DECIMAL(15, 2)) AS fi_assets,
-            --float
             CAST(SUBSTRING(value, 144, 17) AS DECIMAL(15, 2)) AS fi_liability,
             CAST(SUBSTRING(value, 161, 13) AS BIGINT) AS fi_out_basic,
             CAST(SUBSTRING(value, 174, 13) AS BIGINT) AS fi_out_dilut,

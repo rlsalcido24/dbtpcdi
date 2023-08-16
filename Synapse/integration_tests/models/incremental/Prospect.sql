@@ -125,7 +125,6 @@ FROM
                             numbercreditcards,
                             networth
                     ) AS t0
-            --QUALIFY ROW_NUMBER() OVER (PARTITION BY agencyid ORDER BY batchid DESC) = 1 -- noqa: LT05
             ) AS t1
         WHERE rownum = 1
     ) AS p

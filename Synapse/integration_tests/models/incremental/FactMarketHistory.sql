@@ -58,9 +58,6 @@ FROM
                     ) AS dmh
             ) AS t
         WHERE rownum = 1
-    --QUALIFY ROW_NUMBER() OVER (
-    --  PARTITION BY dm_s_symb, dm_date
-    --  ORDER BY sk_fiftytwoweeklowdate, sk_fiftytwoweekhighdate) = 1
     ) AS fmh
     -- Converts to LEFT JOIN if this is run as DQ EDITION. On some higher Scale
     -- Factors, a small number of Security Security symbols are missing from

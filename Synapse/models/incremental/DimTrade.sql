@@ -62,27 +62,23 @@ FROM (
                             OVER (PARTITION BY tradeid)
                             AS createdate,
                         t_dts,
-                        --coalesce(sk_createdateid, last_value(sk_createdateid) IGNORE NULLS OVER ( -- noqa: LT05
                         COALESCE(
-                            sk_createdateid, LAST_VALUE(sk_createdateid) OVER (
+                            sk_createdateid, LAST_VALUE(sk_createdateid) /*IGNORE NULLS*/ OVER (
                                 PARTITION BY tradeid ORDER BY t_dts
                             )
                         ) AS sk_createdateid,
-                        --coalesce(sk_createtimeid, last_value(sk_createtimeid) IGNORE NULLS OVER ( -- noqa: LT05
                         COALESCE(
-                            sk_createtimeid, LAST_VALUE(sk_createtimeid) OVER (
+                            sk_createtimeid, LAST_VALUE(sk_createtimeid) /*IGNORE NULLS*/ OVER (
                                 PARTITION BY tradeid ORDER BY t_dts
                             )
                         ) AS sk_createtimeid,
-                        --coalesce(sk_closedateid, last_value(sk_closedateid) IGNORE NULLS OVER ( -- noqa: LT05
                         COALESCE(
-                            sk_closedateid, LAST_VALUE(sk_closedateid) OVER (
+                            sk_closedateid, LAST_VALUE(sk_closedateid) /*IGNORE NULLS*/ OVER (
                                 PARTITION BY tradeid ORDER BY t_dts
                             )
                         ) AS sk_closedateid,
-                        --coalesce(sk_closetimeid, last_value(sk_closetimeid) IGNORE NULLS OVER ( -- noqa: LT05
                         COALESCE(
-                            sk_closetimeid, LAST_VALUE(sk_closetimeid) OVER (
+                            sk_closetimeid, LAST_VALUE(sk_closetimeid) /*IGNORE NULLS*/ OVER (
                                 PARTITION BY tradeid ORDER BY t_dts
                             )
                         ) AS sk_closetimeid,
@@ -205,7 +201,6 @@ FROM (
                 ) AS t1
         ) AS t2
     WHERE rownum = 1
---  QUALIFY ROW_NUMBER() OVER (PARTITION BY tradeid ORDER BY t_dts desc) = 1
 ) AS trade
     INNER JOIN {{ ref('StatusType') }} AS status
         ON status.st_id = trade.t_st_id

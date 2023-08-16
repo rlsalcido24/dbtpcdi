@@ -34,29 +34,25 @@ FROM
                         SELECT
                             customerid,
                             symbol,
-                            --coalesce(sk_dateid_dateplaced, last_value(sk_dateid_dateplaced) IGNORE NULLS OVER ( -- noqa: LT05
                             COALESCE(
                                 sk_dateid_dateplaced,
-                                LAST_VALUE(sk_dateid_dateplaced) OVER (
+                                LAST_VALUE(sk_dateid_dateplaced) /*IGNORE NULLS*/ OVER (
                                     PARTITION BY customerid,
                                     symbol ORDER BY w_dts
                                 )
                             ) AS sk_dateid_dateplaced,
-                            --coalesce(sk_dateid_dateremoved, last_value(sk_dateid_dateremoved) IGNORE NULLS OVER ( -- noqa: LT05
                             COALESCE(
                                 sk_dateid_dateremoved,
-                                LAST_VALUE(sk_dateid_dateremoved) OVER (
+                                LAST_VALUE(sk_dateid_dateremoved) /*IGNORE NULLS*/ OVER (
                                     PARTITION BY customerid,
                                     symbol ORDER BY w_dts
                                 )
                             ) AS sk_dateid_dateremoved,
-                            --coalesce(dateplaced, last_value(dateplaced) IGNORE NULLS OVER ( -- noqa: LT05
-                            COALESCE(dateplaced, LAST_VALUE(dateplaced) OVER (
+                            COALESCE(dateplaced, LAST_VALUE(dateplaced) /*IGNORE NULLS*/ OVER (
                                 PARTITION BY customerid, symbol ORDER BY w_dts
                             )) AS dateplaced,
                             w_dts,
-                            --coalesce(batchid, last_value(batchid) IGNORE NULLS OVER ( -- noqa: LT05
-                            COALESCE(batchid, LAST_VALUE(batchid) OVER (
+                            COALESCE(batchid, LAST_VALUE(batchid) /*IGNORE NULLS*/ OVER (
                                 PARTITION BY customerid, symbol ORDER BY w_dts
                             )) AS batchid
                         FROM

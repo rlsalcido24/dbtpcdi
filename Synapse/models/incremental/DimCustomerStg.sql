@@ -5,112 +5,90 @@
         ,dist='HASH(customerid)'
     )
 }}
-
 -- !!!!! IGNORE NULLS is not supported in Synapse !!!!!
-
 SELECT *
 FROM (
     SELECT
         sk_customerid,
         customerid,
-        --coalesce(taxid, last_value(taxid) IGNORE NULLS OVER (
-        COALESCE(taxid, LAST_VALUE(taxid) OVER (
+        COALESCE(taxid, LAST_VALUE(taxid) /*IGNORE NULLS*/ OVER (
             PARTITION BY customerid
             ORDER BY update_ts
         )) AS taxid,
         status,
-        --coalesce(lastname, last_value(lastname) IGNORE NULLS OVER (
-        COALESCE(lastname, LAST_VALUE(lastname) OVER (
+        COALESCE(lastname, LAST_VALUE(lastname) /*IGNORE NULLS*/ OVER (
             PARTITION BY customerid
             ORDER BY update_ts
         )) AS lastname,
-        --coalesce(firstname, last_value(firstname) IGNORE NULLS OVER (
-        COALESCE(firstname, LAST_VALUE(firstname) OVER (
+        COALESCE(firstname, LAST_VALUE(firstname) /*IGNORE NULLS*/ OVER (
             PARTITION BY customerid
             ORDER BY update_ts
         )) AS firstname,
-        --coalesce(middleinitial, last_value(middleinitial) IGNORE NULLS OVER (
-        COALESCE(middleinitial, LAST_VALUE(middleinitial) OVER (
+        COALESCE(middleinitial, LAST_VALUE(middleinitial) /*IGNORE NULLS*/ OVER (
             PARTITION BY customerid
             ORDER BY update_ts
         )) AS middleinitial,
-        --coalesce(gender, last_value(gender) IGNORE NULLS OVER (
-        COALESCE(gender, LAST_VALUE(gender) OVER (
+        COALESCE(gender, LAST_VALUE(gender) /*IGNORE NULLS*/ OVER (
             PARTITION BY customerid
             ORDER BY update_ts
         )) AS gender,
-        --coalesce(tier, last_value(tier) IGNORE NULLS OVER (
-        COALESCE(tier, LAST_VALUE(tier) OVER (
+        COALESCE(tier, LAST_VALUE(tier) /*IGNORE NULLS*/ OVER (
             PARTITION BY customerid
             ORDER BY update_ts
         )) AS tier,
-        --coalesce(dob, last_value(dob) IGNORE NULLS OVER (
-        COALESCE(dob, LAST_VALUE(dob) OVER (
+        COALESCE(dob, LAST_VALUE(dob) /*IGNORE NULLS*/ OVER (
             PARTITION BY customerid
             ORDER BY update_ts
         )) AS dob,
-        --coalesce(addressline1, last_value(addressline1) IGNORE NULLS OVER (
-        COALESCE(addressline1, LAST_VALUE(addressline1) OVER (
+        COALESCE(addressline1, LAST_VALUE(addressline1) /*IGNORE NULLS*/ OVER (
             PARTITION BY customerid
             ORDER BY update_ts
         )) AS addressline1,
-        --coalesce(addressline2, last_value(addressline2) IGNORE NULLS OVER (
-        COALESCE(addressline2, LAST_VALUE(addressline2) OVER (
+        COALESCE(addressline2, LAST_VALUE(addressline2) /*IGNORE NULLS*/ OVER (
             PARTITION BY customerid
             ORDER BY update_ts
         )) AS addressline2,
-        --coalesce(postalcode, last_value(postalcode) IGNORE NULLS OVER (
-        COALESCE(postalcode, LAST_VALUE(postalcode) OVER (
+        COALESCE(postalcode, LAST_VALUE(postalcode) /*IGNORE NULLS*/ OVER (
             PARTITION BY customerid
             ORDER BY update_ts
         )) AS postalcode,
-        --coalesce(CITY, last_value(CITY) IGNORE NULLS OVER (
-        COALESCE(city, LAST_VALUE(city) OVER (
+        COALESCE(city, LAST_VALUE(city) /*IGNORE NULLS*/ OVER (
             PARTITION BY customerid
             ORDER BY update_ts
         )) AS city,
-        --coalesce(stateprov, last_value(stateprov) IGNORE NULLS OVER (
-        COALESCE(stateprov, LAST_VALUE(stateprov) OVER (
+        COALESCE(stateprov, LAST_VALUE(stateprov) /*IGNORE NULLS*/ OVER (
             PARTITION BY customerid
             ORDER BY update_ts
         )) AS stateprov,
-        --coalesce(country, last_value(country) IGNORE NULLS OVER (
-        COALESCE(country, LAST_VALUE(country) OVER (
+        COALESCE(country, LAST_VALUE(country) /*IGNORE NULLS*/ OVER (
             PARTITION BY customerid
             ORDER BY update_ts
         )) AS country,
-        --coalesce(phone1, last_value(phone1) IGNORE NULLS OVER (
-        COALESCE(phone1, LAST_VALUE(phone1) OVER (
+        COALESCE(phone1, LAST_VALUE(phone1) /*IGNORE NULLS*/ OVER (
             PARTITION BY customerid
             ORDER BY update_ts
         )) AS phone1,
-        --coalesce(phone2, last_value(phone2) IGNORE NULLS OVER (
-        COALESCE(phone2, LAST_VALUE(phone2) OVER (
+        COALESCE(phone2, LAST_VALUE(phone2) /*IGNORE NULLS*/ OVER (
             PARTITION BY customerid
             ORDER BY update_ts
         )) AS phone2,
-        --coalesce(phone3, last_value(phone3) IGNORE NULLS OVER (
-        COALESCE(phone3, LAST_VALUE(phone3) OVER (
+        COALESCE(phone3, LAST_VALUE(phone3) /*IGNORE NULLS*/ OVER (
             PARTITION BY customerid
             ORDER BY update_ts
         )) AS phone3,
-        --coalesce(email1, last_value(email1) IGNORE NULLS OVER (
-        COALESCE(email1, LAST_VALUE(email1) OVER (
+        COALESCE(email1, LAST_VALUE(email1) /*IGNORE NULLS*/ OVER (
             PARTITION BY customerid
             ORDER BY update_ts
         )) AS email1,
-        --coalesce(email2, last_value(email2) IGNORE NULLS OVER (
-        COALESCE(email2, LAST_VALUE(email2) OVER (
+        COALESCE(email2, LAST_VALUE(email2) /*IGNORE NULLS*/ OVER (
             PARTITION BY customerid
             ORDER BY update_ts
         )) AS email2,
-        --coalesce(LCL_TX_ID, last_value(LCL_TX_ID) IGNORE NULLS OVER (
-        COALESCE(lcl_tx_id, LAST_VALUE(lcl_tx_id) OVER (
+        COALESCE(lcl_tx_id, LAST_VALUE(lcl_tx_id) /*IGNORE NULLS*/ OVER (
             PARTITION BY customerid
             ORDER BY update_ts
         )) AS lcl_tx_id,
-        --coalesce(NAT_TX_ID, last_value(NAT_TX_ID) IGNORE NULLS OVER (
-        COALESCE(nat_tx_id, LAST_VALUE(nat_tx_id) OVER (
+        COALESCE(nat_tx_id, LAST_VALUE(nat_tx_id) /*IGNORE NULLS*/ OVER (
             PARTITION BY customerid
             ORDER BY update_ts
         )) AS nat_tx_id,
