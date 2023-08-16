@@ -3,8 +3,6 @@
         materialized = 'table'
     )
 }}
-
-
 SELECT
     a.sk_customerid,
     a.sk_accountid,
@@ -16,7 +14,7 @@ SELECT
 FROM (
     SELECT
         ct_ca_id AS accountid,
-        CONVERT(DATE, ct_dts) AS datevalue,
+        CAST(ct_dts AS DATE) AS datevalue,
         SUM(ct_amt) AS account_daily_total,
         batchid
     FROM (
@@ -37,7 +35,7 @@ FROM (
     --accountid,
         ct_ca_id,
         --datevalue,
-        CONVERT(DATE, ct_dts),
+        CAST(ct_dts AS DATE),
         batchid
 ) AS c
     INNER JOIN {{ ref('DimDate') }} AS d

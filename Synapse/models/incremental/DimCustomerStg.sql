@@ -123,11 +123,11 @@ FROM (
                 THEN 0
             ELSE 1
         END AS iscurrent,
-        CONVERT(DATE, update_ts) AS effectivedate,
+        CAST(update_ts AS DATE) AS effectivedate,
         COALESCE(
-            LEAD(CONVERT(DATE, update_ts))
+            LEAD(CAST(update_ts AS DATE))
                 OVER (PARTITION BY customerid ORDER BY update_ts),
-            CONVERT(DATE, '9999-12-31')
+            CAST('9999-12-31' AS DATE)
         ) AS enddate
     FROM (
         SELECT
@@ -239,8 +239,8 @@ FROM (
             c.lcl_tx_id,
             c.nat_tx_id,
             c.batchid,
-            CONVERT(DATETIME2, bd.batchdate) AS update_ts,
-            CONCAT(c.customerid, '-', CONVERT(DATETIME2, bd.batchdate))
+            CAST(bd.batchdate AS DATETIME2) AS update_ts,
+            CONCAT(c.customerid, '-', CAST(bd.batchdate AS DATETIME2))
                 AS sk_customerid
         FROM {{ ref('CustomerIncremental') }} AS c
             INNER JOIN {{ ref('BatchDate') }} AS bd

@@ -102,7 +102,7 @@ FROM (
         ) AS enddate
     FROM (
         SELECT
-            CONVERT(
+            CONVERT( --noqa: CV11
                 DATETIME2,
                 SUBSTRING(value, 1, 8)
                 + ' '
@@ -118,7 +118,7 @@ FROM (
             TRIM(SUBSTRING(value, 89, 4)) AS status,
             TRIM(SUBSTRING(value, 93, 2)) AS industryid,
             TRIM(SUBSTRING(value, 95, 4)) AS sprating,
-            CONVERT(
+            CONVERT( --noqa: CV11
                 DATE,
                 CASE
                     WHEN TRIM(SUBSTRING(value, 99, 8)) = '' THEN NULL ELSE

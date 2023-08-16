@@ -56,11 +56,11 @@ FROM (
                 COALESCE(status, LAST_VALUE(status) OVER (
                     PARTITION BY accountid ORDER BY update_ts
                 )) AS status,
-                CONVERT(DATE, update_ts) AS effectivedate,
+                CAST(update_ts AS DATE) AS effectivedate,
                 ISNULL(
-                    LEAD(CONVERT(DATE, update_ts))
+                    LEAD(CAST(update_ts AS DATE))
                         OVER (PARTITION BY accountid ORDER BY update_ts),
-                    CONVERT(DATE, '9999-12-31')
+                    CAST('9999-12-31' AS DATE)
                 ) AS enddate,
                 batchid
             FROM (
@@ -83,7 +83,7 @@ FROM (
                     a.taxstatus,
                     a.ca_b_id AS brokerid,
                     st.st_name AS status,
-                    CONVERT(DATETIME2, bd.batchdate) AS update_ts,
+                    CAST(bd.batchdate AS DATETIME2) AS update_ts,
                     a.batchid
                 FROM {{ ref('AccountIncremental') }} AS a
                     INNER JOIN {{ ref('BatchDate') }} AS bd

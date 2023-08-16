@@ -98,7 +98,7 @@ FROM
                                     ) AS wh
                                     INNER JOIN
                                         {{ ref('DimDate') }} AS d
-                                        ON d.datevalue = CONVERT(DATE, wh.w_dts)
+                                        ON d.datevalue = CAST(wh.w_dts AS DATE)
                             ) AS t0
                     ) AS t1
             ) AS t

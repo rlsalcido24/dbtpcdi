@@ -69,7 +69,7 @@ FROM (
         FROM (
             SELECT
                 CAST(
-                    CONVERT(
+                    CONVERT( --noqa: CV11
                         DATETIME2,
                         SUBSTRING(value, 1, 8)
                         + ' '
@@ -88,8 +88,10 @@ FROM (
                 TRIM(SUBSTRING(value, 44, 70)) AS name,
                 TRIM(SUBSTRING(value, 114, 6)) AS exchangeid,
                 CAST(SUBSTRING(value, 120, 13) AS BIGINT) AS sharesoutstanding,
-                CONVERT(DATE, SUBSTRING(value, 133, 8), 112) AS firsttrade,
-                CONVERT(DATE, SUBSTRING(value, 141, 8), 112)
+                CONVERT( --noqa: CV11
+                    DATE, SUBSTRING(value, 133, 8), 112
+                ) AS firsttrade,
+                CONVERT(DATE, SUBSTRING(value, 141, 8), 112) --noqa: CV11
                     AS firsttradeonexchange,
                 CAST(SUBSTRING(value, 149, 12) AS DECIMAL(10, 2)) AS dividend,
                 TRIM(SUBSTRING(value, 161, 60)) AS conameorcik
