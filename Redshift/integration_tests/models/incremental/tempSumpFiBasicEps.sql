@@ -3,8 +3,6 @@
         materialized = 'table'
     )
 }}
---,index='CLUSTERED COLUMNSTORE INDEX'
---,dist='HASH(sk_companyid)'
 
 SELECT
     f.sk_companyid,

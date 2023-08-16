@@ -4,8 +4,6 @@
 
     )
 }}
---,index='CLUSTERED COLUMNSTORE INDEX'
---,dist='REPLICATE'
 SELECT
     CAST(employeeid AS BIGINT) AS brokerid,
     CAST(managerid AS BIGINT) AS managerid,

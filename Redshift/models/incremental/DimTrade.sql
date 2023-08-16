@@ -3,8 +3,6 @@
         materialized = 'table'
     )
 }}
---,index='CLUSTERED COLUMNSTORE INDEX'
---,dist='REPLICATE'
 SELECT
     trade.tradeid,
     da.sk_brokerid,
@@ -32,7 +30,6 @@ FROM (
     FROM
         (
             SELECT
-                --* EXCEPT(t_dts)
                 tradeid,
                 createdate,
                 sk_createdateid,
@@ -63,7 +60,6 @@ FROM (
                             OVER (PARTITION BY tradeid)
                         AS createdate,
                         t_dts,
-                        --coalesce(sk_createdateid, last_value(sk_createdateid) IGNORE NULLS OVER ( -- noqa: LT05
                         COALESCE(
                             sk_createdateid, LAST_VALUE(sk_createdateid) OVER (
                                 PARTITION BY tradeid
@@ -72,7 +68,6 @@ FROM (
                                 ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
                             )
                         ) AS sk_createdateid,
-                        --coalesce(sk_createtimeid, last_value(sk_createtimeid) IGNORE NULLS OVER ( -- noqa: LT05
                         COALESCE(
                             sk_createtimeid, LAST_VALUE(sk_createtimeid) OVER (
                                 PARTITION BY tradeid
@@ -81,7 +76,6 @@ FROM (
                                 ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
                             )
                         ) AS sk_createtimeid,
-                        --coalesce(sk_closedateid, last_value(sk_closedateid) IGNORE NULLS OVER ( -- noqa: LT05
                         COALESCE(
                             sk_closedateid, LAST_VALUE(sk_closedateid) OVER (
                                 PARTITION BY tradeid
@@ -90,7 +84,6 @@ FROM (
                                 ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
                             )
                         ) AS sk_closedateid,
-                        --coalesce(sk_closetimeid, last_value(sk_closetimeid) IGNORE NULLS OVER ( -- noqa: LT05
                         COALESCE(
                             sk_closetimeid, LAST_VALUE(sk_closetimeid) OVER (
                                 PARTITION BY tradeid
@@ -117,28 +110,24 @@ FROM (
                             SELECT
                                 t.tradeid,
                                 t.t_dts,
-                                --if(create_flg, sk_dateid, cast(NULL AS BIGINT)) sk_createdateid, -- noqa: LT05
                                 CASE
                                     WHEN
                                         t.create_flg > 0
                                         THEN CAST(dt.sk_dateid AS BIGINT)
                                     ELSE CAST(NULL AS BIGINT)
                                 END AS sk_createdateid,
-                                --if(create_flg, sk_timeid, cast(NULL AS BIGINT)) sk_createtimeid, -- noqa: LT05
                                 CASE
                                     WHEN
                                         t.create_flg > 0
                                         THEN CAST(dd.sk_dateid AS BIGINT)
                                     ELSE CAST(NULL AS BIGINT)
                                 END AS sk_createtimeid,
-                                --if(!create_flg, sk_dateid, cast(NULL AS BIGINT)) sk_closedateid, -- noqa: LT05
                                 CASE
                                     WHEN
                                         t.create_flg = 0
                                         THEN CAST(dt.sk_dateid AS BIGINT)
                                     ELSE CAST(NULL AS BIGINT)
                                 END AS sk_closedateid,
-                                --if(!create_flg, sk_timeid, cast(NULL AS BIGINT)) sk_closetimeid, -- noqa: LT05
                                 CASE
                                     WHEN
                                         t.create_flg = 0
@@ -148,7 +137,6 @@ FROM (
                                 CASE
                                     WHEN t.t_is_cash = 1 THEN CAST(1 AS BOOLEAN)
                                     WHEN t.t_is_cash = 0 THEN CAST(0 AS BOOLEAN)
-                                    --ELSE cast(null as BOOLEAN) END AS cashflag, -- noqa: LT05
                                     ELSE CAST(NULL AS BOOLEAN)
                                 END AS cashflag,
                                 t.t_st_id,
@@ -194,10 +182,8 @@ FROM (
                                         ELSE 0
                                     END AS create_flg
                                 FROM {{ source('tpcdi', 'TradeHistory') }} AS t
-                                    --FROM prd.TradeHistory t
                                     INNER JOIN
                                         {{ source('tpcdi', 'TradeHistoryRaw') }} AS th -- noqa: LT05
-                                        --JOIN prd.TradeHistoryRaw th
                                         ON th.th_t_id = t.t_id
                                 UNION ALL
                                 SELECT
@@ -222,19 +208,14 @@ FROM (
                                         ELSE 0
                                     END AS create_flg
                                 FROM {{ ref('tradeincremental') }} AS t
-                            --FROM stg.TradeIncremental t
                             ) AS t
                                 INNER JOIN
                                     {{ source('tpcdi', 'DimDate') }} AS dd
-                                    --JOIN prd.DimDate dd
-                                    --ON date(t.t_dts) = dd.datevalue
                                     ON
                                         TO_DATE(t.t_dts, 'YYYYMMDD')
                                         = dd.datevalue
                                 INNER JOIN
                                     {{ source('tpcdi', 'DimTime') }} AS dt
-                                    --JOIN prd.DimTime dt
-                                    --ON date_format(t.t_dts, 'HH:mm:ss') = dt.timevalue -- noqa: LT05
                                     ON
                                         TO_CHAR(t.t_dts, 'HH24:MI:SS')
                                         = dt.timevalue
@@ -242,27 +223,22 @@ FROM (
                 ) AS t1
         ) AS t2
     WHERE t2.rownum = 1
---  QUALIFY ROW_NUMBER() OVER (PARTITION BY tradeid ORDER BY t_dts desc) = 1
 ) AS trade
     INNER JOIN {{ source('tpcdi', 'StatusType') }} AS statustype
-        --JOIN prd.StatusType status
         ON statustype.st_id = trade.t_st_id
     INNER JOIN {{ source('tpcdi', 'TradeType') }} AS tt
-        --JOIN prd.TradeType tt
         ON tt.tt_id = trade.t_tt_id
     -- Converts to LEFT JOIN if this is run as DQ EDITION. On some higher Scale
     -- Factors, a small number of Security symbols or Account IDs are missing
     -- from DimSecurity/DimAccount, causing audit check failures.
     --${dq_left_flg}
     LEFT JOIN {{ ref('dimsecurity') }} AS ds
-        --LEFT JOIN dbo.DimSecurity ds
         ON
             ds.symbol = trade.t_s_symb
             AND trade.createdate >= ds.effectivedate
             AND trade.createdate < ds.enddate
     --${dq_left_flg}
     LEFT JOIN {{ ref('dimaccount') }} AS da
-        --LEFT JOIN dbo.DimAccount da
         ON
             trade.t_ca_id = da.accountid
             AND trade.createdate >= da.effectivedate

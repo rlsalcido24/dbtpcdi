@@ -3,8 +3,6 @@
         materialized = 'table'
     )
 }}
---,index='CLUSTERED COLUMNSTORE INDEX'
---,dist='HASH(sk_companyid)'
 
 SELECT
     f.sk_companyid,
@@ -19,4 +17,3 @@ SELECT
 FROM {{ ref('financial') }} AS f
     INNER JOIN {{ ref('dimcompany') }} AS c
         ON f.sk_companyid = c.sk_companyid
---  USING (sk_companyid);

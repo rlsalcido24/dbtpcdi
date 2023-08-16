@@ -35,5 +35,4 @@ FROM (
     FROM {{ ref('dailymarketincremental') }}
 ) AS dmh
     INNER JOIN {{ source('tpcdi', 'DimDate') }} AS d
-        --JOIN prd.DimDate d
         ON d.datevalue = dmh.dm_date

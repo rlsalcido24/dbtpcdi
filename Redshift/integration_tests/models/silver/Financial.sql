@@ -3,8 +3,6 @@
         materialized = 'table'
     )
 }}
---,index='CLUSTERED COLUMNSTORE INDEX'
---,dist='HASH(sk_companyid)'
 SELECT
     dc.sk_companyid,
     f.fi_year,
@@ -58,7 +56,6 @@ FROM (
             CAST(SUBSTRING(value, 174, 13) AS BIGINT) AS fi_out_dilut,
             TRIM(SUBSTRING(value, 187, 60)) AS conameorcik
         FROM {{ ref('finwire') }}
-        --FROM stg.FinWire
         WHERE rectype = 'FIN'
     ) AS f
 ) AS f
@@ -69,7 +66,6 @@ FROM (
             effectivedate,
             enddate
         FROM {{ ref('dimcompany') }}
-        --FROM dbo.DimCompany
         UNION ALL
         SELECT
             sk_companyid,
@@ -77,7 +73,6 @@ FROM (
             effectivedate,
             enddate
         FROM {{ ref('dimcompany') }}
-    --FROM dbo.DimCompany
     ) AS dc
         ON
             f.conameorcik = dc.conameorcik
