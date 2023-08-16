@@ -5,14 +5,12 @@
         , dist='HASH(sk_customerid)'
     )
 }}
-
 -- !!!!! IGNORE NULLS is not supported in Synapse !!!!!
-
 SELECT
-    c.sk_customerid sk_customerid,
-    s.sk_securityid sk_securityid,
-    sk_dateid_dateplaced,
-    sk_dateid_dateremoved,
+    c.sk_customerid AS sk_customerid,
+    s.sk_securityid AS sk_securityid,
+    wh.sk_dateid_dateplaced,
+    wh.sk_dateid_dateremoved,
     wh.batchid
 FROM
     (
@@ -28,67 +26,64 @@ FROM
                     batchid,
                     ROW_NUMBER() OVER (
                         PARTITION BY customerid, symbol ORDER BY w_dts DESC
-                    ) rownum
+                    ) AS rownum
                 FROM
                     (
                         SELECT
                             customerid,
                             symbol,
-                            --coalesce(sk_dateid_dateplaced, last_value(sk_dateid_dateplaced) IGNORE NULLS OVER (
+                            --coalesce(sk_dateid_dateplaced, last_value(sk_dateid_dateplaced) IGNORE NULLS OVER ( -- noqa: LT05
                             COALESCE(
                                 sk_dateid_dateplaced,
                                 LAST_VALUE(sk_dateid_dateplaced) OVER (
                                     PARTITION BY customerid,
                                     symbol ORDER BY w_dts
                                 )
-                            ) sk_dateid_dateplaced,
-                            --coalesce(sk_dateid_dateremoved, last_value(sk_dateid_dateremoved) IGNORE NULLS OVER (
+                            ) AS sk_dateid_dateplaced,
+                            --coalesce(sk_dateid_dateremoved, last_value(sk_dateid_dateremoved) IGNORE NULLS OVER ( -- noqa: LT05
                             COALESCE(
                                 sk_dateid_dateremoved,
                                 LAST_VALUE(sk_dateid_dateremoved) OVER (
                                     PARTITION BY customerid,
                                     symbol ORDER BY w_dts
                                 )
-                            ) sk_dateid_dateremoved,
-                            --coalesce(dateplaced, last_value(dateplaced) IGNORE NULLS OVER (
+                            ) AS sk_dateid_dateremoved,
+                            --coalesce(dateplaced, last_value(dateplaced) IGNORE NULLS OVER ( -- noqa: LT05
                             COALESCE(dateplaced, LAST_VALUE(dateplaced) OVER (
                                 PARTITION BY customerid, symbol ORDER BY w_dts
-                            )) dateplaced,
+                            )) AS dateplaced,
                             w_dts,
-                            --coalesce(batchid, last_value(batchid) IGNORE NULLS OVER (
+                            --coalesce(batchid, last_value(batchid) IGNORE NULLS OVER ( -- noqa: LT05
                             COALESCE(batchid, LAST_VALUE(batchid) OVER (
                                 PARTITION BY customerid, symbol ORDER BY w_dts
-                            )) batchid
+                            )) AS batchid
                         FROM
                             (
                                 SELECT
-                                    wh.w_c_id customerid,
-                                    wh.w_s_symb symbol,
+                                    wh.w_c_id AS customerid,
+                                    wh.w_s_symb AS symbol,
                                     CASE
                                         WHEN
-                                            w_action = 'ACTV'
+                                            wh.w_action = 'ACTV'
                                             THEN d.sk_dateid
-                                        ELSE NULL
-                                    END sk_dateid_dateplaced,
+                                    END AS sk_dateid_dateplaced,
                                     CASE
                                         WHEN
-                                            w_action = 'CNCL'
+                                            wh.w_action = 'CNCL'
                                             THEN d.sk_dateid
-                                        ELSE NULL
-                                    END sk_dateid_dateremoved,
+                                    END AS sk_dateid_dateremoved,
                                     CASE
                                         WHEN
-                                            w_action = 'ACTV'
+                                            wh.w_action = 'ACTV'
                                             THEN d.datevalue
-                                        ELSE NULL
-                                    END dateplaced,
+                                    END AS dateplaced,
                                     wh.w_dts,
-                                    batchid
+                                    wh.batchid
                                 FROM
                                     (
                                         SELECT
                                             *,
-                                            1 batchid
+                                            1 AS batchid
                                         FROM {{ ref('WatchHistory') }}
                                         UNION ALL
                                         SELECT
@@ -98,25 +93,27 @@ FROM
                                             w_action,
                                             batchid
                                         FROM {{ ref('WatchIncremental') }}
-                                    ) wh
-                                    JOIN
-                                        {{ ref('DimDate') }} d
-                                        ON d.datevalue = CONVERT(DATE, wh.w_dts)
-                            ) t0
-                    ) t1
-            ) t
-        WHERE t.rownum = 1
-    ) wh
-    --  QUALIFY ROW_NUMBER() OVER (PARTITION BY customerid, symbol ORDER BY w_dts desc) = 1) wh
-    -- Converts to LEFT JOINs if this is run as DQ EDITION. On some higher Scale Factors, a small number of Security symbols or Customer IDs "may" be missing from DimSecurity/DimCustomer, causing audit check failures. 
-    --${dq_left_flg} 
-    LEFT JOIN {{ ref('DimSecurity') }} s
+                                    ) AS wh
+                                    INNER JOIN
+                                        {{ ref('DimDate') }} AS d
+                                        ON d.datevalue = CAST(wh.w_dts AS DATE)
+                            ) AS t0
+                    ) AS t1
+            ) AS t
+        WHERE rownum = 1
+    ) AS wh
+    --  QUALIFY ROW_NUMBER() OVER (PARTITION BY customerid, symbol ORDER BY w_dts desc) = 1) wh -- noqa: LT05
+    -- Converts to LEFT JOINs if this is run as DQ EDITION. On some higher
+    -- Scale Factors, a small number of Security symbols or Customer IDs "may"
+    -- be missing from DimSecurity/DimCustomer, causing audit check failures.
+    --${dq_left_flg}
+    LEFT JOIN {{ ref('DimSecurity') }} AS s
         ON
             s.symbol = wh.symbol
             AND wh.dateplaced >= s.effectivedate
             AND wh.dateplaced < s.enddate
-    --${dq_left_flg} 
-    LEFT JOIN {{ ref('DimCustomer') }} c
+    --${dq_left_flg}
+    LEFT JOIN {{ ref('DimCustomer') }} AS c
         ON
             wh.customerid = c.customerid
             AND wh.dateplaced >= c.effectivedate
