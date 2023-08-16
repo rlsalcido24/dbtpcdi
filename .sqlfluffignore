@@ -3,3 +3,6 @@ dbt_packages/
 
 # Ignore the "macros" directory
 macros/
+
+# Ignore the "Synapse/helpers" directory
+Synapse/helpers/
