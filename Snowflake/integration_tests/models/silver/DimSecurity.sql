@@ -4,7 +4,6 @@
     )
 }}
 SELECT
-
     symbol,
     issue,
     status,
@@ -15,8 +14,8 @@ SELECT
     firsttrade,
     firsttradeonexchange,
     dividend,
-    IFF(enddate = DATE('9999-12-31'), TRUE, FALSE) iscurrent,
-    1 batchid,
+    IFF(enddate = DATE('9999-12-31'), TRUE, FALSE) AS iscurrent,
+    1 AS batchid,
     effectivedate,
     CONCAT(exchangeid, '-', effectivedate) AS sk_securityid,
     enddate
@@ -36,29 +35,31 @@ FROM (
             fws.effectivedate < dc.effectivedate,
             dc.effectivedate,
             fws.effectivedate
-        ) effectivedate,
-        IFF(fws.enddate > dc.enddate, dc.enddate, fws.enddate) enddate
+        ) AS effectivedate,
+        IFF(fws.enddate > dc.enddate, dc.enddate, fws.enddate) AS enddate
     FROM (
         SELECT
             fws.* EXCLUDE (status, conameorcik),
-            COALESCE(TO_CHAR(TRY_CAST(conameorcik AS BIGINT)), conameorcik)
-                conameorcik,
+            COALESCE(
+                TO_CHAR(TRY_CAST(fws.conameorcik AS BIGINT)), fws.conameorcik
+            )
+                AS conameorcik,
             s.st_name AS status,
             COALESCE(
-                LEAD(effectivedate) OVER (
-                    PARTITION BY symbol
-                    ORDER BY effectivedate
+                LEAD(fws.effectivedate) OVER (
+                    PARTITION BY fws.symbol
+                    ORDER BY fws.effectivedate
                 ),
                 DATE('9999-12-31')
-            ) enddate
+            ) AS enddate
         FROM (
             SELECT
                 DATE(TO_TIMESTAMP(SUBSTRING(value, 1, 15), 'yyyyMMdd-HHmiss'))
                     AS effectivedate,
                 TRIM(SUBSTRING(value, 19, 15)) AS symbol,
-                TRIM(SUBSTRING(value, 34, 6)) AS issue,
+                TRIM(SUBSTRING(value, 34, 6)) AS issue, -- noqa: RF04
                 TRIM(SUBSTRING(value, 40, 4)) AS status,
-                TRIM(SUBSTRING(value, 44, 70)) AS name,
+                TRIM(SUBSTRING(value, 44, 70)) AS name, -- noqa: RF04
                 TRIM(SUBSTRING(value, 114, 6)) AS exchangeid,
                 CAST(SUBSTRING(value, 120, 13) AS BIGINT) AS sharesoutstanding,
                 TO_DATE(SUBSTRING(value, 133, 8), 'yyyyMMdd') AS firsttrade,
@@ -68,28 +69,28 @@ FROM (
                 TRIM(SUBSTRING(value, 161, 60)) AS conameorcik
             FROM {{ ref('FinWire') }}
             WHERE rectype = 'SEC'
-        ) fws
-            JOIN {{ source('tpcdi', 'StatusType') }} s
+        ) AS fws
+            INNER JOIN {{ source('tpcdi', 'StatusType') }} AS s
                 ON s.st_id = fws.status
-    ) fws
-        JOIN (
+    ) AS fws
+        INNER JOIN (
             SELECT
                 sk_companyid,
-                name conameorcik,
+                name AS conameorcik,
                 effectivedate,
                 enddate
             FROM {{ ref('DimCompany') }}
             UNION ALL
             SELECT
                 sk_companyid,
-                CAST(companyid AS STRING) conameorcik,
+                CAST(companyid AS STRING) AS conameorcik,
                 effectivedate,
                 enddate
             FROM {{ ref('DimCompany') }}
-        ) dc
+        ) AS dc
             ON
                 fws.conameorcik = dc.conameorcik
                 AND fws.effectivedate < dc.enddate
                 AND fws.enddate > dc.effectivedate
-) fws
+) AS fws
 WHERE effectivedate != enddate

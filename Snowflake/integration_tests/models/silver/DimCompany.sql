@@ -6,13 +6,12 @@
 SELECT *
 FROM (
     SELECT
-
-        CAST(cik AS BIGINT) companyid,
-        st.st_name status,
-        companyname name,
-        ind.in_name industry,
+        CAST(cmp.cik AS BIGINT) AS companyid,
+        st.st_name AS status,
+        cmp.companyname AS name, -- noqa: RF04
+        ind.in_name AS industry,
         IFF(
-            sprating IN (
+            cmp.sprating IN (
                 'AAA',
                 'AA',
                 'AA+',
@@ -36,9 +35,9 @@ FROM (
                 'C',
                 'D'
             ),
-            sprating,
+            cmp.sprating,
             CAST(NULL AS STRING)
-        ) sprating,
+        ) AS sprating,
         CASE
             WHEN
                 sprating IN (
@@ -72,24 +71,28 @@ FROM (
                 THEN TRUE
             ELSE CAST(NULL AS BOOLEAN)
         END AS islowgrade,
-        ceoname ceo,
-        addrline1 addressline1,
-        addrline2 addressline2,
-        postalcode,
-        city,
-        stateprovince stateprov,
-        country,
-        description,
-        foundingdate,
-        NVL2(LEAD(pts) OVER (PARTITION BY cik ORDER BY pts), TRUE, FALSE)
-            iscurrent,
-        1 batchid,
-        DATE(pts) effectivedate,
-        CONCAT(companyid, '-', effectivedate) sk_companyid,
+        cmp.ceoname AS ceo,
+        cmp.addrline1 AS addressline1,
+        cmp.addrline2 AS addressline2,
+        cmp.postalcode,
+        cmp.city,
+        cmp.stateprovince AS stateprov,
+        cmp.country,
+        cmp.description,
+        cmp.foundingdate,
+        NVL2(
+            LEAD(cmp.pts) OVER (PARTITION BY cmp.cik ORDER BY cmp.pts),
+            TRUE,
+            FALSE
+        )
+            AS iscurrent,
+        1 AS batchid,
+        DATE(cmp.pts) AS effectivedate,
+        CONCAT(companyid, '-', effectivedate) AS sk_companyid,
         COALESCE(
-            LEAD(DATE(pts)) OVER (PARTITION BY cik ORDER BY pts),
+            LEAD(DATE(cmp.pts)) OVER (PARTITION BY cmp.cik ORDER BY cmp.pts),
             CAST('9999-12-31' AS DATE)
-        ) enddate
+        ) AS enddate
     FROM (
         SELECT
             TO_TIMESTAMP(SUBSTRING(value, 1, 15), 'yyyymmdd-hhmiss') AS pts,
@@ -116,7 +119,11 @@ FROM (
             TRIM(SUBSTRING(value, 394, 150)) AS description
         FROM {{ ref('FinWire') }}
         WHERE rectype = 'CMP'
-    ) cmp
-        JOIN {{ source('tpcdi', 'StatusType') }} st ON cmp.status = st.st_id
-        JOIN {{ source('tpcdi', 'Industry') }} ind ON cmp.industryid = ind.in_id
+    ) AS cmp
+        INNER JOIN
+            {{ source('tpcdi', 'StatusType') }} AS st
+            ON cmp.status = st.st_id
+        INNER JOIN
+            {{ source('tpcdi', 'Industry') }} AS ind
+            ON cmp.industryid = ind.in_id
 )
