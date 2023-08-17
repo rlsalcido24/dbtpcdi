@@ -37,7 +37,8 @@ FROM
                                     PARTITION BY customerid, symbol
                                     ORDER BY
                                         w_dts
-                                    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+                                    ROWS BETWEEN UNBOUNDED PRECEDING
+                                    AND CURRENT ROW
                                 )
                             ) AS sk_dateid_dateplaced,
                             COALESCE(
@@ -46,21 +47,24 @@ FROM
                                     PARTITION BY customerid, symbol
                                     ORDER BY
                                         w_dts
-                                    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+                                    ROWS BETWEEN UNBOUNDED PRECEDING
+                                    AND CURRENT ROW
                                 )
                             ) AS sk_dateid_dateremoved,
                             COALESCE(dateplaced, LAST_VALUE(dateplaced) OVER (
                                 PARTITION BY customerid, symbol
                                 ORDER BY
                                     w_dts
-                                ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+                                ROWS BETWEEN UNBOUNDED PRECEDING
+                                AND CURRENT ROW
                             )) AS dateplaced,
                             w_dts,
                             COALESCE(batchid, LAST_VALUE(batchid) OVER (
                                 PARTITION BY customerid, symbol
                                 ORDER BY
                                     w_dts
-                                ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+                                ROWS BETWEEN UNBOUNDED PRECEDING
+                                AND CURRENT ROW
                             )) AS batchid
                         FROM
                             (
@@ -109,11 +113,11 @@ FROM
                             ) AS t0
                     ) AS t1
             ) AS t
-        WHERE t.rownum = 1
+        WHERE rownum = 1
     ) AS wh
     -- Converts to LEFT JOINs if this is run as DQ EDITION. On some higher Scale
-    -- Factors, a small number of Security symbols or Customer IDs "may" be missing
-    -- from DimSecurity/DimCustomer, causing audit check failures.
+    -- Factors, a small number of Security symbols or Customer IDs "may" be
+    -- missing from DimSecurity/DimCustomer, causing audit check failures.
     --${dq_left_flg}
     LEFT JOIN {{ ref('dimsecurity') }} AS s
         ON
