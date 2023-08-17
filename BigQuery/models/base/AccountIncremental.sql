@@ -13,6 +13,6 @@ UNION ALL
 
 SELECT
     *,
-     3 AS batchid
+    3 AS batchid
 FROM
     {{ source(var('benchmark'), 'AccountIncrementaltres') }}
