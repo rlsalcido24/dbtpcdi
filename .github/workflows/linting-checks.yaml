@@ -77,6 +77,7 @@ jobs:
         if: steps.get_files_to_lint.outputs.lintees != ''
         shell: bash -l {0}
         run: |
+         sqlfluff --version
          sqlfluff lint .
 
 #          --format github-annotation --annotation-level failure --nofail |
