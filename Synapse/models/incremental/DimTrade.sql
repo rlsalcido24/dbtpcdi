@@ -63,22 +63,26 @@ FROM (
                             AS createdate,
                         t_dts,
                         COALESCE(
-                            sk_createdateid, LAST_VALUE(sk_createdateid) /*IGNORE NULLS*/ OVER (
+                            sk_createdateid,
+                            LAST_VALUE(sk_createdateid) /*IGNORE NULLS*/ OVER (
                                 PARTITION BY tradeid ORDER BY t_dts
                             )
                         ) AS sk_createdateid,
                         COALESCE(
-                            sk_createtimeid, LAST_VALUE(sk_createtimeid) /*IGNORE NULLS*/ OVER (
+                            sk_createtimeid,
+                            LAST_VALUE(sk_createtimeid) /*IGNORE NULLS*/ OVER (
                                 PARTITION BY tradeid ORDER BY t_dts
                             )
                         ) AS sk_createtimeid,
                         COALESCE(
-                            sk_closedateid, LAST_VALUE(sk_closedateid) /*IGNORE NULLS*/ OVER (
+                            sk_closedateid,
+                            LAST_VALUE(sk_closedateid) /*IGNORE NULLS*/ OVER (
                                 PARTITION BY tradeid ORDER BY t_dts
                             )
                         ) AS sk_closedateid,
                         COALESCE(
-                            sk_closetimeid, LAST_VALUE(sk_closetimeid) /*IGNORE NULLS*/ OVER (
+                            sk_closetimeid,
+                            LAST_VALUE(sk_closetimeid) /*IGNORE NULLS*/ OVER (
                                 PARTITION BY tradeid ORDER BY t_dts
                             )
                         ) AS sk_closetimeid,

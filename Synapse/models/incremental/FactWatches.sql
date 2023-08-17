@@ -36,25 +36,37 @@ FROM
                             symbol,
                             COALESCE(
                                 sk_dateid_dateplaced,
-                                LAST_VALUE(sk_dateid_dateplaced) /*IGNORE NULLS*/ OVER (
+                                LAST_VALUE(
+                                    sk_dateid_dateplaced
+                                ) /*IGNORE NULLS*/ OVER (
                                     PARTITION BY customerid,
                                     symbol ORDER BY w_dts
                                 )
                             ) AS sk_dateid_dateplaced,
                             COALESCE(
                                 sk_dateid_dateremoved,
-                                LAST_VALUE(sk_dateid_dateremoved) /*IGNORE NULLS*/ OVER (
+                                LAST_VALUE(
+                                    sk_dateid_dateremoved
+                                ) /*IGNORE NULLS*/ OVER (
                                     PARTITION BY customerid,
                                     symbol ORDER BY w_dts
                                 )
                             ) AS sk_dateid_dateremoved,
-                            COALESCE(dateplaced, LAST_VALUE(dateplaced) /*IGNORE NULLS*/ OVER (
-                                PARTITION BY customerid, symbol ORDER BY w_dts
-                            )) AS dateplaced,
+                            COALESCE(
+                                dateplaced,
+                                LAST_VALUE(dateplaced) /*IGNORE NULLS*/ OVER (
+                                    PARTITION BY customerid,
+                                    symbol ORDER BY w_dts
+                                )
+                            ) AS dateplaced,
                             w_dts,
-                            COALESCE(batchid, LAST_VALUE(batchid) /*IGNORE NULLS*/ OVER (
-                                PARTITION BY customerid, symbol ORDER BY w_dts
-                            )) AS batchid
+                            COALESCE(
+                                batchid,
+                                LAST_VALUE(batchid) /*IGNORE NULLS*/ OVER (
+                                    PARTITION BY customerid,
+                                    symbol ORDER BY w_dts
+                                )
+                            ) AS batchid
                         FROM
                             (
                                 SELECT

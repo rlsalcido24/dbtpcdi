@@ -40,12 +40,16 @@ FROM (
             SELECT
                 accountid,
                 customerid,
-                COALESCE(accountdesc, LAST_VALUE(accountdesc) /*IGNORE NULLS*/ OVER (
-                    PARTITION BY accountid ORDER BY update_ts
-                )) AS accountdesc,
-                COALESCE(taxstatus, LAST_VALUE(taxstatus) /*IGNORE NULLS*/ OVER (
-                    PARTITION BY accountid ORDER BY update_ts
-                )) AS taxstatus,
+                COALESCE(
+                    accountdesc, LAST_VALUE(accountdesc) /*IGNORE NULLS*/ OVER (
+                        PARTITION BY accountid ORDER BY update_ts
+                    )
+                ) AS accountdesc,
+                COALESCE(
+                    taxstatus, LAST_VALUE(taxstatus) /*IGNORE NULLS*/ OVER (
+                        PARTITION BY accountid ORDER BY update_ts
+                    )
+                ) AS taxstatus,
                 COALESCE(brokerid, LAST_VALUE(brokerid) /*IGNORE NULLS*/ OVER (
                     PARTITION BY accountid ORDER BY update_ts
                 )) AS brokerid,

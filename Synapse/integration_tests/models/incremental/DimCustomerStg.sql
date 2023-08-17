@@ -24,10 +24,12 @@ FROM (
             PARTITION BY customerid
             ORDER BY update_ts
         )) AS firstname,
-        COALESCE(middleinitial, LAST_VALUE(middleinitial) /*IGNORE NULLS*/ OVER (
-            PARTITION BY customerid
-            ORDER BY update_ts
-        )) AS middleinitial,
+        COALESCE(
+            middleinitial, LAST_VALUE(middleinitial) /*IGNORE NULLS*/ OVER (
+                PARTITION BY customerid
+                ORDER BY update_ts
+            )
+        ) AS middleinitial,
         COALESCE(gender, LAST_VALUE(gender) /*IGNORE NULLS*/ OVER (
             PARTITION BY customerid
             ORDER BY update_ts
