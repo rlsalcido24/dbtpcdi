@@ -5,7 +5,7 @@ version: 2
 sources:
   - name: tpcdi
     catalog: hive_metastore
-    schema: rsstgtest1010
+    schema: {{var("stagingschema")}}
     tables:
 
       - name: StatusType
