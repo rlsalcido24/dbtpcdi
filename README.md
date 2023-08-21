@@ -4,12 +4,12 @@ This repo is an end to end implementation of
 [TPC-DI](https://www.tpc.org/tpcdi/default5.asp). The repo is desinged to
 be run against Databricks, Snowflake, BigQuery, Redshift, and Synapse.
 You can select your desired target warehouse with different targets that
-are defined in the profiles.yml; for ex `dbt run --target databricks --select databricks`
-will build the TPCDI tables in Databricks while `dbt run --target redshift --select redshift`
-will build the tables in Redshift. The steps below will be applicable
-regardless of the target warehouse. For warehouse specific considerations,
-refer to the read.me within the relevant directories of the models
-directory. 
+are defined in the profiles.yml; for ex `dbt run --target databricks`
+will build the TPCDI tables in Databricks while `dbt run --target redshift`
+will build the tables in Redshift. The default is to build the tables in Databricks but you 
+can build the tables in other warehouses by adjusting the model-paths key to the desried warehouse 
+The steps below will be applicable regardless of the target warehouse. For warehouse specific considerations,
+refer to the read.me within the relevant directories of the models directory. 
 
 ## Data Preparation 
 This project uses the TPC-DI Kit TPC-DI Data Generator https://github.com/haydarai/tpcdi-kit
