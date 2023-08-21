@@ -12,7 +12,7 @@ vars:
   stagingschema: stagingschema
   bucketname: bucketname  # bigquery, redshift only
 
-model-paths: ["Databricks"]
+model-paths: ["Databricks/models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
 seed-paths: ["seeds"]
