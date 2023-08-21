@@ -11,7 +11,7 @@ regardless of the target warehouse. For warehouse specific considerations,
 refer to the read.me within the relevant directories of the models
 directory. 
 
-## Data Preparation
+## Data Preparation 
 This project uses the TPC-DI Kit TPC-DI Data Generator https://github.com/haydarai/tpcdi-kit
 
 ### Generating test data files
@@ -35,10 +35,9 @@ customermgmt xml file.
 1. create your prod and staging schemas (if not already created)
 2. Update profiles.yml with your prod schema and other warehouse specific
 configurations.
-3. Update sources.yml with your staging schema
-4. Update project.yml with desired scalefactor and bucketname
-5. dbt run-operation stage_external_sources
-6. dbt run
+3. Update project.yml with desired scalefactor, bucketname, and staging schema
+4. dbt run-operation stage_external_sources
+5. dbt run
 
 ### Contributing
 
