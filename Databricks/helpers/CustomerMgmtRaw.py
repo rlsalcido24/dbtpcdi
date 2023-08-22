@@ -14,11 +14,15 @@
 import json
 
 with open("../../tools/traditional_config.json", "r") as json_conf:
-  table_conf = json.load(json_conf)['views']['CustomerMgmt']
-user_name = spark.sql("select current_user()").collect()[0][0].split("@")[0].replace(".","_")
+    table_conf = json.load(json_conf)["views"]["CustomerMgmt"]
+user_name = (
+    spark.sql("select current_user()").collect()[0][0].split("@")[0].replace(".", "_")
+)
 
-dbutils.widgets.text("wh_db", f"{user_name}_TPCDI",'Root name of Target Warehouse')
-dbutils.widgets.text("tpcdi_directory", "/tmp/tpcdi/", "Directory where Raw Files are located")
+dbutils.widgets.text("wh_db", f"{user_name}_TPCDI", "Root name of Target Warehouse")
+dbutils.widgets.text(
+    "tpcdi_directory", "/tmp/tpcdi/", "Directory where Raw Files are located"
+)
 dbutils.widgets.text("scale_factor", "10", "Scale factor")
 
 wh_db = f"{dbutils.widgets.get('wh_db')}_wh"
@@ -30,10 +34,9 @@ files_directory = f"{tpcdi_directory}sf={scale_factor}"
 # COMMAND ----------
 
 # DBTITLE 1,Read the XML file and create a temp view on the raw data as all string values
-spark.read.format('xml') \
-  .options(rowTag=table_conf['rowTag'], inferSchema=False) \
-  .load(f"""{files_directory}/{table_conf['path']}/{table_conf['filename']}""") \
-  .createOrReplaceTempView("v_CustomerMgmt")
+spark.read.format("xml").options(rowTag=table_conf["rowTag"], inferSchema=False).load(
+    f"""{files_directory}/{table_conf['path']}/{table_conf['filename']}"""
+).createOrReplaceTempView("v_CustomerMgmt")
 
 # COMMAND ----------
 
@@ -42,7 +45,8 @@ spark.sql(f"CREATE DATABASE IF NOT EXISTS {staging_db}")
 # COMMAND ----------
 
 # DBTITLE 1,Now insert into CustomerMgmt table with nested values parsed and data types applied
-spark.sql(f"""
+spark.sql(
+    f"""
   CREATE TABLE IF NOT EXISTS {staging_db}.CustomerMgmt PARTITIONED BY (ActionType) TBLPROPERTIES (
     --delta.tuneFileSizesForRewrites = true, 
     delta.autoOptimize.optimizeWrite = false
@@ -103,7 +107,8 @@ spark.sql(f"""
     to_timestamp(_ActionTS) update_ts,
     _ActionType ActionType
   FROM v_CustomerMgmt
-""")
+"""
+)
 
 # COMMAND ----------
 
