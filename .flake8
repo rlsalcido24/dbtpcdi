@@ -1,4 +1,15 @@
 [flake8]
+
+max-line-length = 88
+
+builtins =
+    dbutils,
+    spark
+
+extend-ignore =
+    # Line too long (88 characters) (E501)
+    E501,
+
 exclude =
     # No need to traverse our git directory
     .git,
