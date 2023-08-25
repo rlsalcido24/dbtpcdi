@@ -1,7 +1,7 @@
 # DBTPCDI
 
 This repo is an end to end implementation of
-[TPC-DI](https://www.tpc.org/tpcdi/default5.asp). The repo is desinged to
+[TPC-DI](https://www.tpc.org/tpcdi/default5.asp). The repo is desingeddd to
 be run against Databricks, Snowflake, BigQuery, Redshift, and Synapse.
 You can select your desired target warehouse with different targets that
 are defined in the profiles.yml; for ex `dbt run --target databricks`
