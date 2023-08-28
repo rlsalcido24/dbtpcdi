@@ -47,18 +47,26 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v38
 
-      - name: List changed files
+      - name: Set changed files
         run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            echo "$file was changed"
-          done
-          
-          echo \
-          $(echo ${{ steps.changed-files.outputs.all_changed_files }} |
+          echo "sql_changed_files=$(echo ${{ steps.changed-files.outputs.all_changed_files }} |
           tr -s ' ' '\n' |
           grep -E '^*[.]sql$' |
           sed 's/^\// /gm' |
-          tr -s '\n' ' ' )
+          tr -s '\n' ' ' ) }}" >> "$GITHUB_ENV"
+
+      - name: Get changed files
+        run: |
+          printf '%s\n' "sql_changed_files"
+
+#          for file in ${{ echo \
+#          $(echo ${{ steps.changed-files.outputs.all_changed_files }} |
+#          tr -s ' ' '\n' |
+#          grep -E '^*[.]sql$' |
+#          sed 's/^\// /gm' |
+#          tr -s '\n' ' ' ) }}; do
+#            echo "$file was changed"
+#          done
 
       - name: Install sqlfluff
         run: |
