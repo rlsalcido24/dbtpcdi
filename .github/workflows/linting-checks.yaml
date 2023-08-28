@@ -78,10 +78,8 @@ jobs:
         shell: bash -l {0}
         run: |
          sqlfluff --version
-         sqlfluff lint .
-
-#          --format github-annotation --annotation-level failure --nofail |
-#         ${{ steps.get_files_to_lint.outputs.lintees }} > annotations.json
+         sqlfluff lint --format github-annotation --annotation-level failure --nofail |
+         ${{ steps.get_files_to_lint.outputs.lintees }} > annotations.json
 
       - name: Annotate
         uses: yuzutech/annotations-action@v0.3.0
@@ -89,3 +87,31 @@ jobs:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           title: "SQLFluff Lint"
           input: "./annotations.json"
+
+  python-linting:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
+      - name: Install black
+        run: |
+          python -m pip install --upgrade pip
+          pip install black
+
+      - name: Run black
+        run: black --check .
+
+      - name: Install flake8
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8
+
+      - name: Run flake8
+        run: flake8
+

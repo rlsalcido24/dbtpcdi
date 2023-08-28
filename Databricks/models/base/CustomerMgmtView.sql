@@ -3,6 +3,8 @@
         materialized = 'view'
     )
 }}
-SELECT *
-FROM
-    hive_metastore.roberto_salcido_tpcdi_stage.customermgmt1000
+
+select
+    *
+from
+    hive_metastore.{{var('stagingschema')}}.CustomerMgmt

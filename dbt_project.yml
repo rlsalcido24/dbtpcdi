@@ -9,9 +9,10 @@ profile: 'sql_endpoints'
 vars:
   scalefactor: 1000
   stage: stagename
+  stagingschema: stagingschema
   bucketname: bucketname  # bigquery, redshift only
 
-model-paths: ["models"]
+model-paths: ["Databricks/models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
 seed-paths: ["seeds"]
