@@ -59,7 +59,7 @@ jobs:
 
       - name: Get changed files
         run: |
-          echo ${{ sql_changed_files }}
+          echo $sql_changed_files
 
 #          for file in ${{ echo \
 #          $(echo ${{ steps.changed-files.outputs.all_changed_files }} |
