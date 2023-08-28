@@ -55,7 +55,7 @@ jobs:
             grep -E '^*[.]sql$' |
             sed 's/^\// /gm' |
             tr -s '\n' ' '
-          ) }}" >> "$GITHUB_ENV"
+          )" >> "$GITHUB_ENV"
 
       - name: List changed files
         run: |
