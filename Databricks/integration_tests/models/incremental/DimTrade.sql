@@ -69,11 +69,11 @@ FROM (
             SELECT
                 t.tradeid,
                 t.t_dts,
-                --  TODO UNCOMMENT AND FIX
-                --  if(create_flg, sk_dateid, cast(NULL AS BIGINT)) sk_createdateid, -- noqa:LT05
-                --  if(create_flg, sk_timeid, cast(NULL AS BIGINT)) sk_createtimeid, -- noqa:LT05
-                --  if(!create_flg, sk_dateid, cast(NULL AS BIGINT)) sk_closedateid, -- noqa:LT05
-                --  if(!create_flg, sk_timeid, cast(NULL AS BIGINT)) sk_closetimeid, -- noqa:LT05
+                --  TODO: FIX `!` operator for SQLFluff and remove from `.sqlfluffignore`
+                 if(create_flg, sk_dateid, cast(NULL AS BIGINT)) AS sk_createdateid,
+                 if(create_flg, sk_timeid, cast(NULL AS BIGINT)) AS sk_createtimeid,
+                 if(!create_flg, sk_dateid, cast(NULL AS BIGINT)) AS sk_closedateid,
+                 if(!create_flg, sk_timeid, cast(NULL AS BIGINT)) AS sk_closetimeid,
                 CASE
                     WHEN t.t_is_cash = 1 THEN TRUE
                     WHEN t.t_is_cash = 0 THEN FALSE

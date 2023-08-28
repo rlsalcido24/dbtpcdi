@@ -75,13 +75,13 @@ FROM (
                 IF(
                     t.create_flg, dt.sk_timeid, CAST(NULL AS BIGINT)
                 ) AS sk_createtimeid,
-                -- TODO: ! THROWS PARSING ERROR FOR SQLFLUFF
-                -- IF(
-                --     !t.create_flg, dd.sk_dateid, cast(NULL AS BIGINT)
-                -- ) AS sk_closedateid,
-                -- IF(
-                --     !t.create_flg, dt.sk_timeid, cast(NULL AS BIGINT)
-                -- ) AS sk_closetimeid,
+                --  TODO: FIX `!` operator for SQLFluff and remove from `.sqlfluffignore`
+                IF(
+                    !t.create_flg, dd.sk_dateid, cast(NULL AS BIGINT)
+                ) AS sk_closedateid,
+                IF(
+                    !t.create_flg, dt.sk_timeid, cast(NULL AS BIGINT)
+                ) AS sk_closetimeid,
                 CASE
                     WHEN t.t_is_cash = 1 THEN TRUE
                     WHEN t.t_is_cash = 0 THEN FALSE
