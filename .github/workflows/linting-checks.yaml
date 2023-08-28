@@ -72,22 +72,7 @@ jobs:
       - name: Run sqlfluff
         run: |
          sqlfluff --version
-         sqlfluff lint --format github-annotation \
-          --annotation-level failure \
-          --nofail $sql_changed_files \
-          --write-output annotations.json
-#         sqlfluff lint $sql_changed_files
-
-      - name: Debug
-        run: |
-          cat annotations.json
-
-      - name: Annotate
-        uses: yuzutech/annotations-action@v0.3.0
-        with:
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          title: "SQLFluff Lint"
-          input: "./annotations.json"
+         sqlfluff lint $sql_changed_files
 
   python-linting:
     runs-on: ubuntu-latest
