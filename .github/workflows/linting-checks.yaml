@@ -49,15 +49,17 @@ jobs:
 
       - name: Set changed files
         run: |
-          echo "sql_changed_files=$(echo ${{ steps.changed-files.outputs.all_changed_files }} |
-          tr -s ' ' '\n' |
-          grep -E '^*[.]sql$' |
-          sed 's/^\// /gm' |
-          tr -s '\n' ' ' ) }}" >> "$GITHUB_ENV"
+          echo "sql_changed_files=$(
+            echo ${{ steps.changed-files.outputs.all_changed_files }} |
+            tr -s ' ' '\n' |
+            grep -E '^*[.]sql$' |
+            sed 's/^\// /gm' |
+            tr -s '\n' ' '
+          ) }}" >> "$GITHUB_ENV"
 
       - name: Get changed files
         run: |
-          printf '%s\n' "sql_changed_files"
+          echo ${{ sql_changed_files }}
 
 #          for file in ${{ echo \
 #          $(echo ${{ steps.changed-files.outputs.all_changed_files }} |
