@@ -18,7 +18,7 @@ SELECT
   if(enddate = date('9999-12-31'), True, False) iscurrent,
   1 batchid,
   effectivedate,
-  bigint(concat(date_format(effectivedate, 'yyyyMMdd'), cast(exchangeid as string))) as sk_securityid,
+  monotonically_increasing_id() as sk_securityid,
   enddate
 FROM (
   SELECT 

@@ -6,5 +6,5 @@
 select
     *
 from
-    hive_metastore.roberto_salcido_tpcdi_stage.customermgmt1000
+    hive_metastore.{{var('stagingschema')}}.CustomerMgmt
 
