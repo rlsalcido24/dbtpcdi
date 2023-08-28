@@ -6,20 +6,24 @@
     )
 }}
 
-        
+
 SELECT
-  cast(employeeid as BIGINT) brokerid,
-  cast(managerid as BIGINT) managerid,
-  employeefirstname firstname,
-  employeelastname lastname,
-  employeemi middleinitial,
-  employeebranch branch,
-  employeeoffice office,
-  employeephone phone,
-  1 iscurrent,
-  1 batchid,
-  (SELECT min(cast(datevalue as date)) as effectivedate FROM {{ ref('DimDate') }}) effectivedate,
-  cast('9999-12-31' as date) enddate,
-  concat(cast(employeeid as BIGINT), '-', cast('9999-12-31' as date)) as sk_brokerid
-FROM  {{ ref('HR') }}
+    CAST(employeeid AS BIGINT) AS brokerid,
+    CAST(managerid AS BIGINT) AS managerid,
+    employeefirstname AS firstname,
+    employeelastname AS lastname,
+    employeemi AS middleinitial,
+    employeebranch AS branch,
+    employeeoffice AS office,
+    employeephone AS phone,
+    1 AS iscurrent,
+    1 AS batchid,
+    (
+        SELECT MIN(CAST(datevalue AS DATE)) AS effectivedate
+        FROM {{ ref('DimDate') }}
+    ) AS effectivedate,
+    CAST('9999-12-31' AS DATE) AS enddate,
+    CONCAT(CAST(employeeid AS BIGINT), '-', CAST('9999-12-31' AS DATE))
+        AS sk_brokerid
+FROM {{ ref('HR') }}
 WHERE employeejobcode = 314

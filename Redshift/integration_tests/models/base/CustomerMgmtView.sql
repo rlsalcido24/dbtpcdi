@@ -3,7 +3,6 @@
         materialized = 'view', bind=False
     )
 }}
-select
-    *
-from
+SELECT *
+FROM
     {{ source('tpcdi', 'CustomerMgmt') }}

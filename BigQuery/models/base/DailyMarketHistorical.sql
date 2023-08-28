@@ -3,8 +3,8 @@
         materialized = 'view'
     )
 }}
-select
+SELECT
     *,
-    1 as batchid
-from
-    {{source(var('benchmark'), 'DailyMarket') }}
+    1 AS batchid
+FROM
+    {{ source(var('benchmark'), 'DailyMarket') }}

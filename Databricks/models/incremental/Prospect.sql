@@ -3,139 +3,173 @@
         materialized = 'table'
     )
 }}
-SELECT 
-  agencyid,
-  recdate.sk_dateid sk_recorddateid,
-  origdate.sk_dateid sk_updatedateid,
-  p.batchid,
-  nvl2(c.customerid, True, False) iscustomer, 
-  p.lastname,
-  p.firstname,
-  p.middleinitial,
-  p.gender,
-  p.addressline1,
-  p.addressline2,
-  p.postalcode,
-  city,
-  state,
-  country,
-  phone,
-  income,
-  numbercars,
-  numberchildren,
-  maritalstatus,
-  age,
-  creditrating,
-  ownorrentflag,
-  employer,
-  numbercreditcards,
-  networth,
-  if(
-    isnotnull(
-      if(networth > 1000000 or income > 200000,"HighValue+","") || 
-      if(numberchildren > 3 or numbercreditcards > 5,"Expenses+","") ||
-      if(age > 45, "Boomer+", "") ||
-      if(income < 50000 or creditrating < 600 or networth < 100000, "MoneyAlert+","") ||
-      if(numbercars > 3 or numbercreditcards > 7, "Spender+","") ||
-      if(age < 25 and networth > 1000000, "Inherited+","")),
-    left(
-      if(networth > 1000000 or income > 200000,"HighValue+","") || 
-      if(numberchildren > 3 or numbercreditcards > 5,"Expenses+","") ||
-      if(age > 45, "Boomer+", "") ||
-      if(income < 50000 or creditrating < 600 or networth < 100000, "MoneyAlert+","") ||
-      if(numbercars > 3 or numbercreditcards > 7, "Spender+","") ||
-      if(age < 25 and networth > 1000000, "Inherited+",""),
-      length(
-        if(networth > 1000000 or income > 200000,"HighValue+","") || 
-        if(numberchildren > 3 or numbercreditcards > 5,"Expenses+","") ||
-        if(age > 45, "Boomer+", "") ||
-        if(income < 50000 or creditrating < 600 or networth < 100000, "MoneyAlert+","") ||
-        if(numbercars > 3 or numbercreditcards > 7, "Spender+","") ||
-        if(age < 25 and networth > 1000000, "Inherited+",""))
-      -1),
-    NULL) marketingnameplate
+SELECT
+    p.agencyid,
+    recdate.sk_dateid AS sk_recorddateid,
+    origdate.sk_dateid AS sk_updatedateid,
+    p.batchid,
+    NVL2(c.customerid, TRUE, FALSE) AS iscustomer,
+    p.lastname,
+    p.firstname,
+    p.middleinitial,
+    p.gender,
+    p.addressline1,
+    p.addressline2,
+    p.postalcode,
+    p.city,
+    p.state,
+    p.country,
+    p.phone,
+    p.income,
+    p.numbercars,
+    p.numberchildren,
+    p.maritalstatus,
+    p.age,
+    p.creditrating,
+    p.ownorrentflag,
+    p.employer,
+    p.numbercreditcards,
+    p.networth,
+    IF(
+        ISNOTNULL(
+            IF(p.networth > 1000000 OR p.income > 200000, 'HighValue+', '')
+            || IF(
+                p.numberchildren > 3 OR p.numbercreditcards > 5, 'Expenses+', ''
+            )
+            || IF(p.age > 45, 'Boomer+', '')
+            || IF(
+                p.income < 50000 OR p.creditrating < 600 OR p.networth < 100000,
+                'MoneyAlert+',
+                ''
+            )
+            || IF(p.numbercars > 3 OR p.numbercreditcards > 7, 'Spender+', '')
+            || IF(p.age < 25 AND p.networth > 1000000, 'Inherited+', '')
+        ),
+        LEFT(
+            IF(p.networth > 1000000 OR p.income > 200000, 'HighValue+', '')
+            || IF(
+                p.numberchildren > 3 OR p.numbercreditcards > 5, 'Expenses+', ''
+            )
+            || IF(p.age > 45, 'Boomer+', '')
+            || IF(
+                p.income < 50000 OR p.creditrating < 600 OR p.networth < 100000,
+                'MoneyAlert+',
+                ''
+            )
+            || IF(p.numbercars > 3 OR p.numbercreditcards > 7, 'Spender+', '')
+            || IF(p.age < 25 AND p.networth > 1000000, 'Inherited+', ''),
+            LENGTH(
+                IF(p.networth > 1000000 OR p.income > 200000, 'HighValue+', '')
+                || IF(
+                    p.numberchildren > 3 OR p.numbercreditcards > 5,
+                    'Expenses+',
+                    ''
+                )
+                || IF(p.age > 45, 'Boomer+', '')
+                || IF(
+                    p.income < 50000
+                    OR p.creditrating < 600
+                    OR p.networth < 100000,
+                    'MoneyAlert+',
+                    ''
+                )
+                || IF(
+                    p.numbercars > 3 OR p.numbercreditcards > 7, 'Spender+', ''
+                )
+                || IF(p.age < 25 AND p.networth > 1000000, 'Inherited+', '')
+            )
+            - 1
+        ),
+        NULL
+    ) AS marketingnameplate
 FROM (
-  SELECT 
-    * FROM (
-    SELECT
-      agencyid,
-      max(batchid) recordbatchid,
-      lastname,
-      firstname,
-      middleinitial,
-      gender,
-      addressline1,
-      addressline2,
-      postalcode,
-      city,
-      state,
-      country,
-      phone,
-      income,
-      numbercars,
-      numberchildren,
-      maritalstatus,
-      age,
-      creditrating,
-      ownorrentflag,
-      employer,
-      numbercreditcards,
-      networth,
-      min(batchid) batchid
-    FROM {{ ref('ProspectRaw') }} p
-    GROUP BY
-      agencyid,
-      lastname,
-      firstname,
-      middleinitial,
-      gender,
-      addressline1,
-      addressline2,
-      postalcode,
-      city,
-      state,
-      country,
-      phone,
-      income,
-      numbercars,
-      numberchildren,
-      maritalstatus,
-      age,
-      creditrating,
-      ownorrentflag,
-      employer,
-      numbercreditcards,
-      networth)
-  QUALIFY ROW_NUMBER() OVER (PARTITION BY agencyid ORDER BY batchid DESC) = 1) p
-JOIN (
-  SELECT 
-    sk_dateid,
-    batchid
-  FROM {{ ref('BatchDate') }} b 
-  JOIN {{ source('tpcdi', 'DimDate') }} d 
-    ON b.batchdate = d.datevalue) recdate
-  ON p.recordbatchid = recdate.batchid
-JOIN (
-  SELECT 
-    sk_dateid,
-    batchid
-  FROM {{ ref('BatchDate') }} b 
-  JOIN {{ source('tpcdi', 'DimDate') }} d 
-    ON b.batchdate = d.datevalue) origdate
-  ON p.batchid = origdate.batchid
-LEFT JOIN (
-  SELECT 
-    customerid,
-    lastname,
-    firstname,
-    addressline1,
-    addressline2,
-    postalcode
-  FROM {{ ref('DimCustomerStg') }}
-  WHERE iscurrent) c
-  ON 
-    upper(p.LastName) = upper(c.lastname)
-    and upper(p.FirstName) = upper(c.firstname)
-    and upper(p.AddressLine1) = upper(c.addressline1)
-    and upper(nvl(p.addressline2, '')) = upper(nvl(c.addressline2, ''))
-    and upper(p.PostalCode) = upper(c.postalcode)
+    SELECT *
+    FROM (
+        SELECT
+            agencyid,
+            MAX(batchid) AS recordbatchid,
+            lastname,
+            firstname,
+            middleinitial,
+            gender,
+            addressline1,
+            addressline2,
+            postalcode,
+            city,
+            state,
+            country,
+            phone,
+            income,
+            numbercars,
+            numberchildren,
+            maritalstatus,
+            age,
+            creditrating,
+            ownorrentflag,
+            employer,
+            numbercreditcards,
+            networth,
+            MIN(batchid) AS batchid
+        FROM {{ ref('ProspectRaw') }}
+        GROUP BY
+            agencyid,
+            lastname,
+            firstname,
+            middleinitial,
+            gender,
+            addressline1,
+            addressline2,
+            postalcode,
+            city,
+            state,
+            country,
+            phone,
+            income,
+            numbercars,
+            numberchildren,
+            maritalstatus,
+            age,
+            creditrating,
+            ownorrentflag,
+            employer,
+            numbercreditcards,
+            networth
+    )
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY agencyid ORDER BY batchid DESC) = 1
+) AS p
+    INNER JOIN (
+        SELECT
+            d.sk_dateid,
+            b.batchid
+        FROM {{ ref('BatchDate') }} AS b
+            INNER JOIN {{ source('tpcdi', 'DimDate') }} AS d
+                ON b.batchdate = d.datevalue
+    ) AS recdate
+        ON p.recordbatchid = recdate.batchid
+    INNER JOIN (
+        SELECT
+            d.sk_dateid,
+            b.batchid
+        FROM {{ ref('BatchDate') }} AS b
+            INNER JOIN {{ source('tpcdi', 'DimDate') }} AS d
+                ON b.batchdate = d.datevalue
+    ) AS origdate
+        ON p.batchid = origdate.batchid
+    LEFT JOIN (
+        SELECT
+            customerid,
+            lastname,
+            firstname,
+            addressline1,
+            addressline2,
+            postalcode
+        FROM {{ ref('DimCustomerStg') }}
+        WHERE iscurrent
+    ) AS c
+        ON
+            UPPER(p.lastname) = UPPER(c.lastname)
+            AND UPPER(p.firstname) = UPPER(c.firstname)
+            AND UPPER(p.addressline1) = UPPER(c.addressline1)
+            AND UPPER(COALESCE(p.addressline2, ''))
+            = UPPER(COALESCE(c.addressline2, ''))
+            AND UPPER(p.postalcode) = UPPER(c.postalcode)

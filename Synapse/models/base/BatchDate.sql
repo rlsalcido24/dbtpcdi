@@ -8,24 +8,24 @@
 
 
 
-select
+SELECT
     *,
-    1 as batchid
-from
+    1 AS batchid
+FROM
     {{ source('tpcdi', 'BatchDate1') }}
 
- UNION ALL
+UNION ALL
 
-select
+SELECT
     *,
-    2 as batchid
-from
+    2 AS batchid
+FROM
     {{ source('tpcdi', 'BatchDate2') }}
 
- UNION ALL
+UNION ALL
 
- select
+SELECT
     *,
-    3 as batchid
-from
+    3 AS batchid
+FROM
     {{ source('tpcdi', 'BatchDate3') }}

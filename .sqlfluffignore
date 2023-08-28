@@ -1,0 +1,13 @@
+# Ignore the "dbt_packages" directory
+dbt_packages/
+
+# Ignore the "macros" directory
+macros/
+
+# Ignore the "Synapse/helpers" directory
+Synapse/helpers/
+
+# Ignore files in Databricks with `!` that are causing parsing errors
+# TODO - remove this once we have a better solution
+Databricks/integration_tests/models/incremental/DimTrade.sql
+Databricks/models/incremental/DimTrade.sql

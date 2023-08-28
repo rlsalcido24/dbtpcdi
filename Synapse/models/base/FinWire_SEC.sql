@@ -4,8 +4,7 @@
     )
 }}
 
-select
-    *
-from
+SELECT *
+FROM
     {{ ref('FinWire') }}
-where rectype='SEC'
+WHERE rectype = 'SEC'

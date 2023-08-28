@@ -3,9 +3,6 @@
         materialized = 'view'
     )
 }}
-select
-    *
-from
-    fe-dev-sandbox.tpcdi_eu.CustomerMgmt_{{var('benchmark')}}
-    
-
+SELECT *
+FROM
+    fe-dev-sandbox.tpcdi_eu.CustomerMgmt_{{ var('benchmark') }}

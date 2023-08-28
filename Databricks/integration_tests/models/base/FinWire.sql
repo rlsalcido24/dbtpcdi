@@ -5,5 +5,8 @@
     )
 }}
 
-select *, substring(value, 16, 3) rectype from 
-{{ source('tpcdi', 'FinWireStg') }}
+SELECT
+    *,
+    SUBSTRING(value, 16, 3) AS rectype
+FROM
+    {{ source('tpcdi', 'FinWireStg') }}

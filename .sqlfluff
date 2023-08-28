@@ -1,0 +1,47 @@
+[sqlfluff]
+exclude_rules=ST06, ST05, AM04
+
+[sqlfluff:indentation]
+indented_joins=True
+
+[sqlfluff:rules:capitalisation.keywords]
+capitalisation_policy=upper
+# Comma separated list of words to ignore for this rule
+ignore_words=None
+ignore_words_regex=None
+
+[sqlfluff:rules:capitalisation.identifiers]
+capitalisation_policy=lower
+extended_capitalisation_policy=lower
+unquoted_identifiers_policy=all
+# Comma separated list of words to ignore for this rule
+ignore_words=None
+ignore_words_regex=None
+
+[sqlfluff:rules:capitalisation.functions]
+extended_capitalisation_policy=upper
+# Comma separated list of words to ignore for this rule
+ignore_words=None
+ignore_words_regex=None
+
+[sqlfluff:rules:capitalisation.literals]
+capitalisation_policy=upper
+# Comma separated list of words to ignore for this rule
+ignore_words=None
+ignore_words_regex=None
+
+[sqlfluff:rules:capitalisation.types]
+extended_capitalisation_policy=upper
+# Comma separated list of words to ignore for this rule
+ignore_words=None
+ignore_words_regex=None
+
+[sqlfluff:rules:convention.quoted_literals]
+# Consistent usage of preferred quotes for quoted literals
+preferred_quoted_literal_style=single_quotes
+# Disabled for dialects that do not support single and double quotes for quoted literals (e.g. Postgres)
+force_enable=False
+
+[sqlfluff:rules:convention.casting_style]
+# Usage of preferred type casting style
+preferred_type_casting_style=cast

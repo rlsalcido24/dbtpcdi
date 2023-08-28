@@ -4,24 +4,24 @@
     )
 }}
 
-select
+SELECT
     *,
-    1 as batchid
-from
-    {{source(var('benchmark'), 'ProspectRawuno') }}
+    1 AS batchid
+FROM
+    {{ source(var('benchmark'), 'ProspectRawuno') }}
 
- UNION ALL
+UNION ALL
 
-select
+SELECT
     *,
-    2 as batchid
-from
-    {{source(var('benchmark'), 'ProspectRawdos') }}
+    2 AS batchid
+FROM
+    {{ source(var('benchmark'), 'ProspectRawdos') }}
 
- UNION ALL
+UNION ALL
 
- select
+SELECT
     *,
-    3 as batchid
-from
-    {{source(var('benchmark'), 'ProspectRawtres') }}
+    3 AS batchid
+FROM
+    {{ source(var('benchmark'), 'ProspectRawtres') }}

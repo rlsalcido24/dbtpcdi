@@ -3,17 +3,16 @@
         materialized = 'view'
     )
 }}
-select
+SELECT
     *,
-    2 as batchid
-from
-    {{source(var('benchmark'), 'customerincrementaldos') }}
+    2 AS batchid
+FROM
+    {{ source(var('benchmark'), 'customerincrementaldos') }}
 
- UNION ALL
+UNION ALL
 
- select
+SELECT
     *,
-    3 as batchid
-from
-    {{source(var('benchmark'), 'customerincrementaltres') }}
-
+    3 AS batchid
+FROM
+    {{ source(var('benchmark'), 'customerincrementaltres') }}

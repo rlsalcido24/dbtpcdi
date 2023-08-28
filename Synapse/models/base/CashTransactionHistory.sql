@@ -5,9 +5,6 @@
 }}
 
 
-select
-    *
-from
+SELECT *
+FROM
     {{ source('tpcdi', 'CashTransactionHistory') }}
-
-

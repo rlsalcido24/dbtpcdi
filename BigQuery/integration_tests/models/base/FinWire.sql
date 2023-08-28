@@ -1,4 +1,3 @@
-
 {{
     config(
         materialized = 'table',
@@ -6,5 +5,8 @@
     )
 }}
 
-select string_field_0 as value,  substring(string_field_0, 16, 3) rectype  from 
-{{source(var('benchmark'), 'FinWireStg') }}
+SELECT
+    string_field_0 AS value, -- noqa: RF04
+    SUBSTRING(string_field_0, 16, 3) AS rectype
+FROM
+    {{ source(var('benchmark'), 'FinWireStg') }}
