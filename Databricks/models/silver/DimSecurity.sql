@@ -4,21 +4,21 @@
     )
 }}
 SELECT
-  symbol,
-  issue,
-  status,
-  name,
-  exchangeid,
-  sk_companyid,
-  sharesoutstanding,
-  firsttrade,
-  firsttradeonexchange,
-  dividend,
-  IF(enddate = DATE('9999-12-31'), True, False) AS iscurrent,
-  1 AS batchid,
-  effectivedate,
-  monotonically_increasing_id() as sk_securityid,
-  enddate
+    symbol,
+    issue,
+    status,
+    name,
+    exchangeid,
+    sk_companyid,
+    sharesoutstanding,
+    firsttrade,
+    firsttradeonexchange,
+    dividend,
+    IF(enddate = DATE('9999-12-31'), TRUE, FALSE) AS iscurrent,
+    1 AS batchid,
+    effectivedate,
+    MONOTONICALLY_INCREASING_ID() AS sk_securityid,
+    enddate
 FROM (
     SELECT
         fws.symbol,

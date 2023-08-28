@@ -4,7 +4,6 @@
     )
 }}
 
-select
-    *
-from
-    hive_metastore.{{var('stagingschema')}}.CustomerMgmt
+SELECT *
+FROM
+    hive_metastore.{{ var('stagingschema') }}.customermgmt
