@@ -39,9 +39,9 @@ SELECT
   c.effectivedate,
   c.enddate
 FROM {{ ref('DimCustomerStg') }} c
-LEFT JOIN {{ source('tpcdi', 'TaxRate') }} r_lcl 
+LEFT JOIN {{ ref('TaxRate') }} r_lcl 
   ON c.LCL_TX_ID = r_lcl.TX_ID
-LEFT JOIN {{ source('tpcdi', 'TaxRate') }} r_nat 
+LEFT JOIN {{ ref('TaxRate') }} r_nat 
   ON c.NAT_TX_ID = r_nat.TX_ID
 LEFT JOIN {{ ref('Prospect') }} p 
   on upper(p.lastname) = upper(c.lastname)

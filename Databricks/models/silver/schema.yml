@@ -1,5 +1,3 @@
----
-
 version: 2
 
 models:
@@ -11,13 +9,17 @@ models:
               config:
                 store_failures: true
 
+
+    
   - name: Financial
     columns:
       - name: sk_companyid
         tests:
-          - not_null:
+           - not_null:
               config:
                 store_failures: true
+
+  
 
   - name: DimCompany
     columns:
@@ -26,3 +28,9 @@ models:
           - dateval:
               config:
                 store_failures: true
+     
+
+
+
+
+

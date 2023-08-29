@@ -63,7 +63,7 @@ FROM (
         FROM {{ ref('AccountIncremental') }} a
         JOIN {{ ref('BatchDate') }} bd
           ON a.batchid = bd.batchid
-        JOIN {{ source('tpcdi', 'StatusType') }} st 
+        JOIN {{ ref('StatusType') }} st 
           ON a.CA_ST_ID = st.st_id
       ) a
     ) a

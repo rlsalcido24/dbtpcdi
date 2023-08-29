@@ -151,7 +151,7 @@ SELECT * FROM (
     FROM {{ ref('CustomerIncremental') }} c
     JOIN {{ ref('BatchDate') }} bd
       ON c.batchid = bd.batchid
-    JOIN {{ source('tpcdi', 'StatusType') }} s 
+    JOIN {{ ref('StatusType') }} s 
       ON c.status = s.st_id
   ) c
   )

@@ -56,6 +56,6 @@ SELECT
     FROM {{ ref('FinWire') }}
     WHERE rectype = 'CMP'
        ) cmp
-  JOIN {{ source('tpcdi', 'StatusType') }} st ON cmp.status = st.st_id
-  JOIN {{ source('tpcdi', 'Industry') }} ind ON cmp.industryid = ind.in_id
+  JOIN {{ ref('StatusType') }} st ON cmp.status = st.st_id
+  JOIN {{ ref('Industry') }} ind ON cmp.industryid = ind.in_id
 )
