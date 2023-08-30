@@ -1,19 +1,12 @@
 ---
 
-name: 'dbsql_dbt_tpch'
+name: 'springbricks_integration_tests'
 version: '1.0.0'
 config-version: 2
 
-profile: 'sql_endpoints'
+profile: 'integration_tests'
 
-vars:
-  scalefactor: 10
-  stage: stagename
-  stagingschema: stagingschema
-  bucketname: bucketname  # bigquery, redshift only
-  storageaccountname: synapsemigrationdemoadls
-
-model-paths: ["Fabric/models", "Synapse/models"]
+model-paths: ["models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
 seed-paths: ["seeds"]
@@ -24,6 +17,9 @@ target-path: "target"
 clean-targets:
   - "target"
   - "dbt_packages"
+
+vars:
+  max_ship_date: "'1998-12-01'"
 
 dispatch:
   - macro_namespace: dbt_utils
