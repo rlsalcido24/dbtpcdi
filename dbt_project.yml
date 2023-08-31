@@ -13,7 +13,7 @@ vars:
   bucketname: bucketname  # bigquery, redshift only
   storageaccountname: synapsemigrationdemoadls
 
-model-paths: ["Fabric/models", "Synapse/models"]
+model-paths: ["Synapse/models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
 seed-paths: ["seeds"]
