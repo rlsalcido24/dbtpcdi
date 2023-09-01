@@ -1,5 +1,22 @@
 # Synapse dbt TPC-DI benchmark project
 
+## Installation
+In order to run dbt model on Azure Synapse Dedicated SQL Pool you need to install **dbt-synapse** adapter.
+1. Install Microsoft ODBC driver 18 for SQL Server
+- MacOS - [Install the Microsoft ODBC driver for SQL Server (macOS)](https://learn.microsoft.com/en-us/sql/connect/odbc/linux-mac/install-microsoft-odbc-driver-sql-server-macos?view=sql-server-ver16)
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+brew tap microsoft/mssql-release https://github.com/Microsoft/homebrew-mssql-release
+brew update
+HOMEBREW_ACCEPT_EULA=Y brew install msodbcsql18 mssql-tools18
+```
+- Windows - [Download ODBC Driver for SQL Server](https://learn.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server?view=sql-server-ver16)
+- Linux - [Install the Microsoft ODBC driver for SQL Server (Linux)](https://learn.microsoft.com/en-us/sql/connect/odbc/linux-mac/installing-the-microsoft-odbc-driver-for-sql-server?view=sql-server-ver16&tabs=alpine18-install%2Calpine17-install%2Cdebian8-install%2Credhat7-13-install%2Crhel7-offline)
+2. Install **dbt-synapse** adapter
+```bash
+pip install dbt-synapse
+```
+
 ## Data Preparation
 This project uses the TPC-DI Kit TPC-DI Data Generator https://github.com/haydarai/tpcdi-kit
 
