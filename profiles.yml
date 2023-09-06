@@ -1,7 +1,7 @@
 ---
 
 sql_endpoints:
-  target: snowflake
+  target: synapse
 
   outputs:
     redshift:
@@ -53,4 +53,20 @@ sql_endpoints:
       database: "{{ env_var('SYNAPSE_DATABASE') }}"
       schema: "{{ env_var('SYNAPSE_SCHEMA') }}"
       authentication: "{{ env_var('SYNAPSE_AUTH') }}"
+      user: "{{ env_var('SYNAPSE_TEST_USER') }}"
+      password: "{{ env_var('SYNAPSE_TEST_PASSWORD') }}"
+      threads: 25
+
+    fabric:
+      type: fabric
+      driver: 'ODBC Driver 18 for SQL Server'  # (The ODBC Driver installed on your system)
+      server: "{{ env_var('FABRIC_SERVER') }}"
+      port: 1433
+      encrypt: true
+      trust_cert: true
+      database: "{{ env_var('FABRIC_DATABASE') }}"
+      schema: "{{ env_var('FABRIC_SCHEMA') }}"
+      authentication: "{{ env_var('FABRIC_AUTH') }}"
+      user: "{{ env_var('FABRIC_TEST_USER') }}"
+      password: "{{ env_var('FABRIC_TEST_PASSWORD') }}"
       threads: 25

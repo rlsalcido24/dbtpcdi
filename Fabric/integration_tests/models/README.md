@@ -1,22 +1,5 @@
 # Synapse dbt TPC-DI benchmark project
 
-## Installation
-In order to run dbt model on Azure Synapse Dedicated SQL Pool you need to install **dbt-synapse** adapter.
-1. Install Microsoft ODBC driver 18 for SQL Server
-- MacOS - [Install the Microsoft ODBC driver for SQL Server (macOS)](https://learn.microsoft.com/en-us/sql/connect/odbc/linux-mac/install-microsoft-odbc-driver-sql-server-macos?view=sql-server-ver16)
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-brew tap microsoft/mssql-release https://github.com/Microsoft/homebrew-mssql-release
-brew update
-HOMEBREW_ACCEPT_EULA=Y brew install msodbcsql18 mssql-tools18
-```
-- Windows - [Download ODBC Driver for SQL Server](https://learn.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server?view=sql-server-ver16)
-- Linux - [Install the Microsoft ODBC driver for SQL Server (Linux)](https://learn.microsoft.com/en-us/sql/connect/odbc/linux-mac/installing-the-microsoft-odbc-driver-for-sql-server?view=sql-server-ver16&tabs=alpine18-install%2Calpine17-install%2Cdebian8-install%2Credhat7-13-install%2Crhel7-offline)
-2. Install **dbt-synapse** adapter
-```bash
-pip install dbt-synapse
-```
-
 ## Data Preparation
 This project uses the TPC-DI Kit TPC-DI Data Generator https://github.com/haydarai/tpcdi-kit
 
@@ -100,64 +83,26 @@ GO
 ```
 
 ### Authentication
-Default dbt profile [profiles.yml](../../profiles.yml) is configured to use environment variables for authentication configuration. The following environment variables are used:
-- **SYNAPSE_SERVER** - fully qualified domain name of Dedicated SQL Pool endpoint, must be ***.sql.azuresynapse.net or similar.
-- **SYNAPSE_DATABASE** - the name of Dedicated SQL Pool.
-- **SYNAPSE_SCHEMA** - the name of a schema where TPC-DI objects, such as tables and views, will be created.
-- **SYNAPSE_AUTH** - the authentication type. It can be **CLI** for Azure CLI authentication, **MSI** for Managed Service Identity authentication, or **SQL** for SQL basic authentication (user name and password).
-Please note that in order to use MSI authentication the VM where dbt will be running must be assigned a managed identity and respective user must be registered in Azure Synapse Dedicated SQL Pool.
-- **SYNAPSE_TEST_USER** - the name of a user for SQL baseic authentication, it must not be empty for other types of authentication.
-- **SYNAPSE_TEST_PASSWORD** - the password for SQL baseic authentication, it must not be empty for other types of authentication.
+Default dbt profile [profiles.yml](./profiles.yml) is configured to use CLI authentication which means that current user AAD credentials will be used to connect to Synapse Dedicated SQL Pool. To connect using **dbt** user and leverage Synapse workload management please replace ***authentication*** element in [profiles.yml](./profiles.yml) with ***user*** and ***password*** elements.
+```yaml
+synapse:
+  target: dev
+  outputs:
+    dev:
+      ...
+      user: dbt
+      password: <strongpassword>
+      ...
+```
 
-You can use the following commands set environment variables.
-
-MacOS/Linux bash:
-```shell
-export SYNAPSE_SERVER=***.sql.azuresynapse.net
-export SYNAPSE_DATABASE=tpcdi
-export SYNAPSE_SCHEMA=dbo
-export SYNAPSE_AUTH=SQL
-export SYNAPSE_TEST_USER=***
-export SYNAPSE_TEST_PASSWORD=***
-```
-Windows OS command prompt:
-```shell
-SET SYNAPSE_SERVER=***.sql.azuresynapse.net
-SET SYNAPSE_DATABASE=tpcdi
-SET SYNAPSE_SCHEMA=dbo
-SET SYNAPSE_AUTH=SQL
-SET SYNAPSE_TEST_USER=***
-SET SYNAPSE_TEST_PASSWORD=***
-```
-Windows OS PowerShell:
-```shell
-$Env:SYNAPSE_SERVER="***.sql.azuresynapse.net"
-$Env:SYNAPSE_DATABASE="tpcdi"
-$Env:SYNAPSE_SCHEMA="dbo"
-$Env:SYNAPSE_AUTH="SQL"
-$Env:SYNAPSE_TEST_USER="***"
-$Env:SYNAPSE_TEST_PASSWORD="***"
-```
 As an alternative you can use a non-default profile by specifying ```--profiles-dir``` parameter in dbt command line. 
 
 ## Using the project
 
 Use the following commands:
-- Initialize **dbt** project.
-```shell
-dbt init
-```
-- Test connectivity to Synapse Dedicated SQL Pool.
-```shell
-dbt debug
-```
-- Configure external tables in Synapse Dedicated SQL Pool.*
-```shell
-dbt run-operation stage_external_sources --vars "ext_full_refresh: true"
-```
-- Execute the project and actully run TPC-DI transformations.
-```shell
-dbt run
-```
+- ```shell dbt init``` - This will initialize dbt project.
+- ```shell dbt debug``` - This will test connectivity to Synapse Dedicated SQL Pool.
+- ```shell dbt run-operation stage_external_sources --vars "ext_full_refresh: true"``` - This will configure external tables in Synapse Dedicated SQL Pool.*
+- ```shell dbt run``` - This will execute the project and actully run TPC-DI transformations.
 
 You can also specify ```--profiles-dir``` to use dbt profile other than default profile specified in [profiles.yml](./profiles.yml).

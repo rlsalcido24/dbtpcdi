@@ -1,3 +1,9 @@
+# dbt files
+logs/dbt.log
+logs/dbt.log.legacy
+**/.user.yml
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

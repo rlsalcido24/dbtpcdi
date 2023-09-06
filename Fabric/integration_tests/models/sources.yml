@@ -4,13 +4,13 @@ version: 2
 
 sources:
   - name: tpcdi
-    schema: "SF{{var('scalefactor')}}"
+    schema: "{{var('scalefactor')}}"
     tables:
-      - name: CustomerMgmt  
+      - name: CustomerMgmt
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch1/CustomerMgmt/"    # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior) 
+          location: "/{{var('scalefactor')}}/Batch1/CustomerMgmt/"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: customerid
             data_type: bigint
@@ -100,8 +100,8 @@ sources:
       - name: FinWireStg
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch1/FinWire/"    # path on above data sourc
-          file_format: "TsvFileFormat"        # External File Format name (created prior) 
+          location: "/{{var('scalefactor')}}/Batch1/FinWire/"   # path on above data sourc
+          file_format: "TsvFileFormat"   # External File Format name (created prior)
         columns:
           - name: value
             data_type: varchar(4000)
@@ -110,8 +110,8 @@ sources:
       - name: StatusType
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch1/StatusType.txt"    # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior) 
+          location: "/{{var('scalefactor')}}/Batch1/StatusType.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: st_id
             data_type: char(4)
@@ -123,8 +123,8 @@ sources:
       - name: TaxRate
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch1/TaxRate.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior) 
+          location: "/{{var('scalefactor')}}/Batch1/TaxRate.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: tx_id
             index: c1
@@ -142,15 +142,15 @@ sources:
       - name: DimTime
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch1/Time.txt"    # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior) 
+          location: "/{{var('scalefactor')}}/Batch1/Time.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: sk_timeid
             data_type: bigint
             description: "abc"
             index: c1
           - name: timevalue
-            data_type: time                    #varchar(20)
+            data_type: time  # varchar(20)
             description: "abc"
             index: c2
           - name: hourid
@@ -160,26 +160,26 @@ sources:
           - name: hourdesc
             data_type: varchar(20)
             description: "abc"
-            index: c4 
+            index: c4
           - name: minuteid
             data_type: int
-            description: "abc" 
+            description: "abc"
             index: c4
           - name: minutedesc
             data_type: varchar(20)
             description: "abc"
-            index: c5 
+            index: c5
           - name: secondid
             data_type: int
             description: "abc"
-            index: c6 
+            index: c6
           - name: seconddesc
             data_type: varchar(20)
             description: "abc"
-            index: c7 
+            index: c7
           - name: markethoursflag
             data_type: bit
-            description: "abc" 
+            description: "abc"
             index: c8
           - name: officehoursflag
             data_type: bit
@@ -189,8 +189,8 @@ sources:
       - name: AccountIncremental2
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch2/Account.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)         
+          location: "/{{var('scalefactor')}}/Batch2/Account.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: cdc_flag
             data_type: varchar(1)
@@ -207,11 +207,11 @@ sources:
           - name: ca_b_id
             data_type: bigint
             description: "abc"
-            index: c4 
+            index: c4
           - name: ca_c_id
             data_type: bigint
             description: "abc"
-            index: c5 
+            index: c5
           - name: accountDesc
             data_type: varchar(50)
             description: "abc"
@@ -219,7 +219,7 @@ sources:
           - name: taxstatus
             data_type: tinyint
             description: "abc"
-            index: c7 
+            index: c7
           - name: ca_st_id
             data_type: varchar(4)
             description: "abc"
@@ -228,8 +228,8 @@ sources:
       - name: AccountIncremental3
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch3/Account.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)    
+          location: "/{{var('scalefactor')}}/Batch3/Account.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: cdc_flag
             data_type: varchar(1)
@@ -246,11 +246,11 @@ sources:
           - name: ca_b_id
             data_type: bigint
             description: "abc"
-            index: c4 
+            index: c4
           - name: ca_c_id
             data_type: bigint
             description: "abc"
-            index: c5 
+            index: c5
           - name: accountDesc
             data_type: varchar(50)
             description: "abc"
@@ -258,17 +258,17 @@ sources:
           - name: taxstatus
             data_type: tinyint
             description: "abc"
-            index: c7 
+            index: c7
           - name: ca_st_id
             data_type: varchar(4)
             description: "abc"
-            index: c8      
+            index: c8
 
       - name: CashTransactionHistory
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch1/CashTransaction.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)    
+          location: "/{{var('scalefactor')}}/Batch1/CashTransaction.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: ct_ca_id
             data_type: bigint
@@ -285,13 +285,13 @@ sources:
           - name: ct_name
             data_type: varchar(100)
             description: "abc"
-            index: c4 
+            index: c4
 
       - name: CashTransactionIncremental2
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch2/CashTransaction.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)    
+          location: "/{{var('scalefactor')}}/Batch2/CashTransaction.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: cdc_flag
             data_type: varchar(1)
@@ -308,11 +308,11 @@ sources:
           - name: ct_dts
             data_type: datetime2
             description: "abc"
-            index: c4 
+            index: c4
           - name: ct_amt
             data_type: decimal(10,2)
             description: "abc"
-            index: c5 
+            index: c5
           - name: ct_name
             data_type: varchar(100)
             description: "abc"
@@ -321,8 +321,8 @@ sources:
       - name: CashTransactionIncremental3
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch3/CashTransaction.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)    
+          location: "/{{var('scalefactor')}}/Batch3/CashTransaction.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: cdc_flag
             data_type: varchar(1)
@@ -339,11 +339,11 @@ sources:
           - name: ct_dts
             data_type: datetime2
             description: "abc"
-            index: c4 
+            index: c4
           - name: ct_amt
             data_type: decimal(10,2)
             description: "abc"
-            index: c5 
+            index: c5
           - name: ct_name
             data_type: varchar(100)
             description: "abc"
@@ -352,8 +352,8 @@ sources:
       - name: CustomerIncremental2
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch2/Customer.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)    
+          location: "/{{var('scalefactor')}}/Batch2/Customer.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: cdc_flag
             data_type: varchar(1)
@@ -370,11 +370,11 @@ sources:
           - name: taxid
             data_type: varchar(20)
             description: "abc"
-            index: c4 
+            index: c4
           - name: status
             data_type: varchar(4)
             description: "abc"
-            index: c5 
+            index: c5
           - name: lastname
             data_type: varchar(25)
             description: "abc"
@@ -394,11 +394,11 @@ sources:
           - name: tier
             data_type: tinyint
             description: "abc"
-            index: c10 
+            index: c10
           - name: dob
             data_type: date
             description: "abc"
-            index: c11 
+            index: c11
           - name: addressline1
             data_type: varchar(80)
             description: "abc"
@@ -418,11 +418,11 @@ sources:
           - name: stateprov
             data_type: varchar(20)
             description: "abc"
-            index: c16 
+            index: c16
           - name: country
             data_type: varchar(24)
             description: "abc"
-            index: c17 
+            index: c17
           - name: c_ctry_1
             data_type: varchar(3)
             description: "abc"
@@ -438,11 +438,11 @@ sources:
           - name: c_ext_1
             data_type: varchar(5)
             description: "abc"
-            index: c21 
+            index: c21
           - name: c_ctry_2
             data_type: varchar(3)
             description: "abc"
-            index: c22 
+            index: c22
           - name: c_area_2
             data_type: varchar(3)
             description: "abc"
@@ -462,11 +462,11 @@ sources:
           - name: c_area_3
             data_type: varchar(3)
             description: "abc"
-            index: c27 
+            index: c27
           - name: c_local_3
             data_type: varchar(10)
             description: "abc"
-            index: c28 
+            index: c28
           - name: c_ext_3
             data_type: varchar(5)
             description: "abc"
@@ -474,7 +474,7 @@ sources:
           - name: email1
             data_type: varchar(50)
             description: "abc"
-            index: c30 
+            index: c30
           - name: email2
             data_type: varchar(50)
             description: "abc"
@@ -482,17 +482,17 @@ sources:
           - name: lcl_tx_id
             data_type: varchar(4)
             description: "abc"
-            index: c32 
+            index: c32
           - name: nat_tx_id
             data_type: varchar(4)
             description: "abc"
-            index: c33          
-              
+            index: c33
+
       - name: CustomerIncremental3
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch3/Customer.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)    
+          location: "/{{var('scalefactor')}}/Batch3/Customer.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: cdc_flag
             data_type: varchar(1)
@@ -509,11 +509,11 @@ sources:
           - name: taxid
             data_type: varchar(20)
             description: "abc"
-            index: c4 
+            index: c4
           - name: status
             data_type: varchar(4)
             description: "abc"
-            index: c5 
+            index: c5
           - name: lastname
             data_type: varchar(25)
             description: "abc"
@@ -533,11 +533,11 @@ sources:
           - name: tier
             data_type: tinyint
             description: "abc"
-            index: c10 
+            index: c10
           - name: dob
             data_type: date
             description: "abc"
-            index: c11 
+            index: c11
           - name: addressline1
             data_type: varchar(80)
             description: "abc"
@@ -557,11 +557,11 @@ sources:
           - name: stateprov
             data_type: varchar(20)
             description: "abc"
-            index: c16 
+            index: c16
           - name: country
             data_type: varchar(24)
             description: "abc"
-            index: c17 
+            index: c17
           - name: c_ctry_1
             data_type: varchar(3)
             description: "abc"
@@ -577,11 +577,11 @@ sources:
           - name: c_ext_1
             data_type: varchar(5)
             description: "abc"
-            index: c21 
+            index: c21
           - name: c_ctry_2
             data_type: varchar(3)
             description: "abc"
-            index: c22 
+            index: c22
           - name: c_area_2
             data_type: varchar(3)
             description: "abc"
@@ -601,11 +601,11 @@ sources:
           - name: c_area_3
             data_type: varchar(3)
             description: "abc"
-            index: c27 
+            index: c27
           - name: c_local_3
             data_type: varchar(10)
             description: "abc"
-            index: c28 
+            index: c28
           - name: c_ext_3
             data_type: varchar(5)
             description: "abc"
@@ -613,7 +613,7 @@ sources:
           - name: email1
             data_type: varchar(50)
             description: "abc"
-            index: c30 
+            index: c30
           - name: email2
             data_type: varchar(50)
             description: "abc"
@@ -621,17 +621,17 @@ sources:
           - name: lcl_tx_id
             data_type: varchar(4)
             description: "abc"
-            index: c32 
+            index: c32
           - name: nat_tx_id
             data_type: varchar(4)
             description: "abc"
-            index: c33  
+            index: c33
 
       - name: DailyMarketHistorical
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch1/DailyMarket.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)  
+          location: "/{{var('scalefactor')}}/Batch1/DailyMarket.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: dm_date
             data_type: date
@@ -648,21 +648,21 @@ sources:
           - name: dm_high
             data_type: decimal(8,2)
             description: "abc"
-            index: c4 
+            index: c4
           - name: dm_low
             data_type: decimal(8,2)
             description: "abc"
-            index: c5 
+            index: c5
           - name: dm_vol
             data_type: int
             description: "abc"
-            index: c6 
+            index: c6
 
       - name: DailyMarketIncremental2
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch2/DailyMarket.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)  
+          location: "/{{var('scalefactor')}}/Batch2/DailyMarket.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: cdc_flag
             data_type: varchar(1)
@@ -679,11 +679,11 @@ sources:
           - name: dm_s_symb
             data_type: varchar(15)
             description: "abc"
-            index: c4 
+            index: c4
           - name: dm_close
             data_type: decimal(8,2)
             description: "abc"
-            index: c5 
+            index: c5
           - name: dm_high
             data_type: decimal(8,2)
             description: "abc"
@@ -691,7 +691,7 @@ sources:
           - name: dm_low
             data_type: decimal(8,2)
             description: "abc"
-            index: c7 
+            index: c7
           - name: dm_vol
             data_type: int
             description: "abc"
@@ -700,8 +700,8 @@ sources:
       - name: DailyMarketIncremental3
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch3/DailyMarket.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)  
+          location: "/{{var('scalefactor')}}/Batch3/DailyMarket.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: cdc_flag
             data_type: varchar(1)
@@ -718,11 +718,11 @@ sources:
           - name: dm_s_symb
             data_type: varchar(15)
             description: "abc"
-            index: c4 
+            index: c4
           - name: dm_close
             data_type: decimal(8,2)
             description: "abc"
-            index: c5 
+            index: c5
           - name: dm_high
             data_type: decimal(8,2)
             description: "abc"
@@ -730,17 +730,17 @@ sources:
           - name: dm_low
             data_type: decimal(8,2)
             description: "abc"
-            index: c7 
+            index: c7
           - name: dm_vol
             data_type: int
             description: "abc"
-            index: c8   
+            index: c8
 
       - name: DimDate
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch1/Date.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)  
+          location: "/{{var('scalefactor')}}/Batch1/Date.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: sk_dateid
             data_type: bigint
@@ -756,12 +756,12 @@ sources:
             index: c3
           - name: calendaryearid
             data_type: int
-            description: "abc" 
+            description: "abc"
             index: c4
           - name: calendaryeardesc
             data_type: varchar(20)
             description: "abc"
-            index: c5 
+            index: c5
           - name: calendarqtrid
             data_type: int
             description: "abc"
@@ -777,7 +777,7 @@ sources:
           - name: calendarmonthdesc
             data_type: varchar(20)
             description: "abc"
-            index: c9    
+            index: c9
           - name: calendarweekid
             data_type: int
             description: "abc"
@@ -797,11 +797,11 @@ sources:
           - name: fiscalyearid
             data_type: int
             description: "abc"
-            index: c14 
+            index: c14
           - name: fiscalyeardesc
             data_type: varchar(20)
             description: "abc"
-            index: c15 
+            index: c15
           - name: fiscalqtrid
             data_type: int
             description: "abc"
@@ -809,17 +809,17 @@ sources:
           - name: fiscalqtrdesc
             data_type: varchar(20)
             description: "abc"
-            index: c17 
+            index: c17
           - name: holidayflag
             data_type: bit
             description: "abc"
-            index: c18  
+            index: c18
 
       - name: HR
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch1/HR.csv"   # path on above data sourc
-          file_format: "CsvFileFormat"        # External File Format name (created prior)  
+          location: "/{{var('scalefactor')}}/Batch1/HR.csv"   # path on above data sourc
+          file_format: "CsvFileFormat"   # External File Format name (created prior)
         columns:
           - name: employeeid
             data_type: bigint
@@ -836,11 +836,11 @@ sources:
           - name: employeelastname
             data_type: varchar(30)
             description: "abc"
-            index: c4 
+            index: c4
           - name: employeemi
             data_type: varchar(1)
             description: "abc"
-            index: c5 
+            index: c5
           - name: employeejobcode
             data_type: varchar(3)
             description: "abc"
@@ -848,7 +848,7 @@ sources:
           - name: employeebranch
             data_type: varchar(30)
             description: "abc"
-            index: c7 
+            index: c7
           - name: employeeoffice
             data_type: varchar(10)
             description: "abc"
@@ -856,13 +856,13 @@ sources:
           - name: employeephone
             data_type: varchar(14)
             description: "abc"
-            index: c9   
+            index: c9
 
       - name: HoldingHistory
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch1/HoldingHistory.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)  
+          location: "/{{var('scalefactor')}}/Batch1/HoldingHistory.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: hh_h_t_id
             data_type: int
@@ -879,14 +879,14 @@ sources:
           - name: hh_after_qty
             data_type: int
             description: "abc"
-            index: c4 
+            index: c4
 
-            
+
       - name: HoldingIncremental2
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch2/HoldingHistory.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)  
+          location: "/{{var('scalefactor')}}/Batch2/HoldingHistory.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: cdc_flag
             data_type: varchar(1)
@@ -903,21 +903,21 @@ sources:
           - name: hh_t_id
             data_type: int
             description: "abc"
-            index: c4  
+            index: c4
           - name: hh_before_qty
             data_type: int
             description: "abc"
-            index: c5 
+            index: c5
           - name: hh_after_qty
             data_type: int
             description: "abc"
-            index: c6 
+            index: c6
 
       - name: HoldingIncremental3
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch3/HoldingHistory.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)  
+          location: "/{{var('scalefactor')}}/Batch3/HoldingHistory.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: cdc_flag
             data_type: varchar(1)
@@ -934,21 +934,21 @@ sources:
           - name: hh_t_id
             data_type: int
             description: "abc"
-            index: c4  
+            index: c4
           - name: hh_before_qty
             data_type: int
             description: "abc"
-            index: c5 
+            index: c5
           - name: hh_after_qty
             data_type: int
             description: "abc"
-            index: c6 
+            index: c6
 
       - name: BatchDate1
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch1/BatchDate.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)  
+          location: "/{{var('scalefactor')}}/Batch1/BatchDate.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: batchdate
             data_type: date
@@ -958,30 +958,30 @@ sources:
       - name: BatchDate2
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch2/BatchDate.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)  
+          location: "/{{var('scalefactor')}}/Batch2/BatchDate.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: batchdate
             data_type: date
             description: "abc"
             index: c1
-          
+
       - name: BatchDate3
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch3/BatchDate.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)  
+          location: "/{{var('scalefactor')}}/Batch3/BatchDate.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: batchdate
             data_type: date
             description: "abc"
-            index: c1    
+            index: c1
 
       - name: Industry
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch1/Industry.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)  
+          location: "/{{var('scalefactor')}}/Batch1/Industry.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: in_id
             data_type: varchar(2)
@@ -999,8 +999,8 @@ sources:
       - name: TradeHistory
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch1/Trade.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)  
+          location: "/{{var('scalefactor')}}/Batch1/Trade.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: t_id
             data_type: bigint
@@ -1021,7 +1021,7 @@ sources:
           - name: t_is_cash
             data_type: tinyint
             description: "abc"
-            index: c5 
+            index: c5
           - name: t_s_symb
             data_type: varchar(15)
             description: "abc"
@@ -1041,7 +1041,7 @@ sources:
           - name: t_exec_name
             data_type: varchar(49)
             description: "abc"
-            index: c10 
+            index: c10
           - name: t_trade_price
             data_type: decimal(8,2)
             description: "abc"
@@ -1062,8 +1062,8 @@ sources:
       - name: TradeHistoryRaw
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch1/TradeHistory.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)  
+          location: "/{{var('scalefactor')}}/Batch1/TradeHistory.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: th_t_id
             data_type: bigint
@@ -1077,13 +1077,12 @@ sources:
             data_type: varchar(4)
             description: "abc"
             index: c3
-          
 
       - name: TradeIncremental2
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch2/Trade.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)  
+          location: "/{{var('scalefactor')}}/Batch2/Trade.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: cdc_flag
             data_type: varchar(1)
@@ -1112,7 +1111,7 @@ sources:
           - name: t_is_cash
             data_type: tinyint
             description: "abc"
-            index: c7 
+            index: c7
           - name: t_s_symb
             data_type: varchar(15)
             description: "abc"
@@ -1132,7 +1131,7 @@ sources:
           - name: t_exec_name
             data_type: varchar(49)
             description: "abc"
-            index: c12 
+            index: c12
           - name: t_trade_price
             data_type: decimal(8,2)
             description: "abc"
@@ -1153,8 +1152,8 @@ sources:
       - name: TradeIncremental3
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch3/Trade.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)  
+          location: "/{{var('scalefactor')}}/Batch3/Trade.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: cdc_flag
             data_type: varchar(1)
@@ -1183,7 +1182,7 @@ sources:
           - name: t_is_cash
             data_type: tinyint
             description: "abc"
-            index: c7 
+            index: c7
           - name: t_s_symb
             data_type: varchar(15)
             description: "abc"
@@ -1203,7 +1202,7 @@ sources:
           - name: t_exec_name
             data_type: varchar(49)
             description: "abc"
-            index: c12 
+            index: c12
           - name: t_trade_price
             data_type: decimal(8,2)
             description: "abc"
@@ -1224,8 +1223,8 @@ sources:
       - name: TradeType
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch1/TradeType.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)  
+          location: "/{{var('scalefactor')}}/Batch1/TradeType.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: tt_id
             data_type: varchar(3)
@@ -1242,13 +1241,13 @@ sources:
           - name: tt_is_mrkt
             data_type: int
             description: "abc"
-            index: c4 
+            index: c4
 
       - name: WatchIncremental2
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch2/WatchHistory.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)  
+          location: "/{{var('scalefactor')}}/Batch2/WatchHistory.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: cdc_flag
             data_type: varchar(1)
@@ -1265,21 +1264,21 @@ sources:
           - name: w_s_symb
             data_type: varchar(15)
             description: "abc"
-            index: c4 
+            index: c4
           - name: w_dts
             data_type: datetime2
             description: "abc"
-            index: c5 
+            index: c5
           - name: w_action
             data_type: varchar(4)
             description: "abc"
-            index: c6 
+            index: c6
 
       - name: WatchIncremental3
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch3/WatchHistory.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)  
+          location: "/{{var('scalefactor')}}/Batch3/WatchHistory.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: cdc_flag
             data_type: varchar(1)
@@ -1296,11 +1295,11 @@ sources:
           - name: w_s_symb
             data_type: varchar(15)
             description: "abc"
-            index: c4 
+            index: c4
           - name: w_dts
             data_type: datetime2
             description: "abc"
-            index: c5 
+            index: c5
           - name: w_action
             data_type: varchar(4)
             description: "abc"
@@ -1309,8 +1308,8 @@ sources:
       - name: WatchHistory
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch1/WatchHistory.txt"   # path on above data sourc
-          file_format: "PipeFileFormat"        # External File Format name (created prior)  
+          location: "/{{var('scalefactor')}}/Batch1/WatchHistory.txt"   # path on above data sourc
+          file_format: "PipeFileFormat"   # External File Format name (created prior)
         columns:
           - name: w_c_id
             data_type: bigint
@@ -1319,26 +1318,26 @@ sources:
           - name: w_s_symb
             data_type: varchar(15)
             description: "abc"
-            index: c2 
+            index: c2
           - name: w_dts
             data_type: datetime2
             description: "abc"
-            index: c3 
+            index: c3
           - name: w_action
             data_type: varchar(4)
             description: "abc"
-            index: c4 
+            index: c4
 
       - name: ProspectRaw1
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch1/Prospect.csv"   # path on above data sourc
-          file_format: "CsvFileFormat"        # External File Format name (created prior)  
+          location: "/{{var('scalefactor')}}/Batch1/Prospect.csv"   # path on above data sourc
+          file_format: "CsvFileFormat"   # External File Format name (created prior)
         columns:
           - name: agencyid
             data_type: varchar(30)
             description: "abc"
-            index: c1 
+            index: c1
           - name: lastname
             data_type: varchar(30)
             description: "abc"
@@ -1354,7 +1353,7 @@ sources:
           - name: gender
             data_type: varchar(1)
             description: "abc"
-            index: c5 
+            index: c5
           - name: addressline1
             data_type: varchar(80)
             description: "abc"
@@ -1374,7 +1373,7 @@ sources:
           - name: state
             data_type: varchar(20)
             description: "abc"
-            index: c10 
+            index: c10
           - name: country
             data_type: varchar(24)
             description: "abc"
@@ -1390,7 +1389,7 @@ sources:
           - name: numbercars
             data_type: int
             description: "abc"
-            index: c14 
+            index: c14
           - name: numberchildren
             data_type: int
             description: "abc"
@@ -1422,18 +1421,18 @@ sources:
           - name: networth
             data_type: int
             description: "abc"
-            index: c22     
+            index: c22
 
       - name: ProspectRaw2
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch2/Prospect.csv"   # path on above data sourc
-          file_format: "CsvFileFormat"        # External File Format name (created prior)  
+          location: "/{{var('scalefactor')}}/Batch2/Prospect.csv"   # path on above data sourc
+          file_format: "CsvFileFormat"   # External File Format name (created prior)
         columns:
           - name: agencyid
             data_type: varchar(30)
             description: "abc"
-            index: c1 
+            index: c1
           - name: lastname
             data_type: varchar(30)
             description: "abc"
@@ -1449,7 +1448,7 @@ sources:
           - name: gender
             data_type: varchar(1)
             description: "abc"
-            index: c5 
+            index: c5
           - name: addressline1
             data_type: varchar(80)
             description: "abc"
@@ -1469,7 +1468,7 @@ sources:
           - name: state
             data_type: varchar(20)
             description: "abc"
-            index: c10 
+            index: c10
           - name: country
             data_type: varchar(24)
             description: "abc"
@@ -1485,7 +1484,7 @@ sources:
           - name: numbercars
             data_type: int
             description: "abc"
-            index: c14 
+            index: c14
           - name: numberchildren
             data_type: int
             description: "abc"
@@ -1517,19 +1516,18 @@ sources:
           - name: networth
             data_type: int
             description: "abc"
-            index: c22     
-            
+            index: c22
 
       - name: ProspectRaw3
         external:
           data_source: "AzureDataLakeStorage"  # External Data Source name (created prior) made with TYPE= 'HADOOP'
-          location: "/SF{{var('scalefactor')}}/Batch3/Prospect.csv"   # path on above data sourc
-          file_format: "CsvFileFormat"        # External File Format name (created prior)  
+          location: "/{{var('scalefactor')}}/Batch3/Prospect.csv"   # path on above data sourc
+          file_format: "CsvFileFormat"   # External File Format name (created prior)
         columns:
           - name: agencyid
             data_type: varchar(30)
             description: "abc"
-            index: c1 
+            index: c1
           - name: lastname
             data_type: varchar(30)
             description: "abc"
@@ -1545,7 +1543,7 @@ sources:
           - name: gender
             data_type: varchar(1)
             description: "abc"
-            index: c5 
+            index: c5
           - name: addressline1
             data_type: varchar(80)
             description: "abc"
@@ -1565,7 +1563,7 @@ sources:
           - name: state
             data_type: varchar(20)
             description: "abc"
-            index: c10 
+            index: c10
           - name: country
             data_type: varchar(24)
             description: "abc"
@@ -1581,7 +1579,7 @@ sources:
           - name: numbercars
             data_type: int
             description: "abc"
-            index: c14 
+            index: c14
           - name: numberchildren
             data_type: int
             description: "abc"
@@ -1613,4 +1611,4 @@ sources:
           - name: networth
             data_type: int
             description: "abc"
-            index: c22     
+            index: c22
