@@ -50,10 +50,40 @@ file or span multiple files, please open an issue first for discussion.
 
 #### Linting
 
-This project uses [yamllint](https://yamllint.readthedocs.io/en/stable/)
-to lint the yaml files. To run the linter, run `yamllint .` from the root
-of the project. Errors and warnings will be printed to the console for review.
+This project uses several formatters and linters for different file types. Each linter should be run before submitting
+a pull request and the appropriate changes should be made to resolve any errors or warnings. This projects has
+built-in checks that will run automatically when a pull request is submitted and need to pass before the pull request
+can be merged. The file `dev-requirements.txt` contains the packages needed to run the linters. 
 
-These will need to be resolved or justified before a pull request can be merged.
+The `dev-requirements.txt` file can be used to install all of the packages at once with the command
+`pip install -r dev-requirements.txt`. It's considered best practice to install the packages in a python virtual
+environment.
 
-Instructions to install yamllint can be found [here](https://yamllint.readthedocs.io/en/stable/quickstart.html#installing-yamllint).
+Instructions to install each package will be linked below if you do not wish to use the `dev-requirements.txt` file.
+
+##### yaml
+We use [yamllint](https://yamllint.readthedocs.io/en/stable/) to lint the yaml files. To run the linter, run
+`yamllint .` from the root of the project. Errors and warnings will be printed to the console for review.
+
+[Instructions to install yamllint](https://yamllint.readthedocs.io/en/stable/quickstart.html#installing-yamllint).
+
+##### python
+We use [black](https://black.readthedocs.io/en/stable/usage_and_configuration/the_basics.html) to format and
+[flake8](https://flake8.pycqa.org/en/latest/) to lint python files. In addition, `black-jupyter` is an extension of
+`black` for Jupyter Notebooks, which end with an `.ipynb` extension.
+
+We recommend running `black .` to format code prior to `flake8 .` to lint the code since `black` will auto-correct
+many `flake8` violations. Errors and warnings will be printed to the console for review by both tools.
+
+[Instructions to install black](https://black.readthedocs.io/en/stable/installation_and_usage.html#installing-black).
+[Instructions to install flake8](https://flake8.pycqa.org/en/latest/#installation).
+[Instructions to install black-jupyter](https://github.com/n8henrie/jupyter-black).
+
+##### sql
+We use [sqlfluff](https://docs.sqlfluff.com/en/stable/) to lint the sql files. To run the formatter, run
+`sqlfluff format .`, and to run the linter, run `sqlfluff lint .` from the root of the project. Errors and warnings will
+be printed to the console for review.
+
+No additional configurations, including specification of the SQL dialect is required since the project uses a global
+`.sqlfluff` file at the root directory to manage configurations and a `.sqlfluff` file to specify the dialect for each
+Warehouse directory.
