@@ -37,7 +37,7 @@ FROM (
         SELECT *, 1 batchid FROM {{ source('tpcdi', 'WatchHistory') }}
         UNION ALL
         SELECT * except(cdc_flag, cdc_dsn) FROM {{ ref('WatchIncremental') }}) wh
-      JOIN {{ source('tpcdi', 'DimDate') }} d
+      JOIN {{ ref('DimDate') }} d
         ON d.datevalue = date(wh.w_dts)))
   QUALIFY ROW_NUMBER() OVER (PARTITION BY customerid, symbol ORDER BY w_dts desc) = 1) wh
 -- Converts to LEFT JOINs if this is run as DQ EDITION. On some higher Scale Factors, a small number of Security symbols or Customer IDs "may" be missing from DimSecurity/DimCustomer, causing audit check failures. 

@@ -14,7 +14,7 @@ SELECT
   employeephone phone,
   true iscurrent,
   1 batchid,
-  (SELECT min(to_date(datevalue)) as effectivedate FROM {{ source('tpcdi', 'DimDate') }}) effectivedate,
+  (SELECT min(to_date(datevalue)) as effectivedate FROM {{ ref('DimDate') }}) effectivedate,
   date('9999-12-31') enddate,
   bigint(concat(date_format(enddate, 'yyyyMMdd'), cast(brokerid as string))) as sk_brokerid
 FROM  {{ source('tpcdi', 'HR') }}

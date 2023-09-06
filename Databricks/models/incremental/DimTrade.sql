@@ -124,17 +124,17 @@ FROM (
             ELSE cast(null as boolean) END AS create_flg
         FROM {{ ref('TradeIncremental') }} t
       ) t
-      JOIN {{ source('tpcdi', 'DimDate') }} dd
+      JOIN {{ ref('DimDate') }} dd
         ON date(t.t_dts) = dd.datevalue
-      JOIN {{ source('tpcdi', 'DimTime') }} dt
+      JOIN {{ ref('DimTime') }} dt
         ON date_format(t.t_dts, 'HH:mm:ss') = dt.timevalue
     )
   )
   QUALIFY ROW_NUMBER() OVER (PARTITION BY tradeid ORDER BY t_dts desc) = 1
 ) trade
-JOIN {{ source('tpcdi', 'StatusType') }} status
+JOIN {{ ref('StatusType') }} status
   ON status.st_id = trade.t_st_id
-JOIN {{ source('tpcdi', 'TradeType') }} tt
+JOIN {{ ref('TradeType') }} tt
   ON tt.tt_id == trade.t_tt_id
 -- Converts to LEFT JOIN if this is run as DQ EDITION. On some higher Scale Factors, a small number of Security symbols or Account IDs are missing from DimSecurity/DimAccount, causing audit check failures. 
 --${dq_left_flg} 

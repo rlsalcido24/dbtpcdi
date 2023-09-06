@@ -61,7 +61,7 @@ FROM (
       FROM {{ ref('FinWire') }}
       WHERE rectype = 'SEC'
       ) fws
-    JOIN {{ source('tpcdi', 'StatusType') }} s
+    JOIN {{ ref('StatusType') }} s
       ON s.ST_ID = fws.status
     ) fws
   JOIN (
