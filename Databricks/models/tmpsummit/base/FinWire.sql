@@ -5,4 +5,4 @@
     )
 }}
 
-select * from {{ var('catalog') }}.tpcdi.ricardo_portilla_tpcdi_stmv_10_stage.finwire
+select * from {{ var('catalog') }}.ricardo_portilla_tpcdi_stmv_10_stage.finwire
