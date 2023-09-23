@@ -12,8 +12,10 @@ vars:
   stagingschema: stagingschema
   bucketname: bucketname  # bigquery, redshift only
   storageaccountname: synapsemigrationdemoadls
+  catalog: tpcdi
+  prodschema: prodschema
 
-model-paths: ["Databricks/models"]
+model-paths: ["Databricks/models/tmpsummit"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
 seed-paths: ["seeds"]
