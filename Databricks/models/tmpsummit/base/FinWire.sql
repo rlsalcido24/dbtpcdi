@@ -1,8 +1,8 @@
 {{
     config(
-        materialized = 'view',
+        materialized = 'table',
         partition_by = 'rectype'
     )
 }}
 
-select * from {{ var('catalog') }}.ricardo_portilla_tpcdi_stmv_10_stage.finwire
+SELECT value, substring(value, 16, 3) rectype FROM (   SELECT value FROM text.`/Volumes/tpcdi/tpcdi_raw_data/tpcdi_volume/sf="{{var('stagingschema')}}"/Batch1/FINWIRE[0-9][0-9][0-9][0-9]Q[1-4]`)
