@@ -15,7 +15,7 @@ vars:
   catalog: tpcdi
   prodschema: prodschema
 
-model-paths: ["Databricks/models/tmpsummit"]
+model-paths: ["Databricks/models/main"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
 seed-paths: ["seeds"]
