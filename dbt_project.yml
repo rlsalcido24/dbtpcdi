@@ -10,11 +10,11 @@ vars:
   scalefactor: 10
   benchmark: 10
   stage: stagename
-  stagingschema: stagingschema
+  stagingschema: rstpcdi11stg
   bucketname: bucketname  # bigquery, redshift only
   storageaccountname: synapsemigrationdemoadls
-  catalog: tpcdi
-  prodschema: prodschema
+  catalog: hive_metastore
+  prodschema: rstpcdi11prod
 
 model-paths: ["Databricks/models/main"]
 analysis-paths: ["analyses"]
